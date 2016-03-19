@@ -8,7 +8,7 @@ namespace MultiagentAlgorithm
         /// <summary>
         /// The ID of the vertex.
         /// </summary>
-        private int ID { get; }
+        public int ID { get; }
 
         /// <summary>
         /// The weight of the vertex.
@@ -34,6 +34,12 @@ namespace MultiagentAlgorithm
                 _ants = value;
             }
         }
+
+        /// <summary>
+        /// The ratio between the number of neighbors that have different 
+        /// colors to the total number of neighbors.
+        /// </summary>
+        public double LocalCost { get; set; }
 
         public Vertex(int id, int weight)
         {

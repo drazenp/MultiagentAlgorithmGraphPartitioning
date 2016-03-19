@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Fakes;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -147,6 +148,53 @@ namespace MultiagentAlgorithm.Test
             // [6] 6 6 4 5
             Assert.AreEqual(6, graph.EdgesWeights[6, 5]);
             Assert.AreEqual(5, graph.EdgesWeights[6, 3]);
+        }
+
+        [TestMethod]
+        public void Graph_GetConnectedVertcies_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            var connectedVertices = graph.GetConnectedVertices(0).ToList();
+
+            Assert.AreEqual(1, connectedVertices[0].ID);
+            Assert.AreEqual(2, connectedVertices[1].ID);
+            Assert.AreEqual(4, connectedVertices[2].ID);
+        }
+
+        [TestMethod]
+        public void Graph_LocalCostFunction_Initialized()
+        {
+            const int numberOfColors = 3;
+
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.ColorVerticesRandomly(numberOfColors);
+            graph.CalculateLocalCostFunction();
+
+            Assert.AreEqual(0D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.75D, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(0.5D, graph.Vertices[6].LocalCost);
         }
     }
 }

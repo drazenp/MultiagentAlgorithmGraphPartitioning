@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MultiagentAlgorithm
@@ -61,7 +62,6 @@ namespace MultiagentAlgorithm
                     {
                         var edgeVertex = int.Parse(vertices.ElementAt(i)) - 1;
                         var edgeWeight = int.Parse(edges.ElementAt(i));
-                        //EdgesWeights[counter, edgeVertex] = edgeWeight;
                         EdgesWeights[edgeVertex, counter] = edgeWeight;
                     }
 
@@ -105,6 +105,46 @@ namespace MultiagentAlgorithm
                 if (counter >= numberOfAnts)
                 {
                     return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// For all vertices initialize local cost function.
+        /// The ratio between the number of neighbors that have different 
+        /// colors to the total number of neighbors.
+        /// </summary>
+        public void CalculateLocalCostFunction()
+        {
+            foreach (var vertex in Vertices)
+            {
+                var connectedVertices = GetConnectedVertices(vertex.ID).ToList();
+                var verticesCount = connectedVertices.Count;
+                //var sameColorCount = Vertices.Count(x => x.Color == vertex.Color);
+                var differentColorCount = connectedVertices.Count(x => x.Color != vertex.Color);
+                if (verticesCount == differentColorCount)
+                {
+                    vertex.LocalCost = 0;
+                }
+                else if (differentColorCount == 0)
+                {
+                    vertex.LocalCost = 1;
+                }
+                else
+                {
+                    vertex.LocalCost = differentColorCount / (double)connectedVertices.Count;
+                }
+            }
+        }
+
+        public IEnumerable<Vertex> GetConnectedVertices(int vertexId)
+        {
+            for (int i = 0; i < EdgesWeights.GetLength(0); i++)
+            {
+                if (EdgesWeights[vertexId, i] != 0)
+                {
+                    //yield return Vertices[i];
+                    yield return Vertices.Single(x => x.ID == i);
                 }
             }
         }
