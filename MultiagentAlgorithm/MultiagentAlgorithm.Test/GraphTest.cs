@@ -66,7 +66,7 @@ namespace MultiagentAlgorithm.Test
         [TestMethod]
         public void Graph_RandomColorEachVertex_Success()
         {
-            var numberOfColors = 3;
+            const int numberOfColors = 3;
 
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
@@ -98,7 +98,7 @@ namespace MultiagentAlgorithm.Test
             {
                 NextInt32Int32 = (a, b) => 1
             };
-            var numberOfAnts = 2;
+            const int numberOfAnts = 2;
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
@@ -106,6 +106,47 @@ namespace MultiagentAlgorithm.Test
 
             Assert.AreEqual(0, graph.Vertices[0].Ants[0]);
             Assert.AreEqual(1, graph.Vertices[6].Ants[0]);
+        }
+
+        [TestMethod]
+        public void Graph_InitializeEdges_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            var randomMock = new StubRandom();
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+
+            // [0] 5 1 3 2 2 1
+            Assert.AreEqual(1, graph.EdgesWeights[0, 4]);
+            Assert.AreEqual(2, graph.EdgesWeights[0, 2]);
+            Assert.AreEqual(1, graph.EdgesWeights[0, 1]);
+            // [1] 1 1 3 2 4 1
+            Assert.AreEqual(1, graph.EdgesWeights[1, 0]);
+            Assert.AreEqual(2, graph.EdgesWeights[1, 2]);
+            Assert.AreEqual(1, graph.EdgesWeights[1, 3]);
+            // [2] 5 3 4 2 2 2 1 2
+            Assert.AreEqual(3, graph.EdgesWeights[2, 4]);
+            Assert.AreEqual(2, graph.EdgesWeights[2, 3]);
+            Assert.AreEqual(2, graph.EdgesWeights[2, 1]);
+            Assert.AreEqual(2, graph.EdgesWeights[2, 0]);
+            // [3] 2 1 3 2 6 2 7 5
+            Assert.AreEqual(1, graph.EdgesWeights[3, 1]);
+            Assert.AreEqual(2, graph.EdgesWeights[3, 2]);
+            Assert.AreEqual(2, graph.EdgesWeights[3, 5]);
+            Assert.AreEqual(5, graph.EdgesWeights[3, 6]);
+            // [4] 1 1 3 3 6 2
+            Assert.AreEqual(1, graph.EdgesWeights[4, 0]);
+            Assert.AreEqual(3, graph.EdgesWeights[4, 2]);
+            Assert.AreEqual(2, graph.EdgesWeights[4, 5]);
+            // [5] 5 2 4 2 7 6
+            Assert.AreEqual(2, graph.EdgesWeights[5, 4]);
+            Assert.AreEqual(2, graph.EdgesWeights[5, 3]);
+            Assert.AreEqual(6, graph.EdgesWeights[5, 6]);
+            // [6] 6 6 4 5
+            Assert.AreEqual(6, graph.EdgesWeights[6, 5]);
+            Assert.AreEqual(5, graph.EdgesWeights[6, 3]);
         }
     }
 }
