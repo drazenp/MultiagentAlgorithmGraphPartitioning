@@ -120,8 +120,8 @@ namespace MultiagentAlgorithm
             {
                 var connectedVertices = GetConnectedVertices(vertex.ID).ToList();
                 var verticesCount = connectedVertices.Count;
-                //var sameColorCount = Vertices.Count(x => x.Color == vertex.Color);
                 var differentColorCount = connectedVertices.Count(x => x.Color != vertex.Color);
+
                 if (verticesCount == differentColorCount)
                 {
                     vertex.LocalCost = 0;
@@ -139,14 +139,30 @@ namespace MultiagentAlgorithm
 
         public IEnumerable<Vertex> GetConnectedVertices(int vertexId)
         {
-            for (int i = 0; i < EdgesWeights.GetLength(0); i++)
+            for (var i = 0; i < EdgesWeights.GetLength(0); i++)
             {
                 if (EdgesWeights[vertexId, i] != 0)
                 {
-                    //yield return Vertices[i];
                     yield return Vertices.Single(x => x.ID == i);
                 }
             }
+        }
+
+        /// <summary>
+        /// Counts the number of times that an edge joins vertices of different colors.
+        /// </summary>
+        /// <returns>The value of global cost function.</returns>
+        public double CalculateGlobalCostFunction()
+        {
+            var globalCost = 0.0D;
+
+            foreach (var vertex in Vertices)
+            {
+                var differentColorCount = GetConnectedVertices(vertex.ID).Count(x => x.Color == vertex.Color);
+                globalCost += differentColorCount;
+            }
+
+            return globalCost / 2;
         }
     }
 }

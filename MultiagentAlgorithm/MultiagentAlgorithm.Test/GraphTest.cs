@@ -171,7 +171,7 @@ namespace MultiagentAlgorithm.Test
         }
 
         [TestMethod]
-        public void Graph_LocalCostFunction_Initialized()
+        public void Graph_LocalCostFunction_ThreeColors()
         {
             const int numberOfColors = 3;
 
@@ -195,6 +195,54 @@ namespace MultiagentAlgorithm.Test
             Assert.AreEqual(0D, graph.Vertices[4].LocalCost);
             Assert.AreEqual(0D, graph.Vertices[5].LocalCost);
             Assert.AreEqual(0.5D, graph.Vertices[6].LocalCost);
+        }
+
+        [TestMethod]
+        public void Graph_LocalCostFunction_TwoColors()
+        {
+            const int numberOfColors = 2;
+
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.ColorVerticesRandomly(numberOfColors);
+            graph.CalculateLocalCostFunction();
+
+            Assert.AreEqual(1/3D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(2/3D, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0.5D, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.5D, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(1/3D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(2/3D, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[6].LocalCost);
+        }
+
+        [TestMethod]
+        public void Graph_GlobalCostFunction_Initialized()
+        {
+            const int numberOfColors = 2;
+
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.ColorVerticesRandomly(numberOfColors);
+            var globalCost = graph.CalculateGlobalCostFunction();
+
+            Assert.AreEqual(5, globalCost);
         }
     }
 }
