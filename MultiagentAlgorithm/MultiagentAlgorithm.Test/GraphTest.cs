@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -21,12 +22,13 @@ namespace MultiagentAlgorithm.Test
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            var randomMock = new System.Fakes.StubRandom();
 
-            var graph = new Graph(loaderMock.Object);
+            var graph = new Graph(loaderMock.Object, randomMock);
 
             graph.InitializeGraph();
 
-            Assert.AreEqual(7, graph.VerticesWeights.Length, "The number of vertices weights is not correct.");
+            Assert.AreEqual(7, graph.Vertices.Length, "The number of vertices weights is not correct.");
             Assert.AreEqual(11, graph.NumberOfEdges, "The number of edges is not correct.");
         }
 
@@ -35,18 +37,60 @@ namespace MultiagentAlgorithm.Test
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            var randomMock = new System.Fakes.StubRandom();
 
-            var graph = new Graph(loaderMock.Object);
+            var graph = new Graph(loaderMock.Object, randomMock);
 
             graph.InitializeGraph();
 
-            Assert.AreEqual(4, graph.VerticesWeights[0]);
-            Assert.AreEqual(2, graph.VerticesWeights[1]);
-            Assert.AreEqual(5, graph.VerticesWeights[2]);
-            Assert.AreEqual(3, graph.VerticesWeights[3]);
-            Assert.AreEqual(1, graph.VerticesWeights[4]);
-            Assert.AreEqual(6, graph.VerticesWeights[5]);
-            Assert.AreEqual(2, graph.VerticesWeights[6]);
+            Assert.AreEqual(4, graph.Vertices[0].Weight);
+            Assert.AreEqual(2, graph.Vertices[1].Weight);
+            Assert.AreEqual(5, graph.Vertices[2].Weight);
+            Assert.AreEqual(3, graph.Vertices[3].Weight);
+            Assert.AreEqual(1, graph.Vertices[4].Weight);
+            Assert.AreEqual(6, graph.Vertices[5].Weight);
+            Assert.AreEqual(2, graph.Vertices[6].Weight);
+        }
+
+        [TestMethod]
+        public void Graph_Vertices_Initialized()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            var randomMock = new System.Fakes.StubRandom();
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+
+            graph.InitializeGraph();
+
+            Assert.AreEqual(7, graph.Vertices.Length, "Not all vertices are initialized.");
+        }
+
+        [TestMethod]
+        public void Graph_RandomColorEachVertex_Success()
+        {
+            var numberOfColors = 3;
+
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            
+            var randomMock = new System.Fakes.StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+
+            graph.ColorVerticesRandomly(numberOfColors);
+
+            Assert.AreEqual(1, graph.Vertices[0].Color);
+            Assert.AreEqual(3, graph.Vertices[1].Color);
+            Assert.AreEqual(2, graph.Vertices[2].Color);
+            Assert.AreEqual(1, graph.Vertices[3].Color);
+            Assert.AreEqual(3, graph.Vertices[4].Color);
+            Assert.AreEqual(2, graph.Vertices[5].Color);
+            Assert.AreEqual(1, graph.Vertices[6].Color);
         }
     }
 }
