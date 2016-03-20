@@ -49,6 +49,7 @@
     <Compile Include="FileLoader.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="IDataLoader.cs" />
+    <Compile Include="IGraph.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vertex.cs" />

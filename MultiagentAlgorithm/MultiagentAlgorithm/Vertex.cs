@@ -41,10 +41,13 @@ namespace MultiagentAlgorithm
         /// </summary>
         public double LocalCost { get; set; }
 
-        public Vertex(int id, int weight)
+        public Dictionary<int, int> ConnectedEdges { get; }
+
+        public Vertex(int id, int weight, Dictionary<int, int> connectedEdges)
         {
             ID = id;
             Weight = weight;
+            ConnectedEdges = connectedEdges;
         }
     }
 }

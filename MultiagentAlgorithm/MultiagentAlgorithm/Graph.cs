@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MultiagentAlgorithm
 {
-    public class Graph
+    public class Graph : IGraph
     {
         private readonly IDataLoader _dataLoader;
 
@@ -22,6 +22,8 @@ namespace MultiagentAlgorithm
         public int NumberOfEdges { get; set; }
 
         public int[,] EdgesWeights { get; set; }
+
+        public Dictionary<int, int> Ants;
 
         public Graph(IDataLoader dataLoader, Random rnd)
         {
@@ -50,20 +52,25 @@ namespace MultiagentAlgorithm
                 else
                 {
                     var vertexWeight = int.Parse(fileData[0]);
-                    Vertices[counter] = new Vertex(counter, vertexWeight);
-
+                    
                     // Initilize edges. Get list of vertices as the each even element in the file line;
                     // The edges are the each odd element in the file line except first - the first is vertex weight.
                     var fileDataList = fileData.ToList();
                     var edges = fileDataList.Where((x, y) => y%2 == 0).Skip(1).ToList();
                     var vertices = fileDataList.Where((x, y) => y%2 != 0).ToList();
 
+                    var connectedEdges = new Dictionary<int, int>();
                     for (var i = 0; i < vertices.Count(); i++)
                     {
                         var edgeVertex = int.Parse(vertices.ElementAt(i)) - 1;
                         var edgeWeight = int.Parse(edges.ElementAt(i));
                         EdgesWeights[edgeVertex, counter] = edgeWeight;
+
+                        // Separately!
+                        connectedEdges.Add(edgeVertex, edgeWeight);
                     }
+
+                    Vertices[counter] = new Vertex(counter, vertexWeight, connectedEdges);
 
                     counter++;
                 }
@@ -97,9 +104,11 @@ namespace MultiagentAlgorithm
         /// <param name="numberOfAnts">The number of ants.</param>
         public void InitializeAnts(int numberOfAnts)
         {
+            Ants = new Dictionary<int, int>();
             var counter = 0;
             foreach (var vertex in Vertices.Shuffle(_rnd))
             {
+                Ants.Add(counter, vertex.ID);
                 vertex.Ants.Add(counter);
                 counter++;
                 if (counter >= numberOfAnts)

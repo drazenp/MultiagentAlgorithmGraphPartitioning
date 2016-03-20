@@ -110,6 +110,25 @@ namespace MultiagentAlgorithm.Test
         }
 
         [TestMethod]
+        public void Graph_InitializeAntsSeparately_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+            const int numberOfAnts = 2;
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(numberOfAnts);
+
+            Assert.AreEqual(0, graph.Ants[0]);
+            Assert.AreEqual(6, graph.Ants[1]);
+        }
+
+        [TestMethod]
         public void Graph_InitializeEdges_Success()
         {
             var loaderMock = new Mock<IDataLoader>();
@@ -148,6 +167,47 @@ namespace MultiagentAlgorithm.Test
             // [6] 6 6 4 5
             Assert.AreEqual(6, graph.EdgesWeights[6, 5]);
             Assert.AreEqual(5, graph.EdgesWeights[6, 3]);
+        }
+
+        [TestMethod]
+        public void Graph_InitializeEdgesSeparately_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+            var randomMock = new StubRandom();
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+
+            // [0] 5 1 3 2 2 1
+            Assert.AreEqual(1, graph.Vertices[0].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(2, graph.Vertices[0].ConnectedEdges.ElementAt(1).Value);
+            Assert.AreEqual(1, graph.Vertices[0].ConnectedEdges.ElementAt(2).Value);
+            // [1] 1 1 3 2 4 1
+            Assert.AreEqual(1, graph.Vertices[1].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(2, graph.Vertices[1].ConnectedEdges.ElementAt(1).Value);
+            Assert.AreEqual(1, graph.Vertices[1].ConnectedEdges.ElementAt(2).Value);
+            // [2] 5 3 4 2 2 2 1 2
+            Assert.AreEqual(3, graph.Vertices[2].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(2, graph.Vertices[2].ConnectedEdges.ElementAt(1).Value);
+            Assert.AreEqual(2, graph.Vertices[2].ConnectedEdges.ElementAt(2).Value);
+            Assert.AreEqual(2, graph.Vertices[2].ConnectedEdges.ElementAt(3).Value);
+            // [3] 2 1 3 2 6 2 7 5
+            Assert.AreEqual(1, graph.Vertices[3].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(2, graph.Vertices[3].ConnectedEdges.ElementAt(1).Value);
+            Assert.AreEqual(2, graph.Vertices[3].ConnectedEdges.ElementAt(2).Value);
+            Assert.AreEqual(5, graph.Vertices[3].ConnectedEdges.ElementAt(3).Value);
+            // [4] 1 1 3 3 6 2
+            Assert.AreEqual(1, graph.Vertices[4].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(3, graph.Vertices[4].ConnectedEdges.ElementAt(1).Value);
+            Assert.AreEqual(2, graph.Vertices[4].ConnectedEdges.ElementAt(2).Value);
+            // [5] 5 2 4 2 7 6
+            Assert.AreEqual(2, graph.Vertices[5].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(2, graph.Vertices[5].ConnectedEdges.ElementAt(1).Value);
+            Assert.AreEqual(6, graph.Vertices[5].ConnectedEdges.ElementAt(2).Value);
+            // [6] 6 6 4 5
+            Assert.AreEqual(6, graph.Vertices[6].ConnectedEdges.ElementAt(0).Value);
+            Assert.AreEqual(5, graph.Vertices[6].ConnectedEdges.ElementAt(1).Value);
         }
 
         [TestMethod]
