@@ -44,7 +44,7 @@ namespace MultiagentAlgorithm
         /// Counts the number of times that an edge joins vertices of different colors.
         /// </summary>
         /// <returns>The value of global cost function.</returns>
-        double GetGlobalCostFunction();
+        int GetGlobalCostFunction();
 
         /// <summary>
         /// Find the worst adjacent vertex and move ant to it.
@@ -71,5 +71,24 @@ namespace MultiagentAlgorithm
         /// <param name="ant">The ID of the ant.</param>
         /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
         void ColorVertexWithRandomColor(int ant, int numberOfColors);
+
+        /// <summary>
+        /// To keep the balance, the algorithm chooses, from
+        /// a set of s random vertices, one with the lowest value 
+        /// of the local cost function -from those which have the new color- 
+        /// and changes its color to the old color.
+        /// </summary>
+        void KeepBalance(int numberOfRandomVertices);
+
+        /// <summary>
+        /// Reset the all vertices history states. 
+        /// </summary>
+        void ResetVerticesState();
+
+        /// <summary>
+        /// Update local cost function for all chosen vertices 
+        /// which has new color and for all adjacent vertices.
+        /// </summary>
+        void UpdateLocalCostFunction();
     }
 }

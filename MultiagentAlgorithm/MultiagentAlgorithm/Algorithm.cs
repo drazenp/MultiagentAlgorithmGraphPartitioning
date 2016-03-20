@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Reflection;
+using log4net;
+using log4net.Config;
 
 namespace MultiagentAlgorithm
 {
     public static class Algorithm
     {
-        public static void Run(Options options, Random rnd)
+        private static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static int Run(Options options, Random rnd)
         {
             var loader = new FileLoader(options.GraphFilePath);
             var graph = new Graph(loader, rnd);
@@ -14,10 +19,14 @@ namespace MultiagentAlgorithm
             graph.CalculateLocalCostFunction();
 
             var bestCost = graph.GetGlobalCostFunction();
+            Log.DebugFormat($"Initiale global cost function: {bestCost}");
 
             // While (best cost > 0) do
             for (var i = 0; i < 10; i++)
             {
+
+                graph.ResetVerticesState();
+
                 // At a given iteration each ant moves from the current position 
                 // to the adjacent vertex with the lowest local cost, 
                 // i.e. the vertex with the greatest number of constraints (neighbors of a different color).
@@ -49,8 +58,24 @@ namespace MultiagentAlgorithm
                         // Change to a randomly chosen color.
                         graph.ColorVertexWithRandomColor(ant, options.NumberOfPartitions);
                     }
+
+                    // Keep balance (Change a randomly chosen vertex with low local cost
+                    // from the new to the old color).
+                    graph.KeepBalance(options.NumberVerticesForBalance);
+
+                    // For the chosen vertices and all adjacent vertices update local cost function.
+
+
+                    var globalCostFunction = graph.GetGlobalCostFunction();
+                    Log.DebugFormat($"New global cost function: {globalCostFunction}");
+                    if (globalCostFunction < bestCost)
+                    {
+                        bestCost = globalCostFunction;
+                    }
                 }
             }
+
+            return bestCost;
         }
     }
 }

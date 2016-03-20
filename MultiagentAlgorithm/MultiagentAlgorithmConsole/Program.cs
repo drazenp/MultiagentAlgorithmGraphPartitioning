@@ -16,9 +16,11 @@ namespace MultiagentAlgorithmConsole
         {
             XmlConfigurator.Configure();
 
-            var option = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9, movingProbability: 0.95, graphFilePath: GraphFilePath);
+            var option = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9, 
+                movingProbability: 0.95, graphFilePath: GraphFilePath, numberVerticesForBalance: 1);
             var rnd = new Random(Environment.TickCount);
-            Algorithm.Run(option, rnd);
+            var bestCost = Algorithm.Run(option, rnd);
+            Log.DebugFormat($"Best cost at the end: {bestCost}");
         }
     }
 }

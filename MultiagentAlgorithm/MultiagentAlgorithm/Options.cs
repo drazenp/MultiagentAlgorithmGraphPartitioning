@@ -27,13 +27,20 @@
         /// </summary>
         public string GraphFilePath { get; }
 
-        public Options(int numberOfAnts, int numberOfPartitions, double coloringProbability, double movingProbability, string graphFilePath)
+        /// <summary>
+        /// The number of vertices set to keep balance.
+        /// </summary>
+        public int NumberVerticesForBalance { get; }
+
+        public Options(int numberOfAnts, int numberOfPartitions, double coloringProbability, 
+            double movingProbability, string graphFilePath, int numberVerticesForBalance)
         {
             NumberOfAnts = numberOfAnts;
             NumberOfPartitions = numberOfPartitions;
             ColoringProbability = coloringProbability;
             MovingProbability = movingProbability;
             GraphFilePath = graphFilePath;
+            NumberVerticesForBalance = numberVerticesForBalance;
         }
     }
 }

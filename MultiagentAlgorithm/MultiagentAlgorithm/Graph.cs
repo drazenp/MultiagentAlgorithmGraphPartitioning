@@ -14,7 +14,12 @@ namespace MultiagentAlgorithm
         /// The array of weights for each vertex in the graph.
         /// </summary>
         public Vertex[] Vertices { get; private set; }
-        
+
+        /// <summary>
+        /// The list of all chosen vertices - the vertices which changed color.
+        /// </summary>
+        public IList<Vertex> ChosenVertices { get; private set; }
+
         /// <summary>
         /// Number of edges read from files.
         /// This is not used in the application.
@@ -53,12 +58,12 @@ namespace MultiagentAlgorithm
                 else
                 {
                     var vertexWeight = int.Parse(fileData[0]);
-                    
+
                     // Initilize edges. Get list of vertices as the each even element in the file line;
                     // The edges are the each odd element in the file line except first - the first is vertex weight.
                     var fileDataList = fileData.ToList();
-                    var edges = fileDataList.Where((x, y) => y%2 == 0).Skip(1).ToList();
-                    var vertices = fileDataList.Where((x, y) => y%2 != 0).ToList();
+                    var edges = fileDataList.Where((x, y) => y % 2 == 0).Skip(1).ToList();
+                    var vertices = fileDataList.Where((x, y) => y % 2 != 0).ToList();
 
                     var connectedEdges = new Dictionary<int, int>();
                     for (var i = 0; i < vertices.Count(); i++)
@@ -128,22 +133,31 @@ namespace MultiagentAlgorithm
         {
             foreach (var vertex in Vertices)
             {
-                var connectedVertices = GetConnectedVertices(vertex.ID).ToList();
-                var verticesCount = connectedVertices.Count;
-                var differentColorCount = connectedVertices.Count(x => x.Color != vertex.Color);
+                CalculateLocalCostFunctionForVertex(vertex);
+            }
+        }
 
-                if (verticesCount == differentColorCount)
-                {
-                    vertex.LocalCost = 0;
-                }
-                else if (differentColorCount == 0)
-                {
-                    vertex.LocalCost = 1;
-                }
-                else
-                {
-                    vertex.LocalCost = differentColorCount / (double)connectedVertices.Count;
-                }
+        /// <summary>
+        /// Calculate local cost function for the vertex.
+        /// </summary>
+        /// <param name="vertex">The vertex to calculate local cost function.</param>
+        private void CalculateLocalCostFunctionForVertex(Vertex vertex)
+        {
+            var connectedVertices = GetConnectedVertices(vertex.ID).ToList();
+            var verticesCount = connectedVertices.Count;
+            var differentColorCount = connectedVertices.Count(x => x.Color != vertex.Color);
+
+            if (verticesCount == differentColorCount)
+            {
+                vertex.LocalCost = 0;
+            }
+            else if (differentColorCount == 0)
+            {
+                vertex.LocalCost = 1;
+            }
+            else
+            {
+                vertex.LocalCost = differentColorCount / (double)connectedVertices.Count;
             }
         }
 
@@ -162,9 +176,9 @@ namespace MultiagentAlgorithm
         /// Counts the number of times that an edge joins vertices of different colors.
         /// </summary>
         /// <returns>The value of global cost function.</returns>
-        public double GetGlobalCostFunction()
+        public int GetGlobalCostFunction()
         {
-            var globalCost = 0.0D;
+            var globalCost = 0;
 
             foreach (var vertex in Vertices)
             {
@@ -193,7 +207,10 @@ namespace MultiagentAlgorithm
                     worstAdjacentVertex = connectedVertex;
                 }
             }
+
             // Move ant to the worst adjacent vertex.
+            var worstVertex = Vertices[worstAdjacentVertex];
+            worstVertex.LowestCost = true;
             Ants[ant] = worstAdjacentVertex;
         }
 
@@ -217,7 +234,8 @@ namespace MultiagentAlgorithm
         public void ColorVertexWithBestColor(int ant)
         {
             var vertex = Vertices[Ants[ant]];
-            var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new {color, count = group.Count()}).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x=>x.Value).First();
+            var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new { color, count = group.Count() }).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x => x.Value).First();
+            ChosenVertices.Add(vertex);
             vertex.Color = bestColor.Key;
         }
 
@@ -231,6 +249,56 @@ namespace MultiagentAlgorithm
             var vertex = Vertices[Ants[ant]];
             var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(_rnd).First();
             vertex.Color = randomColor;
+        }
+
+        /// <summary>
+        /// To keep the balance, the algorithm chooses, from
+        /// a set of s random vertices, one with the lowest value 
+        /// of the local cost function -from those which have the new color- 
+        /// and changes its color to the old color.
+        /// </summary>
+        public void KeepBalance(int numberOfRandomVertices)
+        {
+            var random = Vertices.Shuffle(_rnd).Take(numberOfRandomVertices);
+            var withChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex=>vertex.LocalCost);
+            if (withChangedColor.Any())
+            {
+                var oldColor = withChangedColor.First().OldColor;
+                if (oldColor != null)
+                {
+                    withChangedColor.First().Color = oldColor.Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reset the all vertices history states. 
+        /// </summary>
+        public void ResetVerticesState()
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Update local cost function for all chosen vertices 
+        /// which has new color and for all adjacent vertices.
+        /// </summary>
+        public void UpdateLocalCostFunction()
+        {
+            List<int> vertices = new List<int>();
+            var changedVertices = Vertices.Select(vertex => vertex.OldColor != null);
+            foreach (var changedVertex in ChosenVertices)
+            {
+                vertices.AddRange(changedVertex.ConnectedEdges.Keys);
+            }
+
+            foreach (var vertex in vertices.Distinct())
+            {
+                CalculateLocalCostFunctionForVertex(Vertices[vertex]);
+            }
         }
     }
 }

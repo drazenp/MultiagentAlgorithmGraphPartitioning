@@ -18,8 +18,10 @@ namespace MultiagentAlgorithm.Test
                                                                         "6 5 2 4 2 7 6",
                                                                         "2 6 6 4 5" };
 
-        private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9, movingProbability: 0.95, graphFilePath: string.Empty);
-        private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9, movingProbability: 0.95, graphFilePath: string.Empty);
+        private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9, 
+            movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1);
+        private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9, 
+            movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1);
 
         [TestMethod]
         public void Graph_FirstLineRead_Sucess()
@@ -422,6 +424,79 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVertexWithRandomColor(1, _optionTwoColors.NumberOfPartitions);
 
             Assert.AreEqual(1, graph.Vertices[graph.Ants[1]].Color);
+        }
+
+        [TestMethod]
+        public void Graph_ResetVerticeState_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+
+            graph.ResetVerticesState();
+
+            Assert.IsFalse(graph.Vertices.Any(vertex => vertex.LowestCost));
+            Assert.IsTrue(graph.Vertices.All(vertex => vertex.OldColor==null));
+        }
+
+        [TestMethod]
+        public void Graph_KeepBalance_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            graph.MoveAntToAnyAdjacentVertex(0);
+            graph.ColorVertexWithBestColor(0);
+            graph.MoveAntToAnyAdjacentVertex(1);
+            graph.ColorVertexWithBestColor(1);
+
+            graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance);
+
+            Assert.AreEqual(1, graph.Vertices[0].Color);
+        }
+
+        [TestMethod]
+        public void Graph_UpdateLocalCostFunction_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            graph.MoveAntToAnyAdjacentVertex(0);
+            graph.ColorVertexWithBestColor(0);
+            graph.MoveAntToAnyAdjacentVertex(1);
+            graph.ColorVertexWithBestColor(1);
+
+            graph.UpdateLocalCostFunction();
+
+            // TODO: Add proper assert.
+            Assert.AreEqual(1, graph.Vertices[0].LocalCost);
         }
     }
 }
