@@ -20,8 +20,7 @@ namespace MultiagentAlgorithm
             {
                 // At a given iteration each ant moves from the current position 
                 // to the adjacent vertex with the lowest local cost, 
-                // i.e.the vertex with the greatest number of constraints (neighbors of a
-                // different color) and replaces its color with a new color 
+                // i.e. the vertex with the greatest number of constraints (neighbors of a different color).
                 // which increases the local cost.
                 foreach (var ant in graph.Ants.Keys)
                 {
@@ -37,6 +36,18 @@ namespace MultiagentAlgorithm
                     {
                         // Move randomly to any adjacent vertex.
                         graph.MoveAntToAnyAdjacentVertex(ant);
+                    }
+
+                    // and replaces its color with a new color.
+                    if (rnd.NextDouble() < options.ColoringProbability)
+                    {
+                        // Change vertex color to the best possible color.
+                        graph.ColorVertexWithBestColor(ant);
+                    }
+                    else
+                    {
+                        // Change to a randomly chosen color.
+
                     }
                 }
             }

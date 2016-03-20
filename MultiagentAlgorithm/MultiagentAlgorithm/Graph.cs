@@ -208,5 +208,17 @@ namespace MultiagentAlgorithm
             // Move ant to the random adjacent vertex.
             Ants[ant] = randomAdjacentVertex;
         }
+
+        /// <summary>
+        /// Fint best color for the ant's vertex and replace the old color with the new color.
+        /// The best color is the color which increases the local cost.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        public void ColorVertexWithBestColor(int ant)
+        {
+            var vertex = Vertices[Ants[ant]];
+            var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new {color, count = group.Count()}).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x=>x.Value).First();
+            vertex.Color = bestColor.Key;
+        }
     }
 }
