@@ -220,5 +220,17 @@ namespace MultiagentAlgorithm
             var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new {color, count = group.Count()}).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x=>x.Value).First();
             vertex.Color = bestColor.Key;
         }
+
+        /// <summary>
+        /// Randomly choose a color and set the new color for the ant's vertex.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
+        public void ColorVertexWithRandomColor(int ant, int numberOfColors)
+        {
+            var vertex = Vertices[Ants[ant]];
+            var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(_rnd).First();
+            vertex.Color = randomColor;
+        }
     }
 }

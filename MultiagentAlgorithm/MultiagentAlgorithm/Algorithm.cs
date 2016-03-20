@@ -47,7 +47,7 @@ namespace MultiagentAlgorithm
                     else
                     {
                         // Change to a randomly chosen color.
-
+                        graph.ColorVertexWithRandomColor(ant, options.NumberOfPartitions);
                     }
                 }
             }

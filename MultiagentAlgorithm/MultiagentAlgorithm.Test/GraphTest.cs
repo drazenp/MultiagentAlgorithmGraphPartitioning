@@ -398,5 +398,30 @@ namespace MultiagentAlgorithm.Test
 
             Assert.AreEqual(2, graph.Vertices[graph.Ants[1]].Color);
         }
+
+        [TestMethod]
+        public void Grap_ChnageVertexColorWithRandomColor_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+
+            graph.ColorVertexWithRandomColor(0, _optionTwoColors.NumberOfPartitions);
+
+            Assert.AreEqual(1, graph.Vertices[graph.Ants[0]].Color);
+
+            graph.ColorVertexWithRandomColor(1, _optionTwoColors.NumberOfPartitions);
+
+            Assert.AreEqual(1, graph.Vertices[graph.Ants[1]].Color);
+        }
     }
 }

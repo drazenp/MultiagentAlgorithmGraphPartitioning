@@ -57,5 +57,19 @@ namespace MultiagentAlgorithm
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
         void MoveAntToAnyAdjacentVertex(int ant);
+
+        /// <summary>
+        /// Fint best color for the ant's vertex and replace the old color with the new color.
+        /// The best color is the color which increases the local cost.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        void ColorVertexWithBestColor(int ant);
+
+        /// <summary>
+        /// Randomly choose a color and set the new color for the ant's vertex.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
+        void ColorVertexWithRandomColor(int ant, int numberOfColors);
     }
 }
