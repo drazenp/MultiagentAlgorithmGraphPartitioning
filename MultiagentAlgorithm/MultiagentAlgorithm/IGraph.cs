@@ -45,5 +45,17 @@ namespace MultiagentAlgorithm
         /// </summary>
         /// <returns>The value of global cost function.</returns>
         double GetGlobalCostFunction();
+
+        /// <summary>
+        /// Find the worst adjacent vertex and move ant to it.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        void MoveAntToVertexWithLowestCost(int ant);
+
+        /// <summary>
+        /// Randomly choose an adjacent vertex and move on to it.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        void MoveAntToAnyAdjacentVertex(int ant);
     }
 }

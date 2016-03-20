@@ -17,7 +17,10 @@ namespace MultiagentAlgorithm.Test
                                                                         "1 1 1 3 3 6 2",
                                                                         "6 5 2 4 2 7 6",
                                                                         "2 6 6 4 5" };
-            
+
+        private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9, movingProbability: 0.95, graphFilePath: string.Empty);
+        private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9, movingProbability: 0.95, graphFilePath: string.Empty);
+
         [TestMethod]
         public void Graph_FirstLineRead_Sucess()
         {
@@ -67,8 +70,6 @@ namespace MultiagentAlgorithm.Test
         [TestMethod]
         public void Graph_RandomColorEachVertex_Success()
         {
-            const int numberOfColors = 3;
-
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
             
@@ -79,7 +80,7 @@ namespace MultiagentAlgorithm.Test
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.ColorVerticesRandomly(numberOfColors);
+            graph.ColorVerticesRandomly(_optionThreeColors.NumberOfPartitions);
 
             Assert.AreEqual(1, graph.Vertices[0].Color);
             Assert.AreEqual(3, graph.Vertices[1].Color);
@@ -99,11 +100,10 @@ namespace MultiagentAlgorithm.Test
             {
                 NextInt32Int32 = (a, b) => 1
             };
-            const int numberOfAnts = 2;
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.InitializeAnts(numberOfAnts);
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
 
             Assert.AreEqual(0, graph.Vertices[0].Ants[0]);
             Assert.AreEqual(1, graph.Vertices[6].Ants[0]);
@@ -118,11 +118,10 @@ namespace MultiagentAlgorithm.Test
             {
                 NextInt32Int32 = (a, b) => 1
             };
-            const int numberOfAnts = 2;
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.InitializeAnts(numberOfAnts);
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
 
             Assert.AreEqual(0, graph.Ants[0]);
             Assert.AreEqual(6, graph.Ants[1]);
@@ -233,8 +232,6 @@ namespace MultiagentAlgorithm.Test
         [TestMethod]
         public void Graph_LocalCostFunction_ThreeColors()
         {
-            const int numberOfColors = 3;
-
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
 
@@ -245,7 +242,7 @@ namespace MultiagentAlgorithm.Test
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.ColorVerticesRandomly(numberOfColors);
+            graph.ColorVerticesRandomly(_optionThreeColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
             Assert.AreEqual(0D, graph.Vertices[0].LocalCost);
@@ -260,8 +257,6 @@ namespace MultiagentAlgorithm.Test
         [TestMethod]
         public void Graph_LocalCostFunction_TwoColors()
         {
-            const int numberOfColors = 2;
-
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
 
@@ -272,7 +267,7 @@ namespace MultiagentAlgorithm.Test
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.ColorVerticesRandomly(numberOfColors);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
             Assert.AreEqual(1/3D, graph.Vertices[0].LocalCost);
@@ -287,8 +282,6 @@ namespace MultiagentAlgorithm.Test
         [TestMethod]
         public void Graph_GlobalCostFunction_Initialized()
         {
-            const int numberOfColors = 2;
-
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
 
@@ -299,7 +292,7 @@ namespace MultiagentAlgorithm.Test
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.ColorVerticesRandomly(numberOfColors);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             var globalCost = graph.GetGlobalCostFunction();
 
             Assert.AreEqual(5, globalCost);
@@ -308,10 +301,6 @@ namespace MultiagentAlgorithm.Test
         [TestMethod]
         public void Graph_MoveAntToVertexWithLowestCost_Success()
         {
-            // TODO: Replace constants with Options.
-            const int numberOfColors = 2;
-            const int numberOfAnts = 2;
-
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
 
@@ -322,8 +311,8 @@ namespace MultiagentAlgorithm.Test
 
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
-            graph.InitializeAnts(numberOfAnts);
-            graph.ColorVerticesRandomly(numberOfColors);
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
             graph.MoveAntToVertexWithLowestCost(0);
@@ -331,7 +320,34 @@ namespace MultiagentAlgorithm.Test
             Assert.AreEqual(4, graph.Vertices[graph.Ants[0]].ID);
 
             graph.MoveAntToVertexWithLowestCost(1);
+
             Assert.AreEqual(3, graph.Vertices[graph.Ants[1]].ID);
+        }
+
+        [TestMethod]
+        public void Graph_MoveAntToAnyAdjacentVertex_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            graph.CalculateLocalCostFunction();
+
+            graph.MoveAntToAnyAdjacentVertex(0);
+
+            Assert.AreEqual(4, graph.Vertices[graph.Ants[0]].ID);
+
+            graph.MoveAntToAnyAdjacentVertex(1);
+
+            Assert.AreEqual(5, graph.Vertices[graph.Ants[1]].ID);
         }
     }
 }

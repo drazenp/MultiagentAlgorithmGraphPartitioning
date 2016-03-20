@@ -196,5 +196,17 @@ namespace MultiagentAlgorithm
             // Move ant to the worst adjacent vertex.
             Ants[ant] = worstAdjacentVertex;
         }
+
+        /// <summary>
+        /// Randomly choose an adjacent vertex and move on to it.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        public void MoveAntToAnyAdjacentVertex(int ant)
+        {
+            var vertex = Vertices[Ants[ant]];
+            var randomAdjacentVertex = vertex.ConnectedEdges.Keys.Shuffle(_rnd).First();
+            // Move ant to the random adjacent vertex.
+            Ants[ant] = randomAdjacentVertex;
+        }
     }
 }

@@ -8,6 +8,11 @@
         public int NumberOfAnts { get; }
 
         /// <summary>
+        /// The number of partitions/colors.
+        /// </summary>
+        public int NumberOfPartitions { get; }
+
+        /// <summary>
         /// The probability with agent or ant moves to the worst adjacent vertex.
         /// </summary>
         public double MovingProbability { get; }
@@ -22,9 +27,10 @@
         /// </summary>
         public string GraphFilePath { get; }
 
-        public Options(int numberOfAnts, double coloringProbability, double movingProbability, string graphFilePath)
+        public Options(int numberOfAnts, int numberOfPartitions, double coloringProbability, double movingProbability, string graphFilePath)
         {
             NumberOfAnts = numberOfAnts;
+            NumberOfPartitions = numberOfPartitions;
             ColoringProbability = coloringProbability;
             MovingProbability = movingProbability;
             GraphFilePath = graphFilePath;

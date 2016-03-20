@@ -2,15 +2,15 @@
 
 namespace MultiagentAlgorithm
 {
-    public class Algorithm
+    public static class Algorithm
     {
-        public void Run(Options options, Random rnd)
+        public static void Run(Options options, Random rnd)
         {
             var loader = new FileLoader(options.GraphFilePath);
             var graph = new Graph(loader, rnd);
             graph.InitializeGraph();
             graph.InitializeAnts(options.NumberOfAnts);
-            graph.ColorVerticesRandomly(options.NumberOfAnts);
+            graph.ColorVerticesRandomly(options.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
             var bestCost = graph.GetGlobalCostFunction();
@@ -36,6 +36,7 @@ namespace MultiagentAlgorithm
                     else
                     {
                         // Move randomly to any adjacent vertex.
+                        graph.MoveAntToAnyAdjacentVertex(ant);
                     }
                 }
             }
