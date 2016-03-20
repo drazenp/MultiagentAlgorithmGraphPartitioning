@@ -21,6 +21,7 @@ namespace MultiagentAlgorithm
         /// </summary>
         public int NumberOfEdges { get; set; }
 
+        // TODO: Remove this property with refactoring.
         public int[,] EdgesWeights { get; set; }
 
         public Dictionary<int, int> Ants;
@@ -83,7 +84,7 @@ namespace MultiagentAlgorithm
         /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
         public void ColorVerticesRandomly(int numberOfColors)
         {
-            for (int i = 0; i < Vertices.Length;)
+            for (var i = 0; i < Vertices.Length;)
             {
                 var randomColors = Enumerable.Range(1, numberOfColors).Shuffle(_rnd);
                 foreach (var color in randomColors)
@@ -161,7 +162,7 @@ namespace MultiagentAlgorithm
         /// Counts the number of times that an edge joins vertices of different colors.
         /// </summary>
         /// <returns>The value of global cost function.</returns>
-        public double CalculateGlobalCostFunction()
+        public double GetGlobalCostFunction()
         {
             var globalCost = 0.0D;
 
@@ -172,6 +173,28 @@ namespace MultiagentAlgorithm
             }
 
             return globalCost / 2;
+        }
+
+        /// <summary>
+        /// Find the worst adjacent vertex and move ant to it.
+        /// </summary>
+        /// <param name="ant">The ID of the ant.</param>
+        public void MoveAntToVertexWithLowestCost(int ant)
+        {
+            var vertex = Vertices[Ants[ant]];
+            var worstAdjacentVertex = vertex.ConnectedEdges.First().Key;
+            var lowestLocalCost = Vertices[worstAdjacentVertex].LocalCost;
+            foreach (var connectedVertex in vertex.ConnectedEdges.Keys.Skip(1))
+            {
+                var localCost = Vertices[connectedVertex].LocalCost;
+                if (localCost < lowestLocalCost)
+                {
+                    lowestLocalCost = localCost;
+                    worstAdjacentVertex = connectedVertex;
+                }
+            }
+            // Move ant to the worst adjacent vertex.
+            Ants[ant] = worstAdjacentVertex;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace MultiagentAlgorithm
         /// </summary>
         public int Color { get; set; }
 
+        // TODO: Remove this property with refactoring.
         private List<int> _ants;
         public List<int> Ants
         {

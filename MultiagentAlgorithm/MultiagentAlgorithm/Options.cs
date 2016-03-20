@@ -17,11 +17,17 @@
         /// </summary>
         public double ColoringProbability { get; }
 
-        public Options(int numberOfAnts, double coloringProbability, double movingProbability)
+        /// <summary>
+        /// The path to the file with graph definition.
+        /// </summary>
+        public string GraphFilePath { get; }
+
+        public Options(int numberOfAnts, double coloringProbability, double movingProbability, string graphFilePath)
         {
             NumberOfAnts = numberOfAnts;
             ColoringProbability = coloringProbability;
             MovingProbability = movingProbability;
+            GraphFilePath = graphFilePath;
         }
     }
 }

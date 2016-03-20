@@ -44,6 +44,6 @@ namespace MultiagentAlgorithm
         /// Counts the number of times that an edge joins vertices of different colors.
         /// </summary>
         /// <returns>The value of global cost function.</returns>
-        double CalculateGlobalCostFunction();
+        double GetGlobalCostFunction();
     }
 }

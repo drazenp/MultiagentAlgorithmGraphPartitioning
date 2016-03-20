@@ -9,19 +9,17 @@ namespace MultiagentAlgorithmConsole
     static class Program
     {
         static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly string GraphFilePath = @"Graphs/test.txt";
 
         static void Main(string[] args)
         {
             XmlConfigurator.Configure();
-
-            var option = new Options(numberOfAnts: 2, coloringProbability: 0.9, movingProbability: 0.95);
-            var loader = new FileLoader(GraphFilePath);
+            
+            var option = new Options(numberOfAnts: 2, coloringProbability: 0.9, movingProbability: 0.95, graphFilePath: GraphFilePath);
             var rnd = new Random(Environment.TickCount);
-            var graph = new Graph(loader, rnd);
-            graph.InitializeGraph();
             var algorithm = new Algorithm();
-            algorithm.Run(graph, option, rnd);
+            algorithm.Run(option, rnd);
         }
     }
 }

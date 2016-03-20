@@ -300,9 +300,38 @@ namespace MultiagentAlgorithm.Test
             var graph = new Graph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(numberOfColors);
-            var globalCost = graph.CalculateGlobalCostFunction();
+            var globalCost = graph.GetGlobalCostFunction();
 
             Assert.AreEqual(5, globalCost);
+        }
+
+        [TestMethod]
+        public void Graph_MoveAntToVertexWithLowestCost_Success()
+        {
+            // TODO: Replace constants with Options.
+            const int numberOfColors = 2;
+            const int numberOfAnts = 2;
+
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(numberOfAnts);
+            graph.ColorVerticesRandomly(numberOfColors);
+            graph.CalculateLocalCostFunction();
+
+            graph.MoveAntToVertexWithLowestCost(0);
+
+            Assert.AreEqual(4, graph.Vertices[graph.Ants[0]].ID);
+
+            graph.MoveAntToVertexWithLowestCost(1);
+            Assert.AreEqual(3, graph.Vertices[graph.Ants[1]].ID);
         }
     }
 }
