@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace MultiagentAlgorithm
 {
     public interface IGraph
@@ -14,9 +12,7 @@ namespace MultiagentAlgorithm
         /// This is not used in the application.
         /// </summary>
         int NumberOfEdges { get; set; }
-
-        int[,] EdgesWeights { get; set; }
-
+        
         void InitializeGraph();
 
         /// <summary>
@@ -37,8 +33,6 @@ namespace MultiagentAlgorithm
         /// colors to the total number of neighbors.
         /// </summary>
         void CalculateLocalCostFunction();
-
-        IEnumerable<Vertex> GetConnectedVertices(int vertexId);
 
         /// <summary>
         /// Counts the number of times that an edge joins vertices of different colors.

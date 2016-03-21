@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using log4net;
-using log4net.Config;
 
 namespace MultiagentAlgorithm
 {
@@ -24,7 +23,8 @@ namespace MultiagentAlgorithm
             // While (best cost > 0) do
             for (var i = 0; i < 10; i++)
             {
-
+                // Reset all history data of vertices so it can be tracked
+                // in the new interation.
                 graph.ResetVerticesState();
 
                 // At a given iteration each ant moves from the current position 
@@ -47,7 +47,7 @@ namespace MultiagentAlgorithm
                         graph.MoveAntToAnyAdjacentVertex(ant);
                     }
 
-                    // and replaces its color with a new color.
+                    // Replaces the color which belong to ant with a new color.
                     if (rnd.NextDouble() < options.ColoringProbability)
                     {
                         // Change vertex color to the best possible color.
@@ -64,8 +64,9 @@ namespace MultiagentAlgorithm
                     graph.KeepBalance(options.NumberVerticesForBalance);
 
                     // For the chosen vertices and all adjacent vertices update local cost function.
+                    graph.UpdateLocalCostFunction();
 
-
+                    // Get best global cost.
                     var globalCostFunction = graph.GetGlobalCostFunction();
                     Log.DebugFormat($"New global cost function: {globalCostFunction}");
                     if (globalCostFunction < bestCost)

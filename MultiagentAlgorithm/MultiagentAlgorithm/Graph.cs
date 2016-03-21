@@ -16,19 +16,28 @@ namespace MultiagentAlgorithm
         public Vertex[] Vertices { get; private set; }
 
         /// <summary>
-        /// The list of all chosen vertices - the vertices which changed color.
+        /// The list of all chosen vertices - the vertices which the 
+        /// changed color in the current iteration.
         /// </summary>
-        public IList<Vertex> ChosenVertices { get; private set; }
+        private IList<Vertex> _chosenVertices;
+        private IList<Vertex> ChosenVertices
+        {
+            get
+            {
+                if (_chosenVertices == null)
+                {
+                    _chosenVertices = new List<Vertex>();
+                }
+                return _chosenVertices;
+            }
+        }
 
         /// <summary>
         /// Number of edges read from files.
         /// This is not used in the application.
         /// </summary>
         public int NumberOfEdges { get; set; }
-
-        // TODO: Remove this property with refactoring.
-        public int[,] EdgesWeights { get; set; }
-
+        
         public Dictionary<int, int> Ants;
 
         public Graph(IDataLoader dataLoader, Random rnd)
@@ -51,7 +60,6 @@ namespace MultiagentAlgorithm
                 {
                     NumberOfEdges = int.Parse(fileData[1]);
                     Vertices = new Vertex[int.Parse(fileData[0])];
-                    EdgesWeights = new int[Vertices.Length, Vertices.Length];
 
                     firstLine = false;
                 }
@@ -70,9 +78,6 @@ namespace MultiagentAlgorithm
                     {
                         var edgeVertex = int.Parse(vertices.ElementAt(i)) - 1;
                         var edgeWeight = int.Parse(edges.ElementAt(i));
-                        EdgesWeights[edgeVertex, counter] = edgeWeight;
-
-                        // Separately!
                         connectedEdges.Add(edgeVertex, edgeWeight);
                     }
 
@@ -115,7 +120,6 @@ namespace MultiagentAlgorithm
             foreach (var vertex in Vertices.Shuffle(_rnd))
             {
                 Ants.Add(counter, vertex.ID);
-                vertex.Ants.Add(counter);
                 counter++;
                 if (counter >= numberOfAnts)
                 {
@@ -143,8 +147,9 @@ namespace MultiagentAlgorithm
         /// <param name="vertex">The vertex to calculate local cost function.</param>
         private void CalculateLocalCostFunctionForVertex(Vertex vertex)
         {
-            var connectedVertices = GetConnectedVertices(vertex.ID).ToList();
-            var verticesCount = connectedVertices.Count;
+            var connectedVertices = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).ToList();
+
+            var verticesCount = connectedVertices.Count();
             var differentColorCount = connectedVertices.Count(x => x.Color != vertex.Color);
 
             if (verticesCount == differentColorCount)
@@ -157,18 +162,7 @@ namespace MultiagentAlgorithm
             }
             else
             {
-                vertex.LocalCost = differentColorCount / (double)connectedVertices.Count;
-            }
-        }
-
-        public IEnumerable<Vertex> GetConnectedVertices(int vertexId)
-        {
-            for (var i = 0; i < EdgesWeights.GetLength(0); i++)
-            {
-                if (EdgesWeights[vertexId, i] != 0)
-                {
-                    yield return Vertices.Single(x => x.ID == i);
-                }
+                vertex.LocalCost = differentColorCount / (double)verticesCount;
             }
         }
 
@@ -182,7 +176,7 @@ namespace MultiagentAlgorithm
 
             foreach (var vertex in Vertices)
             {
-                var differentColorCount = GetConnectedVertices(vertex.ID).Count(x => x.Color == vertex.Color);
+                var differentColorCount = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).Count(x => x.Color == vertex.Color);
                 globalCost += differentColorCount;
             }
 
@@ -248,6 +242,7 @@ namespace MultiagentAlgorithm
         {
             var vertex = Vertices[Ants[ant]];
             var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(_rnd).First();
+            ChosenVertices.Add(vertex);
             vertex.Color = randomColor;
         }
 
@@ -260,7 +255,7 @@ namespace MultiagentAlgorithm
         public void KeepBalance(int numberOfRandomVertices)
         {
             var random = Vertices.Shuffle(_rnd).Take(numberOfRandomVertices);
-            var withChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex=>vertex.LocalCost);
+            var withChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex => vertex.LocalCost);
             if (withChangedColor.Any())
             {
                 var oldColor = withChangedColor.First().OldColor;

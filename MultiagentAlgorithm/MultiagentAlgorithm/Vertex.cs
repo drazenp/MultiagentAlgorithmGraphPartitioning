@@ -35,22 +35,7 @@ namespace MultiagentAlgorithm
         /// The color which was set before the current color (if changed);
         /// </summary>
         public int? OldColor { get; private set; }
-
-        // TODO: Remove this property with refactoring.
-        private List<int> _ants;
-        public List<int> Ants
-        {
-            get { return _ants ?? (_ants = new List<int>()); }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-                _ants = value;
-            }
-        }
-
+        
         /// <summary>
         /// The ratio between the number of neighbors that have different 
         /// colors to the total number of neighbors.
