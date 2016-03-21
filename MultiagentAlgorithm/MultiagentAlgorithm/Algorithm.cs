@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using log4net;
 
@@ -31,7 +32,7 @@ namespace MultiagentAlgorithm
                 // to the adjacent vertex with the lowest local cost, 
                 // i.e. the vertex with the greatest number of constraints (neighbors of a different color).
                 // which increases the local cost.
-                foreach (var ant in graph.Ants.Keys)
+                foreach (var ant in graph.Ants.Keys.ToArray())
                 {
                     // The agent or ant moves to the worst adjacent vertex with a
                     // probability pm (it moves randomly to any other adjacent vertex with 
