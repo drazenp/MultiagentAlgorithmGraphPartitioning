@@ -32,8 +32,15 @@
         /// </summary>
         public int NumberVerticesForBalance { get; }
 
+        /// <summary>
+        /// The number of iteration until algorithm is stopped.
+        /// This is used as fallback if solution is not find in expected time
+        /// and algorithm is stack in the loop.
+        /// </summary>
+        public int NumberOfIterations { get; }
+
         public Options(int numberOfAnts, int numberOfPartitions, double coloringProbability, 
-            double movingProbability, string graphFilePath, int numberVerticesForBalance)
+            double movingProbability, string graphFilePath, int numberVerticesForBalance, int numberOfIterations)
         {
             NumberOfAnts = numberOfAnts;
             NumberOfPartitions = numberOfPartitions;
@@ -41,6 +48,7 @@
             MovingProbability = movingProbability;
             GraphFilePath = graphFilePath;
             NumberVerticesForBalance = numberVerticesForBalance;
+            NumberOfIterations = numberOfIterations;
         }
     }
 }

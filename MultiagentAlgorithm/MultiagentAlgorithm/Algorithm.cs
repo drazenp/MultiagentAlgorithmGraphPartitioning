@@ -9,7 +9,7 @@ namespace MultiagentAlgorithm
     {
         private static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static int Run(Options options, Random rnd)
+        public static void Run(Options options, Random rnd)
         {
             var loader = new FileLoader(options.GraphFilePath);
             var graph = new Graph(loader, rnd);
@@ -19,11 +19,11 @@ namespace MultiagentAlgorithm
             graph.CalculateLocalCostFunction();
 
             var bestCost = graph.GetGlobalCostFunction();
-            Log.DebugFormat($"Initiale global cost function: {bestCost}");
+            Log.DebugFormat($"Initial global cost: {bestCost}");
 
-            // While (best cost > 0) do
-            for (var i = 0; i < 10; i++)
-            {
+            var iteration = 0;
+            while(bestCost > 0 && iteration < options.NumberOfIterations)
+            { 
                 // Reset all history data of vertices so it can be tracked
                 // in the new interation.
                 graph.ResetVerticesState();
@@ -68,16 +68,18 @@ namespace MultiagentAlgorithm
                     graph.UpdateLocalCostFunction();
 
                     // Get best global cost.
-                    var globalCostFunction = graph.GetGlobalCostFunction();
-                    Log.DebugFormat($"New global cost function: {globalCostFunction}");
-                    if (globalCostFunction < bestCost)
+                    var globalCost = graph.GetGlobalCostFunction();
+                    if (globalCost < bestCost)
                     {
-                        bestCost = globalCostFunction;
+                        bestCost = globalCost;
+                        Log.Debug($"Best cost: {bestCost}");
                     }
+                    Log.DebugFormat($"Iteration [{iteration}] | Global cost: {globalCost} | Best cost: {bestCost}");
+                    iteration++;
                 }
             }
 
-            return bestCost;
+            Log.DebugFormat($"Best cost at the end: {bestCost}");
         }
     }
 }
