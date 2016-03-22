@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Fakes;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -9,6 +11,8 @@ namespace MultiagentAlgorithm.Test
     [TestClass]
     public class GraphTest
     {
+        public static ILog Log { get; } = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly List<string> _dummyFile = new List<string>() { "7 11 011",
                                                                         "4 5 1 3 2 2 1",
                                                                         "2 1 1 3 2 4 1",
@@ -18,10 +22,18 @@ namespace MultiagentAlgorithm.Test
                                                                         "6 5 2 4 2 7 6",
                                                                         "2 6 6 4 5" };
 
+        private readonly Options _optionOneColors = new Options(numberOfAnts: 2, numberOfPartitions: 1, coloringProbability: 0.9,
+            movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1);
         private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
             movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1);
         private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9,
             movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1);
+
+        [AssemblyInitialize]
+        public static void Configure(TestContext tc)
+        {
+            log4net.Config.XmlConfigurator.Configure();
+        }
 
         [TestMethod]
         public void Graph_FirstLineRead_Sucess()
@@ -134,7 +146,7 @@ namespace MultiagentAlgorithm.Test
             Assert.AreEqual(0, graph.Ants[0]);
             Assert.AreEqual(6, graph.Ants[1]);
         }
-        
+
         [TestMethod]
         public void Graph_InitializeEdgesSeparately_Success()
         {
@@ -287,7 +299,26 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             var globalCost = graph.GetGlobalCostFunction();
 
-            Assert.AreEqual(5, globalCost);
+            Assert.AreEqual(6, globalCost);
+        }
+
+        [TestMethod]
+        public void Graph_GlobalCostFunction_OneColor()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new Graph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.ColorVerticesRandomly(_optionOneColors.NumberOfPartitions);
+            var globalCost = graph.GetGlobalCostFunction();
+
+            Assert.AreEqual(0, globalCost);
         }
 
         [TestMethod]

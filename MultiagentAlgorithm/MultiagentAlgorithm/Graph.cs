@@ -37,7 +37,7 @@ namespace MultiagentAlgorithm
         /// This is not used in the application.
         /// </summary>
         public int NumberOfEdges { get; set; }
-        
+
         public Dictionary<int, int> Ants;
 
         public Graph(IDataLoader dataLoader, Random rnd)
@@ -172,11 +172,12 @@ namespace MultiagentAlgorithm
         /// <returns>The value of global cost function.</returns>
         public int GetGlobalCostFunction()
         {
+            LoggerHelper.LogVertices(Vertices);
             var globalCost = 0;
 
             foreach (var vertex in Vertices)
             {
-                var differentColorCount = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).Count(x => x.Color == vertex.Color);
+                var differentColorCount = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).Count(x => x.Color != vertex.Color);
                 globalCost += differentColorCount;
             }
 
