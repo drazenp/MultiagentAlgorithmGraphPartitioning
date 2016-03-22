@@ -255,15 +255,10 @@ namespace MultiagentAlgorithm
         public void KeepBalance(int numberOfRandomVertices)
         {
             var random = Vertices.Shuffle(_rnd).Take(numberOfRandomVertices);
-            var withChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex => vertex.LocalCost);
-            if (withChangedColor.Any())
-            {
-                var oldColor = withChangedColor.First().OldColor;
-                if (oldColor != null)
-                {
-                    withChangedColor.First().Color = oldColor.Value;
-                }
-            }
+            var vertexChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
+            if (vertexChangedColor?.OldColor == null) return;
+
+            vertexChangedColor.Color = vertexChangedColor.OldColor.Value;
         }
 
         /// <summary>
