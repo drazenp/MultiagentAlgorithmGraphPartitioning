@@ -45,9 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm.cs" />
+    <Compile Include="BaseGraph.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FileLoader.cs" />
-    <Compile Include="Graph.cs" />
+    <Compile Include="MetisGraph.cs" />
     <Compile Include="IDataLoader.cs" />
     <Compile Include="IGraph.cs" />
     <Compile Include="LoggerHelper.cs" />

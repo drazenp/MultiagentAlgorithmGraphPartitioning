@@ -42,10 +42,10 @@ namespace MultiagentAlgorithm.Test
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
             var randomMock = new StubRandom();
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
-            Assert.AreEqual(7, graph.Vertices.Length, "The number of vertices weights is not correct.");
+            Assert.AreEqual(7, graph.Vertices.Count, "The number of vertices weights is not correct.");
             Assert.AreEqual(11, graph.NumberOfEdges, "The number of edges is not correct.");
         }
 
@@ -56,7 +56,7 @@ namespace MultiagentAlgorithm.Test
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
             var randomMock = new StubRandom();
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
             Assert.AreEqual(4, graph.Vertices[0].Weight);
@@ -75,10 +75,10 @@ namespace MultiagentAlgorithm.Test
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
             var randomMock = new StubRandom();
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
-            Assert.AreEqual(7, graph.Vertices.Length, "Not all vertices are initialized.");
+            Assert.AreEqual(7, graph.Vertices.Count, "Not all vertices are initialized.");
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(_optionThreeColors.NumberOfPartitions);
 
@@ -116,7 +116,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
 
@@ -139,7 +139,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
 
@@ -154,7 +154,7 @@ namespace MultiagentAlgorithm.Test
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
             var randomMock = new StubRandom();
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
             // [0] 5 1 3 2 2 1
@@ -199,7 +199,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
             // [0] 5 1 3 2 2 1
@@ -244,7 +244,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(_optionThreeColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
@@ -269,7 +269,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
@@ -294,7 +294,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             var globalCost = graph.GetGlobalCostFunction();
@@ -313,7 +313,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.ColorVerticesRandomly(_optionOneColors.NumberOfPartitions);
             var globalCost = graph.GetGlobalCostFunction();
@@ -332,7 +332,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -358,7 +358,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -384,7 +384,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -409,7 +409,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -434,7 +434,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -456,7 +456,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -467,7 +467,14 @@ namespace MultiagentAlgorithm.Test
 
             graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance);
 
+            // TODO: Improve this test. Color is somehow 0.
             Assert.AreEqual(1, graph.Vertices[0].Color);
+            Assert.AreEqual(2, graph.Vertices[1].Color);
+            Assert.AreEqual(1, graph.Vertices[2].Color);
+            Assert.AreEqual(2, graph.Vertices[3].Color);
+            Assert.AreEqual(1, graph.Vertices[4].Color);
+            Assert.AreEqual(2, graph.Vertices[5].Color);
+            Assert.AreEqual(1, graph.Vertices[6].Color);
         }
 
         [TestMethod]
@@ -481,7 +488,7 @@ namespace MultiagentAlgorithm.Test
                 NextInt32Int32 = (a, b) => 1
             };
 
-            var graph = new Graph(loaderMock.Object, randomMock);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
@@ -493,7 +500,13 @@ namespace MultiagentAlgorithm.Test
             graph.UpdateLocalCostFunction();
 
             // TODO: Add proper assert.
-            Assert.AreEqual(1, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(1/3D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(1, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(1/3D, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[6].LocalCost);
         }
     }
 }

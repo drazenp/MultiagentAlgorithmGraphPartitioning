@@ -1,11 +1,13 @@
+using System.Collections.Generic;
+
 namespace MultiagentAlgorithm
 {
     public interface IGraph
     {
         /// <summary>
-        /// The array of weights for each vertex in the graph.
+        /// The list of weights for each vertex in the graph.
         /// </summary>
-        Vertex[] Vertices { get; }
+        IList<Vertex> Vertices { get; }
 
         /// <summary>
         /// Number of edges read from files.

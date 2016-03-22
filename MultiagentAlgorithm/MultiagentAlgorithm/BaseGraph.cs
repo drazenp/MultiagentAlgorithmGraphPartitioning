@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MultiagentAlgorithm
 {
-    public class Graph : IGraph
+    public abstract class BaseGraph : IGraph
     {
-        private readonly IDataLoader _dataLoader;
+        protected IDataLoader DataLoader;
 
-        private readonly Random _rnd;
+        protected Random Rnd;
 
         /// <summary>
-        /// The array of weights for each vertex in the graph.
+        /// The list of weights for each vertex in the graph.
         /// </summary>
-        public Vertex[] Vertices { get; private set; }
+        public IList<Vertex> Vertices { get; protected set; }
 
         /// <summary>
         /// The list of all chosen vertices - the vertices which the 
@@ -40,53 +42,7 @@ namespace MultiagentAlgorithm
 
         public Dictionary<int, int> Ants;
 
-        public Graph(IDataLoader dataLoader, Random rnd)
-        {
-            _dataLoader = dataLoader;
-            _rnd = rnd;
-        }
-
-        public void InitializeGraph()
-        {
-            // We need first line of the file just for initialization of the graph.
-            bool firstLine = true;
-            int counter = 0;
-
-            foreach (var line in _dataLoader.LoadData())
-            {
-                var fileData = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (firstLine)
-                {
-                    NumberOfEdges = int.Parse(fileData[1]);
-                    Vertices = new Vertex[int.Parse(fileData[0])];
-
-                    firstLine = false;
-                }
-                else
-                {
-                    var vertexWeight = int.Parse(fileData[0]);
-
-                    // Initilize edges. Get list of vertices as the each even element in the file line;
-                    // The edges are the each odd element in the file line except first - the first is vertex weight.
-                    var fileDataList = fileData.ToList();
-                    var edges = fileDataList.Where((x, y) => y % 2 == 0).Skip(1).ToList();
-                    var vertices = fileDataList.Where((x, y) => y % 2 != 0).ToList();
-
-                    var connectedEdges = new Dictionary<int, int>();
-                    for (var i = 0; i < vertices.Count(); i++)
-                    {
-                        var edgeVertex = int.Parse(vertices.ElementAt(i)) - 1;
-                        var edgeWeight = int.Parse(edges.ElementAt(i));
-                        connectedEdges.Add(edgeVertex, edgeWeight);
-                    }
-
-                    Vertices[counter] = new Vertex(counter, vertexWeight, connectedEdges);
-
-                    counter++;
-                }
-            }
-        }
+        public abstract void InitializeGraph();
 
         /// <summary>
         /// Color each vertex of the graph at random forming k balanced sets.
@@ -94,14 +50,14 @@ namespace MultiagentAlgorithm
         /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
         public void ColorVerticesRandomly(int numberOfColors)
         {
-            for (var i = 0; i < Vertices.Length;)
+            for (var i = 0; i < Vertices.Count;)
             {
-                var randomColors = Enumerable.Range(1, numberOfColors).Shuffle(_rnd);
+                var randomColors = Enumerable.Range(1, numberOfColors).Shuffle(Rnd);
                 foreach (var color in randomColors)
                 {
                     Vertices[i].Color = color;
                     i++;
-                    if (i >= Vertices.Length)
+                    if (i >= Vertices.Count)
                     {
                         return;
                     }
@@ -117,7 +73,7 @@ namespace MultiagentAlgorithm
         {
             Ants = new Dictionary<int, int>();
             var counter = 0;
-            foreach (var vertex in Vertices.Shuffle(_rnd))
+            foreach (var vertex in Vertices.Shuffle(Rnd))
             {
                 Ants.Add(counter, vertex.ID);
                 counter++;
@@ -216,7 +172,7 @@ namespace MultiagentAlgorithm
         public void MoveAntToAnyAdjacentVertex(int ant)
         {
             var vertex = Vertices[Ants[ant]];
-            var randomAdjacentVertex = vertex.ConnectedEdges.Keys.Shuffle(_rnd).First();
+            var randomAdjacentVertex = vertex.ConnectedEdges.Keys.Shuffle(Rnd).First();
             // Move ant to the random adjacent vertex.
             Ants[ant] = randomAdjacentVertex;
         }
@@ -242,7 +198,7 @@ namespace MultiagentAlgorithm
         public void ColorVertexWithRandomColor(int ant, int numberOfColors)
         {
             var vertex = Vertices[Ants[ant]];
-            var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(_rnd).First();
+            var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(Rnd).First();
             ChosenVertices.Add(vertex);
             vertex.Color = randomColor;
         }
@@ -255,7 +211,7 @@ namespace MultiagentAlgorithm
         /// </summary>
         public void KeepBalance(int numberOfRandomVertices)
         {
-            var random = Vertices.Shuffle(_rnd).Take(numberOfRandomVertices);
+            var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices);
             var vertexChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
             if (vertexChangedColor?.OldColor == null) return;
 

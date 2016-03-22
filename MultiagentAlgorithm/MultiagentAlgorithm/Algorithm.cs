@@ -12,7 +12,7 @@ namespace MultiagentAlgorithm
         public static void Run(Options options, Random rnd)
         {
             var loader = new FileLoader(options.GraphFilePath);
-            var graph = new Graph(loader, rnd);
+            var graph = new MetisGraph(loader, rnd);
             graph.InitializeGraph();
             graph.InitializeAnts(options.NumberOfAnts);
             graph.ColorVerticesRandomly(options.NumberOfPartitions);
