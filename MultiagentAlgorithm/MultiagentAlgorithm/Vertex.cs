@@ -35,25 +35,39 @@ namespace MultiagentAlgorithm
         /// The color which was set before the current color (if changed);
         /// </summary>
         public int? OldColor { get; private set; }
-        
+
         /// <summary>
         /// The ratio between the number of neighbors that have different 
         /// colors to the total number of neighbors.
         /// </summary>
         public double LocalCost { get; set; }
 
-        public Dictionary<int, int> ConnectedEdges { get; }
+        private Dictionary<int, int> _connectedEdges;
+        /// <summary>
+        /// The all other connected vertices with the vertex.
+        /// </summary>
+        public Dictionary<int, int> ConnectedEdges
+        {
+            get
+            {
+                if (_connectedEdges == null)
+                {
+                    _connectedEdges = new Dictionary<int, int>();
+                }
+                return _connectedEdges;
+            }
+            set { _connectedEdges = value; }
+        }
 
         /// <summary>
         /// If vertices was marked as with lowest cost and ant moved to it as that.
         /// </summary>
         public bool LowestCost { get; set; }
 
-        public Vertex(int id, int weight, Dictionary<int, int> connectedEdges)
+        public Vertex(int id, int weight)
         {
             ID = id;
             Weight = weight;
-            ConnectedEdges = connectedEdges;
         }
 
         /// <summary>
