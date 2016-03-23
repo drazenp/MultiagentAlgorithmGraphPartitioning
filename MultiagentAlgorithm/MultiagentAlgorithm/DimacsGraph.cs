@@ -45,8 +45,8 @@ namespace MultiagentAlgorithm
                 }
                 else if (fileData[0] == "e")
                 {
-                    var vertexID = int.Parse(fileData[1]);
-                    var connectedVertexID = int.Parse(fileData[2]);
+                    var vertexID = int.Parse(fileData[1]) - 1;
+                    var connectedVertexID = int.Parse(fileData[2]) - 1;
 
                     var vertex = Vertices.FirstOrDefault(v => v.ID == vertexID);
                     if (vertex == null)
