@@ -9,10 +9,8 @@ namespace MultiagentAlgorithm
     {
         private static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void Run(Options options, Random rnd)
+        public static void Run(BaseGraph graph, Options options, Random rnd)
         {
-            var loader = new FileLoader(options.GraphFilePath);
-            var graph = new MetisGraph(loader, rnd);
             graph.InitializeGraph();
             graph.InitializeAnts(options.NumberOfAnts);
             graph.ColorVerticesRandomly(options.NumberOfPartitions);
