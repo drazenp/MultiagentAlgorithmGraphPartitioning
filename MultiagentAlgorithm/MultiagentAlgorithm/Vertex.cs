@@ -15,12 +15,12 @@ namespace MultiagentAlgorithm
         /// </summary>
         public int Weight { get; }
 
-        private int _color;
+        private int? _color;
         /// <summary>
         /// The color set for the vertex.
         /// This value represent the partition.
         /// </summary>
-        public int Color
+        public int? Color
         {
             get { return _color; }
             set

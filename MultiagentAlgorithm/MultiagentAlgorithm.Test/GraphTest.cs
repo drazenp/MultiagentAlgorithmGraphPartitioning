@@ -467,13 +467,12 @@ namespace MultiagentAlgorithm.Test
 
             graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance);
 
-            // TODO: Improve this test. Color is somehow 0.
             Assert.AreEqual(1, graph.Vertices[0].Color);
             Assert.AreEqual(2, graph.Vertices[1].Color);
             Assert.AreEqual(1, graph.Vertices[2].Color);
             Assert.AreEqual(2, graph.Vertices[3].Color);
             Assert.AreEqual(1, graph.Vertices[4].Color);
-            Assert.AreEqual(2, graph.Vertices[5].Color);
+            Assert.AreEqual(1, graph.Vertices[5].Color);
             Assert.AreEqual(1, graph.Vertices[6].Color);
         }
 
@@ -498,8 +497,7 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVertexWithBestColor(1);
 
             graph.UpdateLocalCostFunction();
-
-            // TODO: Add proper assert.
+            
             Assert.AreEqual(1/3D, graph.Vertices[0].LocalCost);
             Assert.AreEqual(0, graph.Vertices[1].LocalCost);
             Assert.AreEqual(0.5, graph.Vertices[2].LocalCost);
