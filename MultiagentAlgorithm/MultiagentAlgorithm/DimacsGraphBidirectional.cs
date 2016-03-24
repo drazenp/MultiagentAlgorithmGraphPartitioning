@@ -1,29 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MultiagentAlgorithm
 {
-    public class DimacsGraph : BaseGraph
+    public class DimacsGraphBidirectional : DimacsGraph
     {
-        protected const int VertexWeight = 1;
-        protected const int EdgeWeight = 1;
-
-        protected enum FileDataType : byte
+        public DimacsGraphBidirectional(IDataLoader dataLoader, Random rnd) 
+            : base(dataLoader, rnd)
         {
-            [Description("c")]
-            Comment,
-            [Description("p")]
-            Definition,
-            [Description("e")]
-            Edges
-        }
-
-        public DimacsGraph(IDataLoader dataLoader, Random rnd)
-        {
-            DataLoader = dataLoader;
-            Rnd = rnd;
         }
 
         public override void InitializeGraph()
@@ -55,14 +42,6 @@ namespace MultiagentAlgorithm
                         Vertices.Add(vertex);
                     }
                     vertex.ConnectedEdges.Add(connectedVertexID, EdgeWeight);
-
-                    var connectedVertex = Vertices.FirstOrDefault(v => v.ID == connectedVertexID);
-                    if (connectedVertex == null)
-                    {
-                        connectedVertex = new Vertex(connectedVertexID, VertexWeight);
-                        Vertices.Add(connectedVertex);
-                    }
-                    connectedVertex.ConnectedEdges.Add(vertexID, EdgeWeight);
                 }
             }
         }

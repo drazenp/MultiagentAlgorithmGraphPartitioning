@@ -12,11 +12,13 @@ namespace MultiagentAlgorithmConsole
 
         static readonly string TestGraphFilePath = @"Graphs/test.txt";
         static readonly string Myciel3GraphFilePath = @"Graphs/DIMACS/myciel3.col";
+        private static readonly string Queen55GraphFilePath = @"Graphs/DIMACS/queen5_5.col";
 
         private enum AlgortithamTest : byte
         {
             TestMetis,
-            TestDimacs
+            TestDimacs,
+            Queen55
         }
 
         static void Main(string[] args)
@@ -36,11 +38,18 @@ namespace MultiagentAlgorithmConsole
                     Algorithm.Run(graphMetis, optionsMetis, rnd);
                     break;
                 case AlgortithamTest.TestDimacs:
-                    var optionsDimacs = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.95, graphFilePath: Myciel3GraphFilePath, numberVerticesForBalance: 3, numberOfIterations: 10000);
+                    var optionsDimacs = new Options(numberOfAnts: 1, numberOfPartitions: 2, coloringProbability: 0.9,
+                        movingProbability: 0.95, graphFilePath: Myciel3GraphFilePath, numberVerticesForBalance: 3, numberOfIterations: 100);
                     var loaderDimacs = new FileLoader(optionsDimacs.GraphFilePath);
                     var graphDimacs = new DimacsGraph(loaderDimacs, rnd);
                     Algorithm.Run(graphDimacs, optionsDimacs, rnd);
+                    break;
+                case AlgortithamTest.Queen55:
+                    var optionsQueen55 = new Options(numberOfAnts: 1, numberOfPartitions: 5, coloringProbability: 0.9,
+                        movingProbability: 0.95, graphFilePath: Queen55GraphFilePath, numberVerticesForBalance: 5, numberOfIterations: 100);
+                    var loaderQueen55 = new FileLoader(optionsQueen55.GraphFilePath);
+                    var graphQueen55 = new DimacsGraphBidirectional(loaderQueen55, rnd);
+                    Algorithm.Run(graphQueen55, optionsQueen55, rnd);
                     break;
                 default:
                     return;

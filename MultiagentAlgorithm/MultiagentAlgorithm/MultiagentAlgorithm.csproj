@@ -47,6 +47,7 @@
     <Compile Include="Algorithm.cs" />
     <Compile Include="BaseGraph.cs" />
     <Compile Include="DimacsGraph.cs" />
+    <Compile Include="DimacsGraphBidirectional.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FileLoader.cs" />
     <Compile Include="MetisGraph.cs" />
