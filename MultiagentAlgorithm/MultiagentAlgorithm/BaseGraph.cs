@@ -137,7 +137,7 @@ namespace MultiagentAlgorithm
                 globalCost += differentColorCount;
             }
 
-            return globalCost / 2;
+            return globalCost;
         }
 
         /// <summary>
