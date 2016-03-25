@@ -29,12 +29,6 @@ namespace MultiagentAlgorithm.Test
         private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9,
             movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1, numberOfIterations: 100);
 
-        [AssemblyInitialize]
-        public static void Configure(TestContext tc)
-        {
-            log4net.Config.XmlConfigurator.Configure();
-        }
-
         [TestMethod]
         public void Graph_FirstLineRead_Sucess()
         {
