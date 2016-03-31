@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace MultiagentAlgorithm
         /// <summary>
         /// Color each vertex of the graph at random forming k balanced sets.
         /// </summary>
-        /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
+        /// <param name="numberOfColors">The number of colors/partitions.</param>
         public void ColorVerticesRandomly(int numberOfColors)
         {
             for (var i = 0; i < Vertices.Count;)
@@ -144,7 +145,8 @@ namespace MultiagentAlgorithm
         /// Find the worst adjacent vertex and move ant to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        public void MoveAntToVertexWithLowestCost(int ant)
+        /// <returns>The vertex with the color on which ant moved.</returns>
+        public Vertex MoveAntToVertexWithLowestCost(int ant)
         {
             var vertex = Vertices[Ants[ant]];
             var worstAdjacentVertex = vertex.ConnectedEdges.First().Key;
@@ -163,18 +165,23 @@ namespace MultiagentAlgorithm
             var worstVertex = Vertices[worstAdjacentVertex];
             worstVertex.LowestCost = true;
             Ants[ant] = worstAdjacentVertex;
+
+            return worstVertex;
         }
 
         /// <summary>
         /// Randomly choose an adjacent vertex and move on to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        public void MoveAntToAnyAdjacentVertex(int ant)
+        /// <returns>The vertex with the color on which ant moved.</returns>
+        public Vertex MoveAntToAnyAdjacentVertex(int ant)
         {
             var vertex = Vertices[Ants[ant]];
             var randomAdjacentVertex = vertex.ConnectedEdges.Keys.Shuffle(Rnd).First();
             // Move ant to the random adjacent vertex.
             Ants[ant] = randomAdjacentVertex;
+
+            return Vertices[randomAdjacentVertex];
         }
 
         /// <summary>
@@ -182,70 +189,59 @@ namespace MultiagentAlgorithm
         /// The best color is the color which increases the local cost.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        public void ColorVertexWithBestColor(int ant)
+        /// <returns>The vertex with the new color.</returns>
+        public Vertex ColorVertexWithBestColor(int ant)
         {
             var vertex = Vertices[Ants[ant]];
             var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new { color, count = group.Count() }).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x => x.Value).First();
             ChosenVertices.Add(vertex);
             vertex.Color = bestColor.Key;
+
+            return vertex;
         }
 
         /// <summary>
         /// Randomly choose a color and set the new color for the ant's vertex.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
-        public void ColorVertexWithRandomColor(int ant, int numberOfColors)
+        /// <param name="numberOfColors">The number of colors/partitions.</param>
+        /// <returns>The vertex with the new color.</returns>
+        public Vertex ColorVertexWithRandomColor(int ant, int numberOfColors)
         {
             var vertex = Vertices[Ants[ant]];
             var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(Rnd).First();
             ChosenVertices.Add(vertex);
             vertex.Color = randomColor;
+
+            return vertex;
         }
 
         /// <summary>
         /// To keep the balance, the algorithm chooses, from
         /// a set of s random vertices, one with the lowest value 
         /// of the local cost function -from those which have the new color- 
-        /// and changes its color to the old color.
+        /// and changes it's color to the old color.
         /// </summary>
-        public void KeepBalance(int numberOfRandomVertices)
+        /// <param name="numberOfRandomVertices">The number of vertices set to keep balance.</param>
+        /// <param name="oldColor">The changed color of the vertex.</param>
+        /// <param name="newColor">The new color of the vertex.</param>
+        public void KeepBalance(int numberOfRandomVertices, int oldColor, int newColor)
         {
             var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices);
-            var vertexChangedColor = random.Where(vertex => vertex.OldColor != null).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
-            if (vertexChangedColor?.OldColor == null) return;
+            var vertexChangedColor = random.Where(vertex => vertex.Color == newColor).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
 
-            vertexChangedColor.Color = vertexChangedColor.OldColor.Value;
+            Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
+            vertexChangedColor.Color = oldColor;
         }
-
-        /// <summary>
-        /// Reset the all vertices history states. 
-        /// </summary>
-        public void ResetVerticesState()
-        {
-            foreach (var vertex in Vertices)
-            {
-                vertex.Reset();
-            }
-        }
-
+        
         /// <summary>
         /// Update local cost function for all chosen vertices 
         /// which has new color and for all adjacent vertices.
         /// </summary>
-        public void UpdateLocalCostFunction()
+        public void UpdateLocalCostFunction(Vertex vertexWithOldColor, Vertex vertexWithNewColor)
         {
-            List<int> vertices = new List<int>();
-            var changedVertices = Vertices.Select(vertex => vertex.OldColor != null);
-            foreach (var changedVertex in ChosenVertices)
-            {
-                vertices.AddRange(changedVertex.ConnectedEdges.Keys);
-            }
-
-            foreach (var vertex in vertices.Distinct())
-            {
-                CalculateLocalCostFunctionForVertex(Vertices[vertex]);
-            }
+            CalculateLocalCostFunctionForVertex(vertexWithOldColor);
+            CalculateLocalCostFunctionForVertex(vertexWithNewColor);
         }
     }
 }

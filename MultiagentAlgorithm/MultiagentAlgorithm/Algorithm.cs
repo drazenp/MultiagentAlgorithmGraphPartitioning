@@ -23,10 +23,6 @@ namespace MultiagentAlgorithm
             var iteration = 0;
             while(bestCost > 0 && iteration < options.NumberOfIterations)
             { 
-                // Reset all history data of vertices so it can be tracked
-                // in the new interation.
-                graph.ResetVerticesState();
-
                 // At a given iteration each ant moves from the current position 
                 // to the adjacent vertex with the lowest local cost, 
                 // i.e. the vertex with the greatest number of constraints (neighbors of a different color).
@@ -36,35 +32,37 @@ namespace MultiagentAlgorithm
                     // The agent or ant moves to the worst adjacent vertex with a
                     // probability pm (it moves randomly to any other adjacent vertex with 
                     // probability 1 − pm)
+                    Vertex vertexWithOldColor;
                     if (rnd.NextDouble() < options.MovingProbability)
                     {
                         // Move the ant to the worst adjacent vertex.
-                        graph.MoveAntToVertexWithLowestCost(ant);
+                        vertexWithOldColor = graph.MoveAntToVertexWithLowestCost(ant);
                     }
                     else
                     {
                         // Move randomly to any adjacent vertex.
-                        graph.MoveAntToAnyAdjacentVertex(ant);
+                        vertexWithOldColor = graph.MoveAntToAnyAdjacentVertex(ant);
                     }
 
+                    Vertex vertexWithNewColor;
                     // Replaces the color which belong to ant with a new color.
                     if (rnd.NextDouble() < options.ColoringProbability)
                     {
                         // Change vertex color to the best possible color.
-                        graph.ColorVertexWithBestColor(ant);
+                        vertexWithNewColor = graph.ColorVertexWithBestColor(ant);
                     }
                     else
                     {
                         // Change to a randomly chosen color.
-                        graph.ColorVertexWithRandomColor(ant, options.NumberOfPartitions);
+                        vertexWithNewColor = graph.ColorVertexWithRandomColor(ant, options.NumberOfPartitions);
                     }
 
                     // Keep balance (Change a randomly chosen vertex with low local cost
                     // from the new to the old color).
-                    graph.KeepBalance(options.NumberVerticesForBalance);
+                    graph.KeepBalance(options.NumberVerticesForBalance, vertexWithOldColor.Color, vertexWithNewColor.Color);
 
                     // For the chosen vertices and all adjacent vertices update local cost function.
-                    graph.UpdateLocalCostFunction();
+                    graph.UpdateLocalCostFunction(vertexWithOldColor, vertexWithNewColor);
 
                     // Get best global cost.
                     var globalCost = graph.GetGlobalCostFunction();

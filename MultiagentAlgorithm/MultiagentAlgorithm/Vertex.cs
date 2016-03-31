@@ -15,26 +15,11 @@ namespace MultiagentAlgorithm
         /// </summary>
         public int Weight { get; }
 
-        private int? _color;
         /// <summary>
         /// The color set for the vertex.
         /// This value represent the partition.
         /// </summary>
-        public int? Color
-        {
-            get { return _color; }
-            set
-            {
-                // Save the current color as old on each change.                                                   
-                OldColor = _color;
-                _color = value;
-            }
-        }
-
-        /// <summary>
-        /// The color which was set before the current color (if changed);
-        /// </summary>
-        public int? OldColor { get; private set; }
+        public int Color { get; set; }
 
         /// <summary>
         /// The ratio between the number of neighbors that have different 
@@ -68,15 +53,6 @@ namespace MultiagentAlgorithm
         {
             ID = id;
             Weight = weight;
-        }
-
-        /// <summary>
-        /// Reset old color and lowest cost.
-        /// </summary>
-        public void Reset()
-        {
-            LowestCost = false;
-            OldColor = null;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace MultiagentAlgorithm
         /// <summary>
         /// Color each vertex of the graph at random forming k balanced sets.
         /// </summary>
-        /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
+        /// <param name="numberOfColors">The number of colors/partitions.</param>
         void ColorVerticesRandomly(int numberOfColors);
 
         /// <summary>
@@ -46,27 +46,31 @@ namespace MultiagentAlgorithm
         /// Find the worst adjacent vertex and move ant to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        void MoveAntToVertexWithLowestCost(int ant);
+        /// <returns>The vertex with the color on which ant moved.</returns>
+        Vertex MoveAntToVertexWithLowestCost(int ant);
 
         /// <summary>
         /// Randomly choose an adjacent vertex and move on to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        void MoveAntToAnyAdjacentVertex(int ant);
+        /// <returns>The vertex with the color on which ant moved.</returns>
+        Vertex MoveAntToAnyAdjacentVertex(int ant);
 
         /// <summary>
         /// Fint best color for the ant's vertex and replace the old color with the new color.
         /// The best color is the color which increases the local cost.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        void ColorVertexWithBestColor(int ant);
+        /// <returns>The vertex with the new color.</returns>
+        Vertex ColorVertexWithBestColor(int ant);
 
         /// <summary>
         /// Randomly choose a color and set the new color for the ant's vertex.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        /// <param name="numberOfColors">The number of colors/ants/partitions.</param>
-        void ColorVertexWithRandomColor(int ant, int numberOfColors);
+        /// <param name="numberOfColors">The number of colors/partitions.</param>
+        /// <returns>The vertex with the new color.</returns>
+        Vertex ColorVertexWithRandomColor(int ant, int numberOfColors);
 
         /// <summary>
         /// To keep the balance, the algorithm chooses, from
@@ -74,17 +78,15 @@ namespace MultiagentAlgorithm
         /// of the local cost function -from those which have the new color- 
         /// and changes its color to the old color.
         /// </summary>
-        void KeepBalance(int numberOfRandomVertices);
-
-        /// <summary>
-        /// Reset the all vertices history states. 
-        /// </summary>
-        void ResetVerticesState();
+        /// <param name="numberOfRandomVertices">The number of vertices set to keep balance.</param>
+        /// <param name="oldColor">The changed color of the vertex.</param>
+        /// <param name="newColor">The new color of the vertex.</param>
+        void KeepBalance(int numberOfRandomVertices, int oldColor, int newColor);
 
         /// <summary>
         /// Update local cost function for all chosen vertices 
         /// which has new color and for all adjacent vertices.
         /// </summary>
-        void UpdateLocalCostFunction();
+        void UpdateLocalCostFunction(Vertex vertexWithOldColor, Vertex vertexWithNewColor);
     }
 }
