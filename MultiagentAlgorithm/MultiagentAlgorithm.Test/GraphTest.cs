@@ -416,37 +416,62 @@ namespace MultiagentAlgorithm.Test
 
             Assert.AreEqual(1, graph.Vertices[graph.Ants[1]].Color);
         }
-        
-        //[TestMethod]
-        //public void Graph_KeepBalance_Success()
-        //{
-        //    var loaderMock = new Mock<IDataLoader>();
-        //    loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
 
-        //    var randomMock = new StubRandom()
-        //    {
-        //        NextInt32Int32 = (a, b) => 1
-        //    };
+        [TestMethod]
+        public void Graph_KeepBalance_CorrectlyColored()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
 
-        //    var graph = new MetisGraph(loaderMock.Object, randomMock);
-        //    graph.InitializeGraph();
-        //    graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
-        //    graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
-        //    graph.MoveAntToAnyAdjacentVertex(0);
-        //    graph.ColorVertexWithBestColor(0);
-        //    graph.MoveAntToAnyAdjacentVertex(1);
-        //    graph.ColorVertexWithBestColor(1);
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
 
-        //    graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance);
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            int oldColor = graph.MoveAntToAnyAdjacentVertex(0);
+            Vertex newVertex = graph.ColorVertexWithBestColor(0);
 
-        //    Assert.AreEqual(1, graph.Vertices[0].Color);
-        //    Assert.AreEqual(2, graph.Vertices[1].Color);
-        //    Assert.AreEqual(1, graph.Vertices[2].Color);
-        //    Assert.AreEqual(2, graph.Vertices[3].Color);
-        //    Assert.AreEqual(1, graph.Vertices[4].Color);
-        //    Assert.AreEqual(1, graph.Vertices[5].Color);
-        //    Assert.AreEqual(1, graph.Vertices[6].Color);
-        //}
+            graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, newVertex.Color);
+            
+            Assert.AreEqual(1, graph.Vertices[0].Color);
+            Assert.AreEqual(2, graph.Vertices[1].Color);
+            Assert.AreEqual(1, graph.Vertices[2].Color);
+            Assert.AreEqual(2, graph.Vertices[3].Color);
+            Assert.AreEqual(1, graph.Vertices[4].Color);
+            Assert.AreEqual(2, graph.Vertices[5].Color);
+            Assert.AreEqual(1, graph.Vertices[6].Color);
+        }
+
+        [TestMethod]
+        public void Graph_KeepBalance_EquallyBalanced()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            int oldColor = graph.MoveAntToAnyAdjacentVertex(0);
+            Vertex newVertex = graph.ColorVertexWithBestColor(0);
+
+            graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, newVertex.Color);
+
+            var numberOfVerticesWithFirstColor = graph.Vertices.Count(vertex => vertex.Color == 1);
+            var numberOfVerticesWithSecondColor = graph.Vertices.Count(vertex => vertex.Color == 2);
+
+            Assert.AreEqual(4, numberOfVerticesWithFirstColor);
+            Assert.AreEqual(3, numberOfVerticesWithSecondColor);
+        }
 
         //[TestMethod]
         //public void Graph_UpdateLocalCostFunction_Success()
@@ -469,7 +494,7 @@ namespace MultiagentAlgorithm.Test
         //    graph.ColorVertexWithBestColor(1);
 
         //    graph.UpdateLocalCostFunction();
-            
+
         //    Assert.AreEqual(1/3D, graph.Vertices[0].LocalCost);
         //    Assert.AreEqual(0, graph.Vertices[1].LocalCost);
         //    Assert.AreEqual(0.5, graph.Vertices[2].LocalCost);

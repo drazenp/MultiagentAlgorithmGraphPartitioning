@@ -32,16 +32,16 @@ namespace MultiagentAlgorithm
                     // The agent or ant moves to the worst adjacent vertex with a
                     // probability pm (it moves randomly to any other adjacent vertex with 
                     // probability 1 − pm)
-                    Vertex vertexWithOldColor;
+                    int oldColor;
                     if (rnd.NextDouble() < options.MovingProbability)
                     {
                         // Move the ant to the worst adjacent vertex.
-                        vertexWithOldColor = graph.MoveAntToVertexWithLowestCost(ant);
+                        oldColor = graph.MoveAntToVertexWithLowestCost(ant);
                     }
                     else
                     {
                         // Move randomly to any adjacent vertex.
-                        vertexWithOldColor = graph.MoveAntToAnyAdjacentVertex(ant);
+                        oldColor = graph.MoveAntToAnyAdjacentVertex(ant);
                     }
 
                     Vertex vertexWithNewColor;
@@ -59,10 +59,10 @@ namespace MultiagentAlgorithm
 
                     // Keep balance (Change a randomly chosen vertex with low local cost
                     // from the new to the old color).
-                    graph.KeepBalance(options.NumberVerticesForBalance, vertexWithOldColor.Color, vertexWithNewColor.Color);
+                    Vertex vertexWhichKeepBalance = graph.KeepBalance(options.NumberVerticesForBalance, oldColor, vertexWithNewColor.Color);
 
                     // For the chosen vertices and all adjacent vertices update local cost function.
-                    graph.UpdateLocalCostFunction(vertexWithOldColor, vertexWithNewColor);
+                    graph.UpdateLocalCostFunction(vertexWhichKeepBalance, vertexWithNewColor);
 
                     // Get best global cost.
                     var globalCost = graph.GetGlobalCostFunction();
@@ -78,6 +78,12 @@ namespace MultiagentAlgorithm
             }
 
             Log.InfoFormat($"Best cost at the end: {bestCost}");
+            foreach (var partition in Enumerable.Range(1, options.NumberOfPartitions))
+            {
+                var numberOfVerticesWithinPartition = bestDistribution.Count(vertex => vertex.Color == partition);
+                Log.InfoFormat($"Partition [{partition}]: {numberOfVerticesWithinPartition}");
+            }
+
             LoggerHelper.LogVertices(bestDistribution);
         }
     }

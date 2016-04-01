@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MultiagentAlgorithm
 {
@@ -43,11 +42,6 @@ namespace MultiagentAlgorithm
             }
             set { _connectedEdges = value; }
         }
-
-        /// <summary>
-        /// If vertices was marked as with lowest cost and ant moved to it as that.
-        /// </summary>
-        public bool LowestCost { get; set; }
 
         public Vertex(int id, int weight)
         {

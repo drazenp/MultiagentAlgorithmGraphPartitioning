@@ -145,8 +145,8 @@ namespace MultiagentAlgorithm
         /// Find the worst adjacent vertex and move ant to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        /// <returns>The vertex with the color on which ant moved.</returns>
-        public Vertex MoveAntToVertexWithLowestCost(int ant)
+        /// <returns>The color of the vertex on which ant moved.</returns>
+        public int MoveAntToVertexWithLowestCost(int ant)
         {
             var vertex = Vertices[Ants[ant]];
             var worstAdjacentVertex = vertex.ConnectedEdges.First().Key;
@@ -163,25 +163,24 @@ namespace MultiagentAlgorithm
 
             // Move ant to the worst adjacent vertex.
             var worstVertex = Vertices[worstAdjacentVertex];
-            worstVertex.LowestCost = true;
             Ants[ant] = worstAdjacentVertex;
 
-            return worstVertex;
+            return worstVertex.Color;
         }
 
         /// <summary>
         /// Randomly choose an adjacent vertex and move on to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        /// <returns>The vertex with the color on which ant moved.</returns>
-        public Vertex MoveAntToAnyAdjacentVertex(int ant)
+        /// <returns>The color of the vertex on which ant moved.</returns>
+        public int MoveAntToAnyAdjacentVertex(int ant)
         {
             var vertex = Vertices[Ants[ant]];
             var randomAdjacentVertex = vertex.ConnectedEdges.Keys.Shuffle(Rnd).First();
             // Move ant to the random adjacent vertex.
             Ants[ant] = randomAdjacentVertex;
 
-            return Vertices[randomAdjacentVertex];
+            return Vertices[randomAdjacentVertex].Color;
         }
 
         /// <summary>
@@ -225,13 +224,16 @@ namespace MultiagentAlgorithm
         /// <param name="numberOfRandomVertices">The number of vertices set to keep balance.</param>
         /// <param name="oldColor">The changed color of the vertex.</param>
         /// <param name="newColor">The new color of the vertex.</param>
-        public void KeepBalance(int numberOfRandomVertices, int oldColor, int newColor)
+        /// <returns>The vertex which has been changed to keep balance.</returns>
+        public Vertex KeepBalance(int numberOfRandomVertices, int oldColor, int newColor)
         {
             var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices);
             var vertexChangedColor = random.Where(vertex => vertex.Color == newColor).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
 
             Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
             vertexChangedColor.Color = oldColor;
+
+            return vertexChangedColor;
         }
         
         /// <summary>

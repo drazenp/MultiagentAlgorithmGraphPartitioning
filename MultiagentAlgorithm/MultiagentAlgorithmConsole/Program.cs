@@ -52,7 +52,7 @@ namespace MultiagentAlgorithmConsole
                     break;
                 case AlgortithamTest.Queen55:
                     var optionsQueen55 = new Options(numberOfAnts: 5, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.95, graphFilePath: Queen55GraphFilePath, numberVerticesForBalance: 10, numberOfIterations: 100);
+                        movingProbability: 0.95, graphFilePath: Queen55GraphFilePath, numberVerticesForBalance: 10, numberOfIterations: 300);
                     var loaderQueen55 = new FileLoader(optionsQueen55.GraphFilePath);
                     var graphQueen55 = new DimacsGraphBidirectional(loaderQueen55, rnd);
                     Algorithm.Run(graphQueen55, optionsQueen55, rnd);
