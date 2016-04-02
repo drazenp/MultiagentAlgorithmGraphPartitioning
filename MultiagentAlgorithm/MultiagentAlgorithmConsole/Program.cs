@@ -16,6 +16,7 @@ namespace MultiagentAlgorithmConsole
         private static readonly string Queen88GraphFilePath = @"Graphs/DIMACS/queen8_8.col";
         private static readonly string Queen1212GraphFilePath = @"Graphs/DIMACS/queen12_12.col";
         private static readonly string Queen1616GraphFilePath = @"Graphs/DIMACS/queen16_16.col";
+        private static readonly string Myciel4GraphFilePath = @"Graphs/DIMACS/myciel4.col";
 
         private enum AlgortithamTest : byte
         {
@@ -24,7 +25,8 @@ namespace MultiagentAlgorithmConsole
             Queen55,
             Queen88,
             Queen1212,
-            Queen1616
+            Queen1616,
+            Myciel4
         }
 
         static void Main(string[] args)
@@ -44,14 +46,14 @@ namespace MultiagentAlgorithmConsole
                     Algorithm.Run(graphMetis, optionsMetis, rnd);
                     break;
                 case AlgortithamTest.TestDimacs:
-                    var optionsDimacs = new Options(numberOfAnts: 1, numberOfPartitions: 3, coloringProbability: 0.9,
+                    var optionsDimacs = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9,
                         movingProbability: 0.95, graphFilePath: Myciel3GraphFilePath, numberVerticesForBalance: 3, numberOfIterations: 100);
                     var loaderDimacs = new FileLoader(optionsDimacs.GraphFilePath);
                     var graphDimacs = new DimacsGraph(loaderDimacs, rnd);
                     Algorithm.Run(graphDimacs, optionsDimacs, rnd);
                     break;
                 case AlgortithamTest.Queen55:
-                    var optionsQueen55 = new Options(numberOfAnts: 5, numberOfPartitions: 2, coloringProbability: 0.9,
+                    var optionsQueen55 = new Options(numberOfAnts: 3, numberOfPartitions: 2, coloringProbability: 0.9,
                         movingProbability: 0.95, graphFilePath: Queen55GraphFilePath, numberVerticesForBalance: 10, numberOfIterations: 300);
                     var loaderQueen55 = new FileLoader(optionsQueen55.GraphFilePath);
                     var graphQueen55 = new DimacsGraphBidirectional(loaderQueen55, rnd);
@@ -77,6 +79,13 @@ namespace MultiagentAlgorithmConsole
                     var loaderQueen1616 = new FileLoader(optionsQueen1616.GraphFilePath);
                     var graphQueen1616 = new DimacsGraphBidirectional(loaderQueen1616, rnd);
                     Algorithm.Run(graphQueen1616, optionsQueen1616, rnd);
+                    break;
+                case AlgortithamTest.Myciel4:
+                    var optionsMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
+                        movingProbability: 0.95, graphFilePath: Myciel4GraphFilePath, numberVerticesForBalance: 12, numberOfIterations: 100);
+                    var loaderMyciel4 = new FileLoader(optionsMyciel4.GraphFilePath);
+                    var graphMyciel4 = new DimacsGraph(loaderMyciel4, rnd);
+                    Algorithm.Run(graphMyciel4, optionsMyciel4, rnd);
                     break;
                 default:
                     return;

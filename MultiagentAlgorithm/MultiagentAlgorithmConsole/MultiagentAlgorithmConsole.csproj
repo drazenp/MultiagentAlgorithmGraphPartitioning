@@ -54,6 +54,9 @@
     <None Include="Graphs\DIMACS\myciel3.col">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Graphs\DIMACS\myciel4.col">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Graphs\DIMACS\queen12_12.col">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
