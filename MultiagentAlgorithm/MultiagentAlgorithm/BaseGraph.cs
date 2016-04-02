@@ -43,6 +43,8 @@ namespace MultiagentAlgorithm
 
         public Dictionary<int, int> Ants;
 
+        public int MaxNumberOfAdjacentVertices;
+
         public abstract void InitializeGraph();
 
         /// <summary>
@@ -230,6 +232,7 @@ namespace MultiagentAlgorithm
             var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices);
             var vertexChangedColor = random.Where(vertex => vertex.Color == newColor).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
 
+            // TODO: Probably this function to return renturn random vertices should be run in recursion until the one is found.
             Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
             vertexChangedColor.Color = oldColor;
 

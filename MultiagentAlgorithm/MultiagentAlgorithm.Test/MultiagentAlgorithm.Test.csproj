@@ -67,6 +67,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DimacsGraphBidirectionalTest.cs" />
     <Compile Include="DimacsGraphTest.cs" />
     <Compile Include="GraphTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
