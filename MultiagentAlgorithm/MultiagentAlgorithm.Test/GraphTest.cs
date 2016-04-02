@@ -268,13 +268,13 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
-            Assert.AreEqual(1 / 3D, graph.Vertices[0].LocalCost);
-            Assert.AreEqual(2 / 3D, graph.Vertices[1].LocalCost);
-            Assert.AreEqual(0.5D, graph.Vertices[2].LocalCost);
-            Assert.AreEqual(0.5D, graph.Vertices[3].LocalCost);
-            Assert.AreEqual(1 / 3D, graph.Vertices[4].LocalCost);
-            Assert.AreEqual(2 / 3D, graph.Vertices[5].LocalCost);
-            Assert.AreEqual(0D, graph.Vertices[6].LocalCost);
+            Assert.AreEqual(3 / 4D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(3 / 4D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[6].LocalCost);
         }
 
         [TestMethod]
@@ -436,7 +436,7 @@ namespace MultiagentAlgorithm.Test
             Vertex newVertex = graph.ColorVertexWithBestColor(0);
 
             graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, newVertex.Color);
-            
+
             Assert.AreEqual(1, graph.Vertices[0].Color);
             Assert.AreEqual(2, graph.Vertices[1].Color);
             Assert.AreEqual(1, graph.Vertices[2].Color);
@@ -488,7 +488,7 @@ namespace MultiagentAlgorithm.Test
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
-            int oldColor= graph.MoveAntToAnyAdjacentVertex(0);
+            int oldColor = graph.MoveAntToAnyAdjacentVertex(0);
             Vertex vertexWithNewColor = graph.ColorVertexWithBestColor(0);
             Vertex vertexWhichKeepBalance = graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, vertexWithNewColor.Color);
             graph.UpdateLocalCostFunction(vertexWhichKeepBalance, vertexWithNewColor);

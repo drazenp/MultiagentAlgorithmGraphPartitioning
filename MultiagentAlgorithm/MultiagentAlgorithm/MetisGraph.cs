@@ -54,6 +54,8 @@ namespace MultiagentAlgorithm
                     counter++;
                 }
             }
+
+            MaxNumberOfAdjacentVertices = Vertices.Max(verex => verex.ConnectedEdges.Count);
         }
     }
 }

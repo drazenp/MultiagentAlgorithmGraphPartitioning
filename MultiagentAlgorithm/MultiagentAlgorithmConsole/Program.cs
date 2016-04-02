@@ -40,7 +40,7 @@ namespace MultiagentAlgorithmConsole
             {
                 case AlgortithamTest.TestMetis:
                     var optionsMetis = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.95, graphFilePath: TestGraphFilePath, numberVerticesForBalance: 3, numberOfIterations: 100);
+                        movingProbability: 0.95, graphFilePath: TestGraphFilePath, numberVerticesForBalance: 4, numberOfIterations: 100);
                     var loaderMetis = new FileLoader(optionsMetis.GraphFilePath);
                     var graphMetis = new MetisGraph(loaderMetis, rnd);
                     Algorithm.Run(graphMetis, optionsMetis, rnd);

@@ -107,21 +107,15 @@ namespace MultiagentAlgorithm
         private void CalculateLocalCostFunctionForVertex(Vertex vertex)
         {
             var connectedVertices = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).ToList();
-
-            var verticesCount = connectedVertices.Count();
             var differentColorCount = connectedVertices.Count(x => x.Color != vertex.Color);
 
-            if (verticesCount == differentColorCount)
-            {
-                vertex.LocalCost = 0;
-            }
-            else if (differentColorCount == 0)
+            if (differentColorCount == 0)
             {
                 vertex.LocalCost = 1;
             }
             else
             {
-                vertex.LocalCost = differentColorCount / (double)verticesCount;
+                vertex.LocalCost = 1 - differentColorCount / (double)MaxNumberOfAdjacentVertices;
             }
         }
 
@@ -238,7 +232,7 @@ namespace MultiagentAlgorithm
 
             return vertexChangedColor;
         }
-        
+
         /// <summary>
         /// Update local cost function for all chosen vertices 
         /// which has new color and for all adjacent vertices.
