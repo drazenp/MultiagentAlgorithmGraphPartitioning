@@ -96,7 +96,7 @@ namespace MultiagentAlgorithm.Test
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
             var randomMock = new StubRandom();
 
-            var graph = new DimacsGraph(loaderMock.Object, randomMock);
+            var graph = new DimacsGraphBidirectional(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
             Assert.AreEqual(5, graph.MaxNumberOfAdjacentVertices, "The number of maximum adjacent vertices of one vertex is not calculatef correctly.");
