@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using log4net;
 
 namespace MultiagentAlgorithm
 {
     public abstract class BaseGraph : IGraph
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         protected IDataLoader DataLoader;
 
         protected Random Rnd;
@@ -53,18 +55,10 @@ namespace MultiagentAlgorithm
         /// <param name="numberOfColors">The number of colors/partitions.</param>
         public void ColorVerticesRandomly(int numberOfColors)
         {
-            for (var i = 0; i < Vertices.Count;)
+            var shuffleVertices = Vertices.Shuffle(Rnd).ToList();
+            for (var i = 0; i < Vertices.Count; i++)
             {
-                var randomColors = Enumerable.Range(1, numberOfColors).Shuffle(Rnd);
-                foreach (var color in randomColors)
-                {
-                    Vertices[i].Color = color;
-                    i++;
-                    if (i >= Vertices.Count)
-                    {
-                        return;
-                    }
-                }
+                shuffleVertices[i].Color = i % numberOfColors + 1;
             }
         }
 
@@ -125,7 +119,11 @@ namespace MultiagentAlgorithm
         /// <returns>The value of global cost function.</returns>
         public int GetGlobalCostFunction()
         {
-            LoggerHelper.LogVertices(Vertices);
+            if (Log.IsDebugEnabled)
+            {
+                LoggerHelper.LogVertices(Vertices);
+            }
+            
             var globalCost = 0;
 
             foreach (var vertex in Vertices)

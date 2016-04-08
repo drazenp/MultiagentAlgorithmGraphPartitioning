@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -7,10 +8,13 @@ namespace MultiagentAlgorithm
 {
     public static class Algorithm
     {
-        private static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void Run(BaseGraph graph, Options options, Random rnd)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             graph.InitializeGraph();
             graph.InitializeAnts(options.NumberOfAnts);
             graph.ColorVerticesRandomly(options.NumberOfPartitions);
@@ -18,7 +22,7 @@ namespace MultiagentAlgorithm
 
             var bestCost = graph.GetGlobalCostFunction();
             var bestDistribution = graph.Vertices;
-            Log.DebugFormat($"Initial global cost: {bestCost}");
+            Log.Info($"Initial global cost: {bestCost}");
 
             var iteration = 0;
             while(bestCost > 0 && iteration < options.NumberOfIterations)
@@ -72,18 +76,22 @@ namespace MultiagentAlgorithm
                         Log.Debug($"Best cost: {bestCost}");
                         bestDistribution = graph.Vertices;
                     }
-                    Log.InfoFormat($"Iteration [{iteration}] | Ant {ant} | Global cost: {globalCost} | Best cost: {bestCost}");
+                    Log.Info($"Iteration [{iteration}] | Ant {ant} | Global cost: {globalCost} | Best cost: {bestCost}");
                 }
                 iteration++;
             }
+            stopwatch.Stop();
+            Log.Info($"The algorithm running time: {stopwatch.ElapsedMilliseconds}");
 
-            Log.InfoFormat($"Best cost at the end: {bestCost}");
-            foreach (var partition in Enumerable.Range(1, options.NumberOfPartitions))
+            Log.Info($"Best cost at the end: {bestCost}");
+            if (Log.IsDebugEnabled)
             {
-                var numberOfVerticesWithinPartition = bestDistribution.Count(vertex => vertex.Color == partition);
-                Log.InfoFormat($"Partition [{partition}]: {numberOfVerticesWithinPartition}");
+                foreach (var partition in Enumerable.Range(1, options.NumberOfPartitions))
+                {
+                    var numberOfVerticesWithinPartition = bestDistribution.Count(vertex => vertex.Color == partition);
+                    Log.Debug($"Partition [{partition}]: {numberOfVerticesWithinPartition}");
+                }
             }
-
             LoggerHelper.LogVertices(bestDistribution);
         }
     }

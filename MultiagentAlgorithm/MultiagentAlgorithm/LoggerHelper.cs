@@ -18,7 +18,7 @@ namespace MultiagentAlgorithm
                 output.AppendFormat($"{Environment.NewLine}Vertex [{vertex.ID}] has Color [{vertex.Color}].");
             }
 
-            Log.Debug(output.ToString());
+            Log.Info(output.ToString());
         }
     }
 }

@@ -91,12 +91,12 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionThreeColors.NumberOfPartitions);
 
             Assert.AreEqual(1, graph.Vertices[0].Color);
-            Assert.AreEqual(3, graph.Vertices[1].Color);
-            Assert.AreEqual(2, graph.Vertices[2].Color);
-            Assert.AreEqual(1, graph.Vertices[3].Color);
-            Assert.AreEqual(3, graph.Vertices[4].Color);
-            Assert.AreEqual(2, graph.Vertices[5].Color);
-            Assert.AreEqual(1, graph.Vertices[6].Color);
+            Assert.AreEqual(1, graph.Vertices[1].Color);
+            Assert.AreEqual(3, graph.Vertices[2].Color);
+            Assert.AreEqual(2, graph.Vertices[3].Color);
+            Assert.AreEqual(1, graph.Vertices[4].Color);
+            Assert.AreEqual(3, graph.Vertices[5].Color);
+            Assert.AreEqual(2, graph.Vertices[6].Color);
         }
 
         [TestMethod]
@@ -115,12 +115,12 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
 
             Assert.AreEqual(1, graph.Vertices[0].Color);
-            Assert.AreEqual(2, graph.Vertices[1].Color);
-            Assert.AreEqual(1, graph.Vertices[2].Color);
-            Assert.AreEqual(2, graph.Vertices[3].Color);
-            Assert.AreEqual(1, graph.Vertices[4].Color);
-            Assert.AreEqual(2, graph.Vertices[5].Color);
-            Assert.AreEqual(1, graph.Vertices[6].Color);
+            Assert.AreEqual(1, graph.Vertices[1].Color);
+            Assert.AreEqual(2, graph.Vertices[2].Color);
+            Assert.AreEqual(1, graph.Vertices[3].Color);
+            Assert.AreEqual(2, graph.Vertices[4].Color);
+            Assert.AreEqual(1, graph.Vertices[5].Color);
+            Assert.AreEqual(2, graph.Vertices[6].Color);
         }
 
         [TestMethod]
@@ -243,13 +243,13 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionThreeColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
-            Assert.AreEqual(0D, graph.Vertices[0].LocalCost);
-            Assert.AreEqual(0D, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(3 / 4D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[1].LocalCost);
             Assert.AreEqual(0D, graph.Vertices[2].LocalCost);
-            Assert.AreEqual(0.75D, graph.Vertices[3].LocalCost);
-            Assert.AreEqual(0D, graph.Vertices[4].LocalCost);
-            Assert.AreEqual(0D, graph.Vertices[5].LocalCost);
-            Assert.AreEqual(0.5D, graph.Vertices[6].LocalCost);
+            Assert.AreEqual(1 / 4D, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(1 / 4D, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(3 / 4D, graph.Vertices[6].LocalCost);
         }
 
         [TestMethod]
@@ -268,13 +268,13 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             graph.CalculateLocalCostFunction();
 
-            Assert.AreEqual(3 / 4D, graph.Vertices[0].LocalCost);
-            Assert.AreEqual(0.5, graph.Vertices[1].LocalCost);
-            Assert.AreEqual(0.5, graph.Vertices[2].LocalCost);
-            Assert.AreEqual(0.5, graph.Vertices[3].LocalCost);
-            Assert.AreEqual(3 / 4D, graph.Vertices[4].LocalCost);
-            Assert.AreEqual(0.5, graph.Vertices[5].LocalCost);
-            Assert.AreEqual(0.5, graph.Vertices[6].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(3 / 4D, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(1 / 4D, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[6].LocalCost);
         }
 
         [TestMethod]
@@ -293,7 +293,7 @@ namespace MultiagentAlgorithm.Test
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
             var globalCost = graph.GetGlobalCostFunction();
 
-            Assert.AreEqual(12, globalCost);
+            Assert.AreEqual(14, globalCost);
         }
 
         [TestMethod]
@@ -334,11 +334,11 @@ namespace MultiagentAlgorithm.Test
 
             graph.MoveAntToVertexWithLowestCost(0);
 
-            Assert.AreEqual(4, graph.Vertices[graph.Ants[0]].ID);
+            Assert.AreEqual(2, graph.Vertices[graph.Ants[0]].ID);
 
             graph.MoveAntToVertexWithLowestCost(1);
 
-            Assert.AreEqual(3, graph.Vertices[graph.Ants[1]].ID);
+            Assert.AreEqual(5, graph.Vertices[graph.Ants[1]].ID);
         }
 
         [TestMethod]
@@ -368,7 +368,7 @@ namespace MultiagentAlgorithm.Test
         }
 
         [TestMethod]
-        public void Grap_ChnageVertexColorWithBestColor_Success()
+        public void Graph_ChnageVertexColorWithBestColor_Success()
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
@@ -385,15 +385,15 @@ namespace MultiagentAlgorithm.Test
 
             graph.ColorVertexWithBestColor(0);
 
-            Assert.AreEqual(1, graph.Vertices[graph.Ants[0]].Color);
+            Assert.AreEqual(2, graph.Vertices[graph.Ants[0]].Color);
 
             graph.ColorVertexWithBestColor(1);
 
-            Assert.AreEqual(2, graph.Vertices[graph.Ants[1]].Color);
+            Assert.AreEqual(1, graph.Vertices[graph.Ants[1]].Color);
         }
 
         [TestMethod]
-        public void Grap_ChnageVertexColorWithRandomColor_Success()
+        public void Graph_ChnageVertexColorWithRandomColor_Success()
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
@@ -437,13 +437,13 @@ namespace MultiagentAlgorithm.Test
 
             graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, newVertex.Color);
 
-            Assert.AreEqual(1, graph.Vertices[0].Color);
-            Assert.AreEqual(2, graph.Vertices[1].Color);
-            Assert.AreEqual(1, graph.Vertices[2].Color);
-            Assert.AreEqual(2, graph.Vertices[3].Color);
+            Assert.AreEqual(2, graph.Vertices[0].Color);
+            Assert.AreEqual(1, graph.Vertices[1].Color);
+            Assert.AreEqual(2, graph.Vertices[2].Color);
+            Assert.AreEqual(1, graph.Vertices[3].Color);
             Assert.AreEqual(1, graph.Vertices[4].Color);
-            Assert.AreEqual(2, graph.Vertices[5].Color);
-            Assert.AreEqual(1, graph.Vertices[6].Color);
+            Assert.AreEqual(1, graph.Vertices[5].Color);
+            Assert.AreEqual(2, graph.Vertices[6].Color);
         }
 
         [TestMethod]
@@ -493,11 +493,11 @@ namespace MultiagentAlgorithm.Test
             Vertex vertexWhichKeepBalance = graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, vertexWithNewColor.Color);
             graph.UpdateLocalCostFunction(vertexWhichKeepBalance, vertexWithNewColor);
 
-            Assert.AreEqual(1 / 3D, graph.Vertices[0].LocalCost);
-            Assert.AreEqual(0, graph.Vertices[1].LocalCost);
-            Assert.AreEqual(0, graph.Vertices[2].LocalCost);
-            Assert.AreEqual(0, graph.Vertices[3].LocalCost);
-            Assert.AreEqual(1 / 3D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0D, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[4].LocalCost);
             Assert.AreEqual(0, graph.Vertices[5].LocalCost);
             Assert.AreEqual(0, graph.Vertices[6].LocalCost);
         }
