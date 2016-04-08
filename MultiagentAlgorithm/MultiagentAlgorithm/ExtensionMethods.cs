@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace MultiagentAlgorithm
 {
     public static class ExtensionMethods
     {
+        public static ILog Log { get; } = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         // http://stackoverflow.com/a/1287572/1033764
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rng)
         {
+            Log.Debug("Start");
             T[] elements = source.ToArray();
             for (var i = elements.Length - 1; i >= 0; i--)
             {
@@ -19,6 +24,7 @@ namespace MultiagentAlgorithm
                 yield return elements[swapIndex];
                 elements[swapIndex] = elements[i];
             }
+            Log.Debug("End");
         }
     }
 }
