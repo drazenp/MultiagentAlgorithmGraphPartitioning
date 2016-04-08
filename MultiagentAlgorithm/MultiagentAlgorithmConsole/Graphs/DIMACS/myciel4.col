@@ -1,4 +1,5 @@
-﻿c FILE: myciel4.col
+﻿c http://mat.gsia.cmu.edu/COLOR/instances.html
+c FILE: myciel4.col
 c SOURCE: Michael Trick (trick@cmu.edu)
 c DESCRIPTION: Graph based on Mycielski transformation. 
 c              Triangle free (clique number 2) but increasing
