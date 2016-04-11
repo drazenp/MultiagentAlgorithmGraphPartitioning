@@ -36,7 +36,7 @@ namespace MultiagentAlgorithmConsole
             var algortithamTest = (AlgortithamTest)Enum.Parse(typeof(AlgortithamTest), args[0]);
             var rnd = new Random(Environment.TickCount);
             var fileWriter = new FileWriter("graph.json");
-            var exportGraph = new D3JSONFileExport(fileWriter);
+            var exportGraph = new D3JsonFileExport(fileWriter);
 
             switch (algortithamTest)
             {
@@ -55,8 +55,8 @@ namespace MultiagentAlgorithmConsole
                     Algorithm.Run(graphDimacs, optionsDimacs, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Queen55:
-                    var optionsQueen55 = new Options(numberOfAnts: 3, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.95, graphFilePath: Queen55GraphFilePath, numberVerticesForBalance: 10, numberOfIterations: 300);
+                    var optionsQueen55 = new Options(numberOfAnts: 5, numberOfPartitions: 2, coloringProbability: 0.9,
+                        movingProbability: 0.95, graphFilePath: Queen55GraphFilePath, numberVerticesForBalance: 10, numberOfIterations: 2000);
                     var loaderQueen55 = new FileLoader(optionsQueen55.GraphFilePath);
                     var graphQueen55 = new DimacsGraphBidirectional(loaderQueen55, rnd);
                     Algorithm.Run(graphQueen55, optionsQueen55, rnd, exportGraph);
