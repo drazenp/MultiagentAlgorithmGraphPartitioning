@@ -16,8 +16,8 @@ namespace MultiagentAlgorithm
         public void ExportGraph(IList<Vertex> vertices)
         {
             var sb = new StringBuilder(128);
-            sb.Append("'nodes':[");
-            var nodes = string.Join(",", vertices.Select(vertex => "{'name':'" + (vertex.ID + 1) + "','group':" + vertex.Color + "}"));
+            sb.Append("\"nodes\":[");
+            var nodes = string.Join(",", vertices.Select(vertex => "{\"name\":'" + (vertex.ID + 1) + "','group':" + vertex.Color + "}"));
             sb.Append(nodes);
 
             sb.Append("],'links':[");

@@ -10,7 +10,7 @@ namespace MultiagentAlgorithm
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void Run(BaseGraph graph, Options options, Random rnd)
+        public static void Run(BaseGraph graph, Options options, Random rnd, IExportGraph graphExport)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -93,6 +93,7 @@ namespace MultiagentAlgorithm
                 }
             }
             LoggerHelper.LogVertices(bestDistribution);
+            graphExport.ExportGraph(bestDistribution);
         }
     }
 }
