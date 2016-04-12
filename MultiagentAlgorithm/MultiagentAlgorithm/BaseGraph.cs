@@ -21,23 +21,6 @@ namespace MultiagentAlgorithm
         public IList<Vertex> Vertices { get; protected set; }
 
         /// <summary>
-        /// The list of all chosen vertices - the vertices which the 
-        /// changed color in the current iteration.
-        /// </summary>
-        private IList<Vertex> _chosenVertices;
-        private IList<Vertex> ChosenVertices
-        {
-            get
-            {
-                if (_chosenVertices == null)
-                {
-                    _chosenVertices = new List<Vertex>();
-                }
-                return _chosenVertices;
-            }
-        }
-
-        /// <summary>
         /// Number of edges read from files.
         /// This is not used in the application.
         /// </summary>
@@ -187,7 +170,6 @@ namespace MultiagentAlgorithm
         {
             var vertex = Vertices[Ants[ant]];
             var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new { color, count = group.Count() }).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x => x.Value).First();
-            ChosenVertices.Add(vertex);
             vertex.Color = bestColor.Key;
 
             return vertex;
@@ -203,7 +185,6 @@ namespace MultiagentAlgorithm
         {
             var vertex = Vertices[Ants[ant]];
             var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(Rnd).First();
-            ChosenVertices.Add(vertex);
             vertex.Color = randomColor;
 
             return vertex;

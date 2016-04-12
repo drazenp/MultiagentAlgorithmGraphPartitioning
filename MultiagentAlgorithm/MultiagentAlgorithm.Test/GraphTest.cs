@@ -382,14 +382,17 @@ namespace MultiagentAlgorithm.Test
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            graph.CalculateLocalCostFunction();
 
+            graph.MoveAntToVertexWithLowestCost(0);
             graph.ColorVertexWithBestColor(0);
 
-            Assert.AreEqual(2, graph.Vertices[graph.Ants[0]].Color);
+            Assert.AreEqual(1, graph.Vertices[graph.Ants[0]].Color);
 
+            graph.MoveAntToVertexWithLowestCost(1);
             graph.ColorVertexWithBestColor(1);
 
-            Assert.AreEqual(1, graph.Vertices[graph.Ants[1]].Color);
+            Assert.AreEqual(2, graph.Vertices[graph.Ants[1]].Color);
         }
 
         [TestMethod]
