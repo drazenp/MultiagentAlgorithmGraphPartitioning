@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Graphs\DIMACS\mulsol.i.2.col" />
     <None Include="Graphs\DIMACS\myciel3.col">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
