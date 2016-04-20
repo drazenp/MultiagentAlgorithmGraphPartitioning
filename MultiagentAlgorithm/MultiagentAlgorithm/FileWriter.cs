@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace MultiagentAlgorithm
 {
@@ -13,7 +14,7 @@ namespace MultiagentAlgorithm
 
         public void WriteData(string data)
         {
-            File.WriteAllText(_fileName, data);
+            File.WriteAllText(_fileName + DateTime.Now.Millisecond, data);
         }
     }
 }

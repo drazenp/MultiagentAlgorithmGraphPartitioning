@@ -38,7 +38,6 @@ namespace MultiagentAlgorithm
                 }
                 if (fileData[0] == "p")
                 {
-                    // TODO: Check if number in description represent corrent number of vertices and edges.
                     var numberOfVertices = int.Parse(fileData[2]);
                     Vertices = new List<Vertex>(numberOfVertices);
                     NumberOfEdges = int.Parse(fileData[3]);

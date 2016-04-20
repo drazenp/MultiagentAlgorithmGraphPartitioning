@@ -52,6 +52,7 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FileLoader.cs" />
     <Compile Include="FileWriter.cs" />
+    <Compile Include="GephiFileExport.cs" />
     <Compile Include="IDataWriter.cs" />
     <Compile Include="IExportGraph.cs" />
     <Compile Include="MetisGraph.cs" />

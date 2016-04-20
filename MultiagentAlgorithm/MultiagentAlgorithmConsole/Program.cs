@@ -36,7 +36,7 @@ namespace MultiagentAlgorithmConsole
             var algortithamTest = (AlgortithamTest)Enum.Parse(typeof(AlgortithamTest), args[0]);
             var rnd = new Random(Environment.TickCount);
             var fileWriter = new FileWriter("graph.json");
-            var exportGraph = new D3JsonFileExport(fileWriter);
+            var exportGraph = new GephiFileExport(fileWriter);
 
             switch (algortithamTest)
             {
