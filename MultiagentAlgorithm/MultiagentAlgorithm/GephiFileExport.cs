@@ -20,7 +20,7 @@ namespace MultiagentAlgorithm
             sb.Append("Id;Degree");
             sb.AppendLine();
 
-            var nodes = string.Join("", vertices.Select(vertex => (vertex.ID + 1) + ";" + vertex.Color + Environment.NewLine));
+            var nodes = string.Join(Environment.NewLine, vertices.Select(vertex => (vertex.ID + 1) + ";" + vertex.Color));
             sb.Append(nodes);
             _dataWriter.WriteData(sb.ToString());
 
@@ -30,9 +30,9 @@ namespace MultiagentAlgorithm
 
             var edges = from vertex in vertices
                         from edge in vertex.ConnectedEdges
-                        select (vertex.ID + 1) + ";" + edge.Key + Environment.NewLine;
+                        select (vertex.ID + 1) + ";" + edge.Key;
 
-            var links = string.Join("", edges.ToList());
+            var links = string.Join(Environment.NewLine, edges.ToList());
             sb.Append(links);
 
             _dataWriter.WriteData(sb.ToString());
