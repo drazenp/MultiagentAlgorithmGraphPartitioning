@@ -21,7 +21,7 @@ namespace MultiagentAlgorithmConsole
         private enum AlgortithamTest : byte
         {
             TestMetis,
-            TestDimacs,
+            Myciel3,
             Queen55,
             Queen88,
             Queen1212,
@@ -47,12 +47,12 @@ namespace MultiagentAlgorithmConsole
                     var graphMetis = new MetisGraph(loaderMetis, rnd);
                     Algorithm.Run(graphMetis, optionsMetis, rnd, exportGraph);
                     break;
-                case AlgortithamTest.TestDimacs:
-                    var optionsDimacs = new Options(numberOfAnts: 3, numberOfPartitions: 3, coloringProbability: 0.9,
+                case AlgortithamTest.Myciel3:
+                    var optionsMyciel3 = new Options(numberOfAnts: 3, numberOfPartitions: 3, coloringProbability: 0.9,
                         movingProbability: 0.85, graphFilePath: Myciel3GraphFilePath, numberVerticesForBalance: 3, numberOfIterations: 100);
-                    var loaderDimacs = new FileLoader(optionsDimacs.GraphFilePath);
-                    var graphDimacs = new DimacsGraph(loaderDimacs, rnd);
-                    Algorithm.Run(graphDimacs, optionsDimacs, rnd, exportGraph);
+                    var loaderMyciel3 = new FileLoader(optionsMyciel3.GraphFilePath);
+                    var graphDimacs = new DimacsGraph(loaderMyciel3, rnd);
+                    Algorithm.Run(graphDimacs, optionsMyciel3, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Queen55:
                     var optionsQueen55 = new Options(numberOfAnts: 3, numberOfPartitions: 2, coloringProbability: 0.9,
@@ -83,7 +83,7 @@ namespace MultiagentAlgorithmConsole
                     Algorithm.Run(graphQueen1616, optionsQueen1616, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Myciel4:
-                    var optionsMyciel4 = new Options(numberOfAnts: 3, numberOfPartitions: 2, coloringProbability: 0.9,
+                    var optionsMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
                         movingProbability: 0.85, graphFilePath: Myciel4GraphFilePath, numberVerticesForBalance: 12, numberOfIterations: 1000);
                     var loaderMyciel4 = new FileLoader(optionsMyciel4.GraphFilePath);
                     var graphMyciel4 = new DimacsGraph(loaderMyciel4, rnd);

@@ -169,9 +169,14 @@ namespace MultiagentAlgorithm
         public Vertex ColorVertexWithBestColor(int ant)
         {
             var vertex = Vertices[Ants[ant]];
-            var bestColor = vertex.ConnectedEdges.Select(connectedEdge => Vertices[connectedEdge.Key]).GroupBy(v => v.Color, (color, group) => new { color, count = group.Count() }).ToDictionary(tuple => tuple.color, tuple => tuple.count).OrderByDescending(x => x.Value).First();
-            vertex.Color = bestColor.Key;
+            var bestColor = vertex.ConnectedEdges
+                              .Select(connectedEdge => Vertices[connectedEdge.Key])
+                              .GroupBy(v => v.Color, (color, group) => new { color, count = group.Count() })
+                              .ToDictionary(tuple => tuple.color, tuple => tuple.count)
+                              .OrderByDescending(x => x.Value).First();
 
+            vertex.Color = bestColor.Key;
+            
             return vertex;
         }
 
@@ -205,7 +210,7 @@ namespace MultiagentAlgorithm
             var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices);
             var vertexChangedColor = random.Where(vertex => vertex.Color == newColor).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
 
-            // TODO: Probably this function to return renturn random vertices should be run in recursion until the one is found.
+            // TODO: Probably the function to return random vertices should be run in recursion until the one is found.
             Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
             vertexChangedColor.Color = oldColor;
 

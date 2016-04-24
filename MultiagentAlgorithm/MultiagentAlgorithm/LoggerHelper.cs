@@ -20,5 +20,10 @@ namespace MultiagentAlgorithm
 
             Log.Info(output.ToString());
         }
+
+        public static void LogVertexWithBestColor(Dictionary<int, int> colorsPerVertex)
+        {
+            
+        }
     }
 }
