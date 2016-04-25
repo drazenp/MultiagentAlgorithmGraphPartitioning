@@ -51,6 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Graphs\DIMACS\jean.col">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Graphs\DIMACS\le450_15b.col">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Graphs\DIMACS\miles500.col">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Graphs\DIMACS\mulsol.i.2.col" />
     <None Include="Graphs\DIMACS\myciel3.col">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
