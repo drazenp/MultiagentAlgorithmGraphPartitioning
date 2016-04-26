@@ -39,7 +39,12 @@ namespace MultiagentAlgorithm
                 if (fileData[0] == "p")
                 {
                     var numberOfVertices = int.Parse(fileData[2]);
-                    Vertices = new List<Vertex>(numberOfVertices);
+                    Vertices = new Vertex[numberOfVertices];
+                    for (var i = 0; i < numberOfVertices; i++)
+                    {
+                        Vertices[i] = new Vertex(i, VertexWeight);
+                    }
+
                     NumberOfEdges = int.Parse(fileData[3]);
                 }
                 else if (fileData[0] == "e")
@@ -47,25 +52,11 @@ namespace MultiagentAlgorithm
                     var vertexID = int.Parse(fileData[1]) - 1;
                     var connectedVertexID = int.Parse(fileData[2]) - 1;
 
-                    var vertex = Vertices.FirstOrDefault(v => v.ID == vertexID);
-                    if (vertex == null)
-                    {
-                        vertex = new Vertex(vertexID, VertexWeight);
-                        Vertices.Add(vertex);
-                    }
-                    vertex.ConnectedEdges.Add(connectedVertexID, EdgeWeight);
+                    Vertices[vertexID].ConnectedEdges.Add(connectedVertexID, EdgeWeight);
 
-                    var connectedVertex = Vertices.FirstOrDefault(v => v.ID == connectedVertexID);
-                    if (connectedVertex == null)
-                    {
-                        connectedVertex = new Vertex(connectedVertexID, VertexWeight);
-                        Vertices.Add(connectedVertex);
-                    }
-                    connectedVertex.ConnectedEdges.Add(vertexID, EdgeWeight);
+                    Vertices[connectedVertexID].ConnectedEdges.Add(vertexID, EdgeWeight);
                 }
             }
-
-            Vertices = Vertices.OrderBy(v => v.ID).ToList();
 
             MaxNumberOfAdjacentVertices = Vertices.Max(verex => verex.ConnectedEdges.Count);
         }

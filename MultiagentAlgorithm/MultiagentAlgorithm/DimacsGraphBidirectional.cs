@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MultiagentAlgorithm
@@ -23,26 +22,24 @@ namespace MultiagentAlgorithm
                 }
                 if (fileData[0] == "p")
                 {
-                    // TODO: Check if number in description represent corrent number of vertices and edges.
                     var numberOfVertices = int.Parse(fileData[2]);
-                    Vertices = new List<Vertex>(numberOfVertices);
+                    Vertices = new Vertex[numberOfVertices];
+                    for (var i = 0; i < numberOfVertices; i++)
+                    {
+                        Vertices[i] = new Vertex(i, VertexWeight);
+                    }
+
                     NumberOfEdges = int.Parse(fileData[3]);
                 }
                 else if (fileData[0] == "e")
                 {
                     var vertexID = int.Parse(fileData[1]) - 1;
                     var connectedVertexID = int.Parse(fileData[2]) - 1;
-
-                    var vertex = Vertices.FirstOrDefault(v => v.ID == vertexID);
-                    if (vertex == null)
-                    {
-                        vertex = new Vertex(vertexID, VertexWeight);
-                        Vertices.Add(vertex);
-                    }
-                    vertex.ConnectedEdges.Add(connectedVertexID, EdgeWeight);
+                    
+                    Vertices[vertexID].ConnectedEdges.Add(connectedVertexID, EdgeWeight);
                 }
             }
-
+            
             MaxNumberOfAdjacentVertices = Vertices.Max(verex => verex.ConnectedEdges.Count);
         }
     }

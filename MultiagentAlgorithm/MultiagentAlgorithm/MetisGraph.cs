@@ -25,7 +25,7 @@ namespace MultiagentAlgorithm
                 if (firstLine)
                 {
                     NumberOfEdges = int.Parse(fileData[1]);
-                    Vertices = new List<Vertex>(int.Parse(fileData[0]));
+                    Vertices = new Vertex[int.Parse(fileData[0])];
 
                     firstLine = false;
                 }
@@ -39,7 +39,7 @@ namespace MultiagentAlgorithm
                     var edges = fileDataList.Where((x, y) => y % 2 == 0).Skip(1).ToList();
                     var vertices = fileDataList.Where((x, y) => y % 2 != 0).ToList();
 
-                    var vertex = new Vertex(counter, vertexWeight);
+                    Vertices[counter] = new Vertex(counter, vertexWeight);
                     var connectedEdges = new Dictionary<int, int>();
                     for (var i = 0; i < vertices.Count(); i++)
                     {
@@ -47,9 +47,7 @@ namespace MultiagentAlgorithm
                         var edgeWeight = int.Parse(edges.ElementAt(i));
                         connectedEdges.Add(edgeVertex, edgeWeight);
                     }
-                    vertex.ConnectedEdges = connectedEdges;
-
-                    Vertices.Add(vertex);
+                    Vertices[counter].ConnectedEdges = connectedEdges;
 
                     counter++;
                 }

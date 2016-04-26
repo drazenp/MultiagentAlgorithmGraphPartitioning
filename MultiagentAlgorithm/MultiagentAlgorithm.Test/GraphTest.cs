@@ -39,7 +39,7 @@ namespace MultiagentAlgorithm.Test
             var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
-            Assert.AreEqual(7, graph.Vertices.Count, "The number of vertices weights is not correct.");
+            Assert.AreEqual(7, graph.Vertices.Length, "The number of vertices weights is not correct.");
             Assert.AreEqual(11, graph.NumberOfEdges, "The number of edges is not correct.");
         }
 
@@ -72,7 +72,7 @@ namespace MultiagentAlgorithm.Test
             var graph = new MetisGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
-            Assert.AreEqual(7, graph.Vertices.Count, "Not all vertices are initialized.");
+            Assert.AreEqual(7, graph.Vertices.Length, "Not all vertices are initialized.");
         }
 
         [TestMethod]

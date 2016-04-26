@@ -52,7 +52,7 @@ namespace MultiagentAlgorithm.Test
             var graph = new DimacsGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
-            Assert.AreEqual(11, graph.Vertices.Count, "The number of vertices weights is not correct.");
+            Assert.AreEqual(11, graph.Vertices.Length, "The number of vertices weights is not correct.");
             Assert.AreEqual(20, graph.NumberOfEdges, "The number of edges is not correct.");
         }
 
@@ -66,7 +66,7 @@ namespace MultiagentAlgorithm.Test
             var graph = new DimacsGraph(loaderMock.Object, randomMock);
             graph.InitializeGraph();
 
-            Assert.AreEqual(11, graph.Vertices.Count, "Not all vertices are initialized.");
+            Assert.AreEqual(11, graph.Vertices.Length, "Not all vertices are initialized.");
         }
 
         [TestMethod]

@@ -16,9 +16,9 @@ namespace MultiagentAlgorithm
         protected Random Rnd;
 
         /// <summary>
-        /// The list of weights for each vertex in the graph.
+        /// The array of weights for each vertex in the graph.
         /// </summary>
-        public IList<Vertex> Vertices { get; protected set; }
+        public Vertex[] Vertices { get; protected set; }
 
         /// <summary>
         /// Number of edges read from files.
@@ -39,7 +39,7 @@ namespace MultiagentAlgorithm
         public void ColorVerticesRandomly(int numberOfColors)
         {
             var shuffleVertices = Vertices.Shuffle(Rnd).ToList();
-            for (var i = 0; i < Vertices.Count; i++)
+            for (var i = 0; i < Vertices.Length; i++)
             {
                 shuffleVertices[i].Color = i % numberOfColors + 1;
             }

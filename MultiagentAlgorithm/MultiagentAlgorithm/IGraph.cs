@@ -5,9 +5,9 @@ namespace MultiagentAlgorithm
     public interface IGraph
     {
         /// <summary>
-        /// The list of weights for each vertex in the graph.
+        /// The array of weights for each vertex in the graph.
         /// </summary>
-        IList<Vertex> Vertices { get; }
+        Vertex[] Vertices { get; }
 
         /// <summary>
         /// Number of edges read from files.
