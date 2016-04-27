@@ -18,6 +18,8 @@ namespace MultiagentAlgorithmConsole
         private static readonly string Queen1616GraphFilePath = @"Graphs/DIMACS/queen16_16.col";
         private static readonly string Myciel4GraphFilePath = @"Graphs/DIMACS/myciel4.col";
         private static readonly string JeanGraphFilePath = @"Graphs/DIMACS/jean.col";
+        private static readonly string Miles500GraphFilePath = @"Graphs/DIMACS/miles500.col";
+        private static readonly string Le45015bGraphFilePath = @"Graphs/DIMACS/le450_15b.col";
 
         private enum AlgortithamTest : byte
         {
@@ -28,7 +30,7 @@ namespace MultiagentAlgorithmConsole
             Queen1212,
             Queen1616,
             Myciel4,
-            Miles50,
+            Miles500,
             Jean,
             Le45015b
         }
@@ -95,10 +97,24 @@ namespace MultiagentAlgorithmConsole
                     break;
                 case AlgortithamTest.Jean:
                     var optionsJean = new Options(numberOfAnts: 3, numberOfPartitions: 5, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: JeanGraphFilePath, numberVerticesForBalance: 30, numberOfIterations: 1000);
+                        movingProbability: 0.85, graphFilePath: JeanGraphFilePath, numberVerticesForBalance: 35, numberOfIterations: 1000);
                     var loaderJean = new FileLoader(optionsJean.GraphFilePath);
                     var graphJean = new DimacsGraphBidirectional(loaderJean, rnd);
                     Algorithm.Run(graphJean, optionsJean, rnd, exportGraph);
+                    break;
+                case AlgortithamTest.Miles500:
+                    var optionsMiles500 = new Options(numberOfAnts: 7, numberOfPartitions: 8, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Miles500GraphFilePath, numberVerticesForBalance: 60, numberOfIterations: 1000);
+                    var loaderMiles500 = new FileLoader(optionsMiles500.GraphFilePath);
+                    var graphMiles500 = new DimacsGraphBidirectional(loaderMiles500, rnd);
+                    Algorithm.Run(graphMiles500, optionsMiles500, rnd, exportGraph);
+                    break;
+                case AlgortithamTest.Le45015b:
+                    var optionsLe45015b = new Options(numberOfAnts: 8, numberOfPartitions: 29, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Le45015bGraphFilePath, numberVerticesForBalance: 200, numberOfIterations: 1000);
+                    var loaderLe45015b = new FileLoader(optionsLe45015b.GraphFilePath);
+                    var graphLe45015b = new DimacsGraph(loaderLe45015b, rnd);
+                    Algorithm.Run(graphLe45015b, optionsLe45015b, rnd, exportGraph);
                     break;
                 default:
                     return;

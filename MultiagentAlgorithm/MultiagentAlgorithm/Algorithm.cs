@@ -93,6 +93,7 @@ namespace MultiagentAlgorithm
                 }
             }
             LoggerHelper.LogVertices(bestDistribution);
+            LoggerHelper.LogVerticesOneLine(bestDistribution);
             graphExport.ExportGraph(bestDistribution);
         }
     }

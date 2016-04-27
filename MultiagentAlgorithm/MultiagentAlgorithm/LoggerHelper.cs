@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using log4net;
@@ -10,7 +11,7 @@ namespace MultiagentAlgorithm
     {
         static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void LogVertices(IList<Vertex> vertices)
+        public static void LogVertices(IEnumerable<Vertex> vertices)
         {
             var output = new StringBuilder(64);
             foreach (var vertex in vertices)
@@ -19,6 +20,11 @@ namespace MultiagentAlgorithm
             }
 
             Log.Info(output.ToString());
+        }
+
+        public static void LogVerticesOneLine(IEnumerable<Vertex> vertices)
+        {
+            Log.Info(string.Join(" ", vertices.Select(v=>v.Color)));
         }
 
         public static void LogVertexWithBestColor(Dictionary<int, int> colorsPerVertex)
