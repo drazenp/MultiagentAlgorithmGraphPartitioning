@@ -71,6 +71,7 @@
     <Compile Include="DimacsGraphTest.cs" />
     <Compile Include="GlobalCostTest.cs" />
     <Compile Include="GraphTest.cs" />
+    <Compile Include="MetisGraphTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAssemblyInitialize.cs" />
   </ItemGroup>

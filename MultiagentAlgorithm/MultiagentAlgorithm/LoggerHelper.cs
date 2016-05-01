@@ -24,12 +24,29 @@ namespace MultiagentAlgorithm
 
         public static void LogVerticesOneLine(IEnumerable<Vertex> vertices)
         {
-            Log.Info(string.Join(" ", vertices.Select(v=>v.Color)));
+            Log.Info(string.Join(" ", vertices.Select(v => v.Color)));
         }
 
-        public static void LogVertexWithBestColor(Dictionary<int, int> colorsPerVertex)
+        public static void LogVertexWithState(IEnumerable<Vertex> vertices)
         {
-            
+            var output = new StringBuilder(256);
+            foreach (var vertex in vertices)
+            {
+                output.AppendFormat($"{Environment.NewLine}Vertex [{vertex.ID}] has Color [{vertex.Color} and LocalCost [{vertex.LocalCost}]].");
+            }
+
+            Log.Warn(output.ToString());
+        }
+
+        public static void LogChangesOnVertices(Dictionary<int, List<string>> changes)
+        {
+            var output = new StringBuilder(256);
+            foreach (var vertex in changes.OrderBy(c => c.Key))
+            {
+                output.AppendFormat($"{Environment.NewLine}Vertex [{vertex.Key}] had Colors [{string.Join(" ", vertex.Value)}].");
+            }
+
+            Log.Warn(output.ToString());
         }
     }
 }

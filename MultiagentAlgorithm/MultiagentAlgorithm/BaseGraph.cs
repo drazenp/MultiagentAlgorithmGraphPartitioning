@@ -30,6 +30,17 @@ namespace MultiagentAlgorithm
 
         public int MaxNumberOfAdjacentVertices;
 
+        public Dictionary<int, List<string>> changes = new Dictionary<int, List<string>>();
+
+        private void AddVertex(string type, Vertex vertex)
+        {
+            if (changes.Keys.All(key => key != vertex.ID))
+            {
+                changes.Add(vertex.ID, new List<string>());
+            }
+            changes[vertex.ID].Add(type + " " + vertex.Color);
+        }
+
         public abstract void InitializeGraph();
 
         /// <summary>
@@ -42,6 +53,7 @@ namespace MultiagentAlgorithm
             for (var i = 0; i < Vertices.Length; i++)
             {
                 shuffleVertices[i].Color = i % numberOfColors + 1;
+                AddVertex("i", shuffleVertices[i]);
             }
         }
 
@@ -177,6 +189,8 @@ namespace MultiagentAlgorithm
 
             vertex.Color = bestColor.Key;
             
+            AddVertex("b", vertex);
+
             return vertex;
         }
 
@@ -191,6 +205,8 @@ namespace MultiagentAlgorithm
             var vertex = Vertices[Ants[ant]];
             var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(Rnd).First();
             vertex.Color = randomColor;
+
+            AddVertex("r", vertex);
 
             return vertex;
         }
@@ -207,12 +223,21 @@ namespace MultiagentAlgorithm
         /// <returns>The vertex which has been changed to keep balance.</returns>
         public Vertex KeepBalance(int numberOfRandomVertices, int oldColor, int newColor)
         {
-            var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices);
+            var random = Vertices.Shuffle(Rnd).Take(numberOfRandomVertices).ToList();
             var vertexChangedColor = random.Where(vertex => vertex.Color == newColor).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
+            //if (vertexChangedColor == null)
+            //{
+            //    Log.Warn($"New color: {newColor}");
+            //    LoggerHelper.LogVertexWithState(random);
+            //    Log.Warn("------------------------------------------------------------------");
+            //    LoggerHelper.LogVertexWithState(Vertices);
+            //}
 
             // TODO: Probably the function to return random vertices should be run in recursion until the one is found.
             Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
             vertexChangedColor.Color = oldColor;
+
+            AddVertex("k", vertexChangedColor);
 
             return vertexChangedColor;
         }

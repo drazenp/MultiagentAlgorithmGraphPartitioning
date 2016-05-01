@@ -43,7 +43,7 @@ namespace MultiagentAlgorithm.Test
                 movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1, numberOfIterations: 100);
 
         [TestMethod]
-        public void DimacsGraph_FirstLineRead_Sucess()
+        public void DimacsGraph_FirstLineRead_Success()
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
