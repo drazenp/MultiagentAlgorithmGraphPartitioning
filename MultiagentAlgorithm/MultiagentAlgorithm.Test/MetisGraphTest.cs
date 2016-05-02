@@ -126,7 +126,6 @@ namespace MultiagentAlgorithm.Test
             Assert.AreEqual(0.5, graph.Vertices[4].LocalCost);
             Assert.AreEqual(3 / 4D, graph.Vertices[5].LocalCost);
             Assert.AreEqual(3 / 4D, graph.Vertices[6].LocalCost);
-            LoggerHelper.LogChangesOnVertices(graph.changes);
             #endregion
 
             #region Second Iteration

@@ -40,8 +40,8 @@ namespace MultiagentAlgorithmConsole
             XmlConfigurator.Configure();
 
             var algortithamTest = (AlgortithamTest)Enum.Parse(typeof(AlgortithamTest), args[0]);
-            //var rnd = new Random(Environment.TickCount);
-            var rnd = new Random(1);
+            var rnd = new Random(Environment.TickCount);
+            //var rnd = new Random(1);
             var fileWriter = new FileWriter("graph.json");
             var exportGraph = new GephiFileExport(fileWriter);
 
@@ -50,7 +50,7 @@ namespace MultiagentAlgorithmConsole
             {
                 case AlgortithamTest.TestMetis:
                     var optionsMetis = new Options(numberOfAnts: 1, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: TestGraphFilePath, numberOfVerticesForBalance: 4, numberOfIterations: 5);
+                        movingProbability: 0.85, graphFilePath: TestGraphFilePath, numberOfVerticesForBalance: 4, numberOfIterations: 1000);
                     var loaderMetis = new FileLoader(optionsMetis.GraphFilePath);
                     var graphMetis = new MetisGraph(loaderMetis, rnd);
                     bestCost = Algorithm.Run(graphMetis, optionsMetis, rnd, exportGraph);

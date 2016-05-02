@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -226,6 +225,16 @@ namespace MultiagentAlgorithm
         {
             var random = Vertices.Where(v => v.ID != vertexWithAntID).Shuffle(Rnd).Take(numberOfRandomVertices).ToList();
             var vertexChangedColor = random.Where(vertex => vertex.Color == newColor).OrderBy(vertex => vertex.LocalCost).FirstOrDefault();
+            while (vertexChangedColor == null)
+            {
+                vertexChangedColor = Vertices
+                                    .Where(v => v.ID != vertexWithAntID)
+                                    .Shuffle(Rnd)
+                                    .Take(numberOfRandomVertices)
+                                    .Where(vertex => vertex.Color == newColor)
+                                    .OrderBy(vertex => vertex.LocalCost)
+                                    .FirstOrDefault();
+            }
             //if (vertexChangedColor == null)
             //{
             //    Log.Warn($"New color: {newColor}");
@@ -234,8 +243,8 @@ namespace MultiagentAlgorithm
             //    LoggerHelper.LogVertexWithState(Vertices);
             //}
 
-            // TODO: Probably the function to return random vertices should be run in recursion until the one is found.
-            Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
+            //// TODO: Probably the function to return random vertices should be run in recursion until the one is found.
+            //Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
             vertexChangedColor.Color = oldColor;
 
             AddVertex("k", vertexChangedColor);
