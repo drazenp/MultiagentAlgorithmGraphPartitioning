@@ -248,8 +248,17 @@ namespace MultiagentAlgorithm
         /// </summary>
         public void UpdateLocalCostFunction(Vertex vertexWithOldColor, Vertex vertexWithNewColor)
         {
+            var neighbors = new HashSet<int>(vertexWithOldColor.ConnectedEdges.Keys);
             CalculateLocalCostFunctionForVertex(vertexWithOldColor);
+            neighbors.UnionWith(vertexWithNewColor.ConnectedEdges.Keys);
             CalculateLocalCostFunctionForVertex(vertexWithNewColor);
+            neighbors.Remove(vertexWithNewColor.ID);
+            neighbors.Remove(vertexWithOldColor.ID);
+
+            foreach (var neighbor in neighbors)
+            {
+                CalculateLocalCostFunctionForVertex(Vertices.Single(vertex => vertex.ID == neighbor));
+            }
         }
     }
 }
