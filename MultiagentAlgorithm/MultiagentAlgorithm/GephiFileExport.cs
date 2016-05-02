@@ -17,10 +17,10 @@ namespace MultiagentAlgorithm
         public void ExportGraph(IList<Vertex> vertices)
         {
             var sb = new StringBuilder(128);
-            sb.Append("Id;Degree");
+            sb.Append("Id;Degree;Label");
             sb.AppendLine();
 
-            var nodes = string.Join(Environment.NewLine, vertices.Select(vertex => (vertex.ID + 1) + ";" + vertex.Color));
+            var nodes = string.Join(Environment.NewLine, vertices.Select(vertex => (vertex.ID + 1) + ";" + vertex.Color + ";" + (vertex.ID + 1)));
             sb.Append(nodes);
             _dataWriter.WriteData(sb.ToString());
 
@@ -30,7 +30,7 @@ namespace MultiagentAlgorithm
 
             var edges = from vertex in vertices
                         from edge in vertex.ConnectedEdges
-                        select (vertex.ID + 1) + ";" + edge.Key;
+                        select (vertex.ID + 1) + ";" + (edge.Key + 1);
 
             var links = string.Join(Environment.NewLine, edges.ToList());
             sb.Append(links);

@@ -50,21 +50,21 @@ namespace MultiagentAlgorithmConsole
             {
                 case AlgortithamTest.TestMetis:
                     var optionsMetis = new Options(numberOfAnts: 1, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: TestGraphFilePath, numberOfVerticesForBalance: 4, numberOfIterations: 1000);
+                        movingProbability: 0.85, graphFilePath: TestGraphFilePath, numberOfVerticesForBalance: 4, numberOfIterations: 100);
                     var loaderMetis = new FileLoader(optionsMetis.GraphFilePath);
                     var graphMetis = new MetisGraph(loaderMetis, rnd);
                     bestCost = Algorithm.Run(graphMetis, optionsMetis, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Myciel3:
                     var optionsMyciel3 = new Options(numberOfAnts: 1, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Myciel3GraphFilePath, numberOfVerticesForBalance: 6, numberOfIterations: 4000);
+                        movingProbability: 0.85, graphFilePath: Myciel3GraphFilePath, numberOfVerticesForBalance: 6, numberOfIterations: 1000);
                     var loaderMyciel3 = new FileLoader(optionsMyciel3.GraphFilePath);
                     var graphDimacs = new DimacsGraph(loaderMyciel3, rnd);
                     bestCost = Algorithm.Run(graphDimacs, optionsMyciel3, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Queen55:
-                    var optionsQueen55 = new Options(numberOfAnts: 3, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Queen55GraphFilePath, numberOfVerticesForBalance: 10, numberOfIterations: 4000);
+                    var optionsQueen55 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Queen55GraphFilePath, numberOfVerticesForBalance: 10, numberOfIterations: 5000);
                     var loaderQueen55 = new FileLoader(optionsQueen55.GraphFilePath);
                     var graphQueen55 = new DimacsGraphBidirectional(loaderQueen55, rnd);
                     bestCost = Algorithm.Run(graphQueen55, optionsQueen55, rnd, exportGraph);
@@ -91,15 +91,15 @@ namespace MultiagentAlgorithmConsole
                     bestCost = Algorithm.Run(graphQueen1616, optionsQueen1616, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Myciel4:
-                    var optionsMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Myciel4GraphFilePath, numberOfVerticesForBalance: 12, numberOfIterations: 4000);
+                    var optionsMyciel4 = new Options(numberOfAnts: 1, numberOfPartitions: 2, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Myciel4GraphFilePath, numberOfVerticesForBalance: 12, numberOfIterations: 1000);
                     var loaderMyciel4 = new FileLoader(optionsMyciel4.GraphFilePath);
                     var graphMyciel4 = new DimacsGraph(loaderMyciel4, rnd);
                     bestCost = Algorithm.Run(graphMyciel4, optionsMyciel4, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Jean:
-                    var optionsJean = new Options(numberOfAnts: 3, numberOfPartitions: 5, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: JeanGraphFilePath, numberOfVerticesForBalance: 35, numberOfIterations: 4000);
+                    var optionsJean = new Options(numberOfAnts: 2, numberOfPartitions: 5, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: JeanGraphFilePath, numberOfVerticesForBalance: 25, numberOfIterations: 5000);
                     var loaderJean = new FileLoader(optionsJean.GraphFilePath);
                     var graphJean = new DimacsGraphBidirectional(loaderJean, rnd);
                     bestCost = Algorithm.Run(graphJean, optionsJean, rnd, exportGraph);

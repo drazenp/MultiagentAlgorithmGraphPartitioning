@@ -8,6 +8,7 @@ namespace MultiagentAlgorithm.Test
     [TestClass]
     public class GlobalCostTest
     {
+        #region Myciel4
         private readonly List<string> _myciel4 = new List<string>() { "p edges 23 71",
                                                                       "e 1 2",
                                                                       "e 1 4",
@@ -80,6 +81,7 @@ namespace MultiagentAlgorithm.Test
                                                                       "e 20 23",
                                                                       "e 21 23",
                                                                       "e 22 23"};
+        #endregion
 
         private readonly List<string> _metisTest = new List<string>() {"7 11 011",
                                                                        "4 5 1 3 2 2 1",
@@ -89,6 +91,34 @@ namespace MultiagentAlgorithm.Test
                                                                        "1 1 1 3 3 6 2",
                                                                        "6 5 2 4 2 7 6",
                                                                        "2 6 6 4 5"};
+        #region Queen5_5
+        private readonly List<string> _queen55Metis = new List<string>() {"25 320",
+                                                                          "7 13 19 25 2 3 4 5 6 11 16 21",
+                                                                          "1 8 14 20 6 3 4 5 7 12 17 22",
+                                                                          "1 2 9 15 7 11 4 5 8 13 18 23",
+                                                                          "1 2 3 10 8 12 16 5 9 14 19 24",
+                                                                          "1 2 3 4 9 13 17 21 10 15 20 25",
+                                                                          "1 2 12 18 24 7 8 9 10 11 16 21",
+                                                                          "1 2 3 6 13 19 25 11 8 9 10 12 17 22",
+                                                                          "2 3 4 6 7 14 20 12 16 9 10 13 18 23",
+                                                                          "3 4 5 6 7 8 15 13 17 21 10 14 19 24",
+                                                                          "4 5 6 7 8 9 14 18 22 15 20 25",
+                                                                          "1 3 6 7 17 23 12 13 14 15 16 21",
+                                                                          "2 4 6 7 8 11 18 24 16 13 14 15 17 22",
+                                                                          "1 3 5 7 8 9 11 12 19 25 17 21 14 15 18 23",
+                                                                          "2 4 8 9 10 11 12 13 20 18 22 15 19 24",
+                                                                          "3 5 9 10 11 12 13 14 19 23 20 25",
+                                                                          "1 4 6 8 11 12 22 17 18 19 20 21",
+                                                                          "2 5 7 9 11 12 13 16 23 21 18 19 20 22",
+                                                                          "3 6 8 10 12 13 14 16 17 24 22 19 20 23",
+                                                                          "1 4 7 9 13 14 15 16 17 18 25 23 20 24",
+                                                                          "2 5 8 10 14 15 16 17 18 19 24 25",
+                                                                          "1 5 6 9 11 13 16 17 22 23 24 25",
+                                                                          "2 7 10 12 14 16 17 18 21 23 24 25",
+                                                                          "3 8 11 13 15 17 18 19 21 22 24 25",
+                                                                          "4 6 9 12 14 18 19 20 21 22 23 25",
+                                                                          "1 5 7 10 13 15 19 20 21 22 23 24"};
+        #endregion
 
         // Uncomment if needed.
         //private readonly Options _optionMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
@@ -166,6 +196,51 @@ namespace MultiagentAlgorithm.Test
             var globalCost = graph.GetGlobalCostFunction();
 
             Assert.AreEqual(6, globalCost);
+        }
+
+        [TestMethod]
+        public void GraphQueen5_5_CalculateGlobalCostFunction_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_queen55Metis);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new MetisUnweightedGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            
+            graph.Vertices[0].Color = 2;
+            graph.Vertices[1].Color = 2;
+            graph.Vertices[2].Color = 1;
+            graph.Vertices[3].Color = 1;
+            graph.Vertices[4].Color = 1;
+            graph.Vertices[5].Color = 2;
+            graph.Vertices[6].Color = 2;
+            graph.Vertices[7].Color = 1;
+            graph.Vertices[8].Color = 2;
+            graph.Vertices[9].Color = 2;
+            graph.Vertices[10].Color = 1;
+            graph.Vertices[11].Color = 1;
+            graph.Vertices[12].Color = 2;
+            graph.Vertices[13].Color = 2;
+            graph.Vertices[14].Color = 2;
+            graph.Vertices[15].Color = 2;
+            graph.Vertices[16].Color = 1;
+            graph.Vertices[17].Color = 1;
+            graph.Vertices[18].Color = 2;
+            graph.Vertices[19].Color = 2;
+            graph.Vertices[20].Color = 2;
+            graph.Vertices[21].Color = 1;
+            graph.Vertices[22].Color = 1;
+            graph.Vertices[23].Color = 1;
+            graph.Vertices[24].Color = 1;
+
+            var globalCost = graph.GetGlobalCostFunction();
+
+            Assert.AreEqual(168, globalCost);
         }
     }
 }
