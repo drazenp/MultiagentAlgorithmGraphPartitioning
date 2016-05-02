@@ -30,7 +30,7 @@
         /// <summary>
         /// The number of vertices set to keep balance.
         /// </summary>
-        public int NumberVerticesForBalance { get; }
+        public int NumberOfVerticesForBalance { get; }
 
         /// <summary>
         /// The number of iteration until algorithm is stopped.
@@ -40,14 +40,14 @@
         public int NumberOfIterations { get; }
 
         public Options(int numberOfAnts, int numberOfPartitions, double coloringProbability, 
-            double movingProbability, string graphFilePath, int numberVerticesForBalance, int numberOfIterations)
+            double movingProbability, string graphFilePath, int numberOfVerticesForBalance, int numberOfIterations)
         {
             NumberOfAnts = numberOfAnts;
             NumberOfPartitions = numberOfPartitions;
             ColoringProbability = coloringProbability;
             MovingProbability = movingProbability;
             GraphFilePath = graphFilePath;
-            NumberVerticesForBalance = numberVerticesForBalance;
+            NumberOfVerticesForBalance = numberOfVerticesForBalance;
             NumberOfIterations = numberOfIterations;
         }
     }

@@ -23,11 +23,11 @@ namespace MultiagentAlgorithm.Test
                                                                         "2 6 6 4 5" };
 
         private readonly Options _optionOneColors = new Options(numberOfAnts: 2, numberOfPartitions: 1, coloringProbability: 0.9,
-            movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1, numberOfIterations: 100);
+            movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
         private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-            movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1, numberOfIterations: 100);
+            movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
         private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9,
-            movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1, numberOfIterations: 100);
+            movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
 
         [TestMethod]
         public void Graph_FirstLineRead_Sucess()
@@ -435,10 +435,12 @@ namespace MultiagentAlgorithm.Test
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
-            int oldColor = graph.MoveAntToAnyAdjacentVertex(0);
+            Vertex vertexWithAnt = graph.MoveAntToAnyAdjacentVertex(0);
+            int oldColor = vertexWithAnt.Color;
+            int vertexWithAntID = vertexWithAnt.ID;
             Vertex newVertex = graph.ColorVertexWithBestColor(0);
 
-            graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, newVertex.Color);
+            graph.KeepBalance(_optionTwoColors.NumberOfVerticesForBalance, vertexWithAntID, oldColor, newVertex.Color);
 
             Assert.AreEqual(2, graph.Vertices[0].Color);
             Assert.AreEqual(1, graph.Vertices[1].Color);
@@ -464,10 +466,12 @@ namespace MultiagentAlgorithm.Test
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
-            int oldColor = graph.MoveAntToAnyAdjacentVertex(0);
+            Vertex vertexWithAnt = graph.MoveAntToAnyAdjacentVertex(0);
+            int oldColor = vertexWithAnt.Color;
+            int vertexWithAntID = vertexWithAnt.ID;
             Vertex newVertex = graph.ColorVertexWithBestColor(0);
 
-            graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, newVertex.Color);
+            graph.KeepBalance(_optionTwoColors.NumberOfVerticesForBalance, vertexWithAntID, oldColor, newVertex.Color);
 
             var numberOfVerticesWithFirstColor = graph.Vertices.Count(vertex => vertex.Color == 1);
             var numberOfVerticesWithSecondColor = graph.Vertices.Count(vertex => vertex.Color == 2);
@@ -491,17 +495,20 @@ namespace MultiagentAlgorithm.Test
             graph.InitializeGraph();
             graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
             graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
-            int oldColor = graph.MoveAntToAnyAdjacentVertex(0);
+            Vertex vertexWithAnt = graph.MoveAntToAnyAdjacentVertex(0);
+            int oldColor = vertexWithAnt.Color;
+            int vertexWithAntID = vertexWithAnt.ID;
             Vertex vertexWithNewColor = graph.ColorVertexWithBestColor(0);
-            Vertex vertexWhichKeepBalance = graph.KeepBalance(_optionTwoColors.NumberVerticesForBalance, oldColor, vertexWithNewColor.Color);
+            Vertex vertexWhichKeepBalance = graph.KeepBalance(_optionTwoColors.NumberOfVerticesForBalance, vertexWithAntID,
+                                                                oldColor, vertexWithNewColor.Color);
             graph.UpdateLocalCostFunction(vertexWhichKeepBalance, vertexWithNewColor);
 
-            Assert.AreEqual(1 / 2D, graph.Vertices[0].LocalCost);
-            Assert.AreEqual(0D, graph.Vertices[1].LocalCost);
-            Assert.AreEqual(0D, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0.25, graph.Vertices[2].LocalCost);
             Assert.AreEqual(0D, graph.Vertices[3].LocalCost);
-            Assert.AreEqual(1 / 2D, graph.Vertices[4].LocalCost);
-            Assert.AreEqual(0, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[5].LocalCost);
             Assert.AreEqual(0, graph.Vertices[6].LocalCost);
         }
     }

@@ -40,7 +40,7 @@ namespace MultiagentAlgorithm.Test
                                                                         "e 10 11" };
 
         private readonly Options _options = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                movingProbability: 0.95, graphFilePath: string.Empty, numberVerticesForBalance: 1, numberOfIterations: 100);
+                movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
 
         [TestMethod]
         public void DimacsGraph_FirstLineRead_Success()

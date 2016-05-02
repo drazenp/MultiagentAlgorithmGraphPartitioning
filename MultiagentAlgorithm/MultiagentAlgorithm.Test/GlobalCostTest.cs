@@ -82,7 +82,7 @@ namespace MultiagentAlgorithm.Test
                                                                       "e 22 23"};
 
         private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                movingProbability: 0.85, graphFilePath: string.Empty, numberVerticesForBalance: 12, numberOfIterations: 100);
+                movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 12, numberOfIterations: 100);
 
         [TestMethod]
         public void DimacsGraph_CalculateGlobalCostFunction_Success()

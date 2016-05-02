@@ -34,19 +34,22 @@ namespace MultiagentAlgorithm
                 foreach (var ant in graph.Ants.Keys.ToArray())
                 {
                     // The agent or ant moves to the worst adjacent vertex with a
-                    // probability pm (it moves randomly to any other adjacent vertex with 
-                    // probability 1 − pm)
-                    int oldColor;
+                    // probability pm (it moves randomly to any other adjacent vertex with probability 1 − pm)
+                    Vertex vertexWithAnt;
                     if (rnd.NextDouble() < options.MovingProbability)
                     {
                         // Move the ant to the worst adjacent vertex.
-                        oldColor = graph.MoveAntToVertexWithLowestCost(ant);
+                        vertexWithAnt = graph.MoveAntToVertexWithLowestCost(ant);
                     }
                     else
                     {
                         // Move randomly to any adjacent vertex.
-                        oldColor = graph.MoveAntToAnyAdjacentVertex(ant);
+                        vertexWithAnt = graph.MoveAntToAnyAdjacentVertex(ant);
                     }
+
+                    // Save the data of the vertex on witch ant moved.
+                    int oldColor = vertexWithAnt.Color;
+                    int vertexWithAntID = vertexWithAnt.ID;
 
                     Vertex vertexWithNewColor;
                     // Replaces the color which belong to ant with a new color.
@@ -63,7 +66,7 @@ namespace MultiagentAlgorithm
 
                     // Keep balance (Change a randomly chosen vertex with low local cost
                     // from the new to the old color).
-                    Vertex vertexWhichKeepBalance = graph.KeepBalance(options.NumberVerticesForBalance, oldColor, vertexWithNewColor.Color);
+                    Vertex vertexWhichKeepBalance = graph.KeepBalance(options.NumberOfVerticesForBalance, vertexWithAntID, oldColor, vertexWithNewColor.Color);
 
                     // For the chosen vertices and all adjacent vertices update local cost function.
                     graph.UpdateLocalCostFunction(vertexWhichKeepBalance, vertexWithNewColor);

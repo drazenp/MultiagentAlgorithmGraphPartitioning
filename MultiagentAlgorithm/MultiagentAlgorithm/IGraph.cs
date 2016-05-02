@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace MultiagentAlgorithm
 {
     public interface IGraph
@@ -46,15 +44,15 @@ namespace MultiagentAlgorithm
         /// Find the worst adjacent vertex and move ant to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        /// <returns>The color of the vertex on which ant moved.</returns>
-        int MoveAntToVertexWithLowestCost(int ant);
+        /// <returns>The vertex on which ant moved.</returns>
+        Vertex MoveAntToVertexWithLowestCost(int ant);
 
         /// <summary>
         /// Randomly choose an adjacent vertex and move on to it.
         /// </summary>
         /// <param name="ant">The ID of the ant.</param>
-        /// <returns>The color of the vertex on which ant moved.</returns>
-        int MoveAntToAnyAdjacentVertex(int ant);
+        /// <returns>The vertex on which ant moved.</returns>
+        Vertex MoveAntToAnyAdjacentVertex(int ant);
 
         /// <summary>
         /// Fint best color for the ant's vertex and replace the old color with the new color.
@@ -79,10 +77,11 @@ namespace MultiagentAlgorithm
         /// and changes its color to the old color.
         /// </summary>
         /// <param name="numberOfRandomVertices">The number of vertices set to keep balance.</param>
+        /// <param name="vertexWithAntID">The ID of the vertex on wich ant moved.</param>
         /// <param name="oldColor">The changed color of the vertex.</param>
         /// <param name="newColor">The new color of the vertex.</param>
         /// <returns>The vertex which has been changed to keep balance.</returns>
-        Vertex KeepBalance(int numberOfRandomVertices, int oldColor, int newColor);
+        Vertex KeepBalance(int numberOfRandomVertices, int vertexWithAntID, int oldColor, int newColor);
 
         /// <summary>
         /// Update local cost function for all chosen vertices 
