@@ -81,11 +81,25 @@ namespace MultiagentAlgorithm.Test
                                                                       "e 21 23",
                                                                       "e 22 23"};
 
-        private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 12, numberOfIterations: 100);
+        private readonly List<string> _metisTest = new List<string>() {"7 11 011",
+                                                                       "4 5 1 3 2 2 1",
+                                                                       "2 1 1 3 2 4 1",
+                                                                       "5 5 3 4 2 2 2 1 2",
+                                                                       "3 2 1 3 2 6 2 7 5",
+                                                                       "1 1 1 3 3 6 2",
+                                                                       "6 5 2 4 2 7 6",
+                                                                       "2 6 6 4 5"};
+
+        // Uncomment if needed.
+        //private readonly Options _optionMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
+        //        movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 12, numberOfIterations: 100);
+
+        //private readonly Options _optionMetisTest = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
+        //        movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 4, numberOfIterations: 5);
+
 
         [TestMethod]
-        public void DimacsGraph_CalculateGlobalCostFunction_Success()
+        public void GraphMyciel4_CalculateGlobalCostFunction_Success()
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
@@ -125,6 +139,33 @@ namespace MultiagentAlgorithm.Test
             var globalCost = graph.GetGlobalCostFunction();
 
             Assert.AreEqual(68, globalCost);
+        }
+
+        [TestMethod]
+        public void GraphMetisTest_CalculateGlobalCostFunction_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_metisTest);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+
+            graph.Vertices[0].Color = 2;
+            graph.Vertices[1].Color = 2;
+            graph.Vertices[2].Color = 2;
+            graph.Vertices[3].Color = 1;
+            graph.Vertices[4].Color = 2;
+            graph.Vertices[5].Color = 1;
+            graph.Vertices[6].Color = 1;
+
+            var globalCost = graph.GetGlobalCostFunction();
+
+            Assert.AreEqual(6, globalCost);
         }
     }
 }

@@ -24,7 +24,6 @@ namespace MultiagentAlgorithm
                 yield return elements[swapIndex];
                 elements[swapIndex] = elements[i];
             }
-            Log.Debug("End");
         }
     }
 }

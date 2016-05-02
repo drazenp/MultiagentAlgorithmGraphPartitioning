@@ -21,7 +21,7 @@ namespace MultiagentAlgorithm
             graph.CalculateLocalCostFunction();
 
             var bestCost = graph.GetGlobalCostFunction();
-            var bestDistribution = graph.Vertices;
+            var bestDistribution = (Vertex[])graph.Vertices.Clone();
             Log.Info($"Initial global cost: {bestCost}");
 
             var iteration = 0;
@@ -77,7 +77,7 @@ namespace MultiagentAlgorithm
                     {
                         bestCost = globalCost;
                         Log.Debug($"Best cost: {bestCost}");
-                        bestDistribution = graph.Vertices;
+                        bestDistribution = (Vertex[])graph.Vertices.Clone();
                     }
                     Log.Info($"Iteration [{iteration}] | Ant {ant} | Global cost: {globalCost} | Best cost: {bestCost}");
                 }
