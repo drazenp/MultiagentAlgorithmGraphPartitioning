@@ -32,29 +32,31 @@ namespace MultiagentAlgorithm
             {
                 var fileData = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (fileData[0] == "c")
+                switch (fileData[0])
                 {
-                    continue;
-                }
-                if (fileData[0] == "p")
-                {
-                    var numberOfVertices = int.Parse(fileData[2]);
-                    Vertices = new Vertex[numberOfVertices];
-                    for (var i = 0; i < numberOfVertices; i++)
-                    {
-                        Vertices[i] = new Vertex(i, VertexWeight);
-                    }
+                    case "p":
+                        var numberOfVertices = int.Parse(fileData[2]);
+                        Vertices = new Vertex[numberOfVertices];
+                        for (var i = 0; i < numberOfVertices; i++)
+                        {
+                            Vertices[i] = new Vertex(i, VertexWeight);
+                        }
 
-                    NumberOfEdges = int.Parse(fileData[3]);
-                }
-                else if (fileData[0] == "e")
-                {
-                    var vertexID = int.Parse(fileData[1]) - 1;
-                    var connectedVertexID = int.Parse(fileData[2]) - 1;
+                        NumberOfEdges = int.Parse(fileData[3]);
+                        break;
+                    case "e":
+                        var vertexID = int.Parse(fileData[1]) - 1;
+                        var connectedVertexID = int.Parse(fileData[2]) - 1;
 
-                    Vertices[vertexID].ConnectedEdges.Add(connectedVertexID, EdgeWeight);
-
-                    Vertices[connectedVertexID].ConnectedEdges.Add(vertexID, EdgeWeight);
+                        if (!Vertices[vertexID].ConnectedEdges.ContainsKey(connectedVertexID))
+                        {
+                            Vertices[vertexID].ConnectedEdges.Add(connectedVertexID, EdgeWeight);
+                        }
+                        if (!Vertices[connectedVertexID].ConnectedEdges.ContainsKey(vertexID))
+                        {
+                            Vertices[connectedVertexID].ConnectedEdges.Add(vertexID, EdgeWeight);
+                        }
+                        break;
                 }
             }
 

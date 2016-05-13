@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using log4net;
 using log4net.Config;
@@ -45,6 +46,9 @@ namespace MultiagentAlgorithmConsole
             var fileWriter = new FileWriter("graph.json");
             var exportGraph = new GephiFileExport(fileWriter);
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             int bestCost;
             switch (algortithamTest)
             {
@@ -64,30 +68,30 @@ namespace MultiagentAlgorithmConsole
                     break;
                 case AlgortithamTest.Queen55:
                     var optionsQueen55 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Queen55GraphFilePath, numberOfVerticesForBalance: 10, numberOfIterations: 5000);
+                        movingProbability: 0.85, graphFilePath: Queen55GraphFilePath, numberOfVerticesForBalance: 10, numberOfIterations: 1000);
                     var loaderQueen55 = new FileLoader(optionsQueen55.GraphFilePath);
-                    var graphQueen55 = new DimacsGraphBidirectional(loaderQueen55, rnd);
+                    var graphQueen55 = new DimacsGraph(loaderQueen55, rnd);
                     bestCost = Algorithm.Run(graphQueen55, optionsQueen55, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Queen88:
-                    var optionsQueen88 = new Options(numberOfAnts: 4, numberOfPartitions: 4, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Queen88GraphFilePath, numberOfVerticesForBalance: 30, numberOfIterations: 4000);
+                    var optionsQueen88 = new Options(numberOfAnts: 3, numberOfPartitions: 4, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Queen88GraphFilePath, numberOfVerticesForBalance: 25, numberOfIterations: 6000);
                     var loaderQueen88 = new FileLoader(optionsQueen88.GraphFilePath);
-                    var graphQueen88 = new DimacsGraphBidirectional(loaderQueen88, rnd);
+                    var graphQueen88 = new DimacsGraph(loaderQueen88, rnd);
                     bestCost = Algorithm.Run(graphQueen88, optionsQueen88, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Queen1212:
-                    var optionsQueen1212 = new Options(numberOfAnts: 6, numberOfPartitions: 9, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Queen1212GraphFilePath, numberOfVerticesForBalance: 70, numberOfIterations: 4000);
+                    var optionsQueen1212 = new Options(numberOfAnts: 4, numberOfPartitions: 9, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Queen1212GraphFilePath, numberOfVerticesForBalance: 55, numberOfIterations: 7000);
                     var loaderQueen1212 = new FileLoader(optionsQueen1212.GraphFilePath);
-                    var graphQueen1212 = new DimacsGraphBidirectional(loaderQueen1212, rnd);
+                    var graphQueen1212 = new DimacsGraph(loaderQueen1212, rnd);
                     bestCost = Algorithm.Run(graphQueen1212, optionsQueen1212, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Queen1616:
-                    var optionsQueen1616 = new Options(numberOfAnts: 7, numberOfPartitions: 16, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Queen1616GraphFilePath, numberOfVerticesForBalance: 150, numberOfIterations: 4000);
+                    var optionsQueen1616 = new Options(numberOfAnts: 5, numberOfPartitions: 16, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Queen1616GraphFilePath, numberOfVerticesForBalance: 125, numberOfIterations: 8000);
                     var loaderQueen1616 = new FileLoader(optionsQueen1616.GraphFilePath);
-                    var graphQueen1616 = new DimacsGraphBidirectional(loaderQueen1616, rnd);
+                    var graphQueen1616 = new DimacsGraph(loaderQueen1616, rnd);
                     bestCost = Algorithm.Run(graphQueen1616, optionsQueen1616, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Myciel4:
@@ -101,19 +105,19 @@ namespace MultiagentAlgorithmConsole
                     var optionsJean = new Options(numberOfAnts: 2, numberOfPartitions: 5, coloringProbability: 0.9,
                         movingProbability: 0.85, graphFilePath: JeanGraphFilePath, numberOfVerticesForBalance: 25, numberOfIterations: 5000);
                     var loaderJean = new FileLoader(optionsJean.GraphFilePath);
-                    var graphJean = new DimacsGraphBidirectional(loaderJean, rnd);
+                    var graphJean = new DimacsGraph(loaderJean, rnd);
                     bestCost = Algorithm.Run(graphJean, optionsJean, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Miles500:
-                    var optionsMiles500 = new Options(numberOfAnts: 7, numberOfPartitions: 8, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Miles500GraphFilePath, numberOfVerticesForBalance: 60, numberOfIterations: 4000);
+                    var optionsMiles500 = new Options(numberOfAnts: 4, numberOfPartitions: 8, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Miles500GraphFilePath, numberOfVerticesForBalance: 55, numberOfIterations: 7000);
                     var loaderMiles500 = new FileLoader(optionsMiles500.GraphFilePath);
-                    var graphMiles500 = new DimacsGraphBidirectional(loaderMiles500, rnd);
+                    var graphMiles500 = new DimacsGraph(loaderMiles500, rnd);
                     bestCost = Algorithm.Run(graphMiles500, optionsMiles500, rnd, exportGraph);
                     break;
                 case AlgortithamTest.Le45015B:
-                    var optionsLe45015B = new Options(numberOfAnts: 8, numberOfPartitions: 29, coloringProbability: 0.9,
-                        movingProbability: 0.85, graphFilePath: Le45015bGraphFilePath, numberOfVerticesForBalance: 240, numberOfIterations: 4000);
+                    var optionsLe45015B = new Options(numberOfAnts: 5, numberOfPartitions: 29, coloringProbability: 0.9,
+                        movingProbability: 0.85, graphFilePath: Le45015bGraphFilePath, numberOfVerticesForBalance: 200, numberOfIterations: 6000);
                     var loaderLe45015B = new FileLoader(optionsLe45015B.GraphFilePath);
                     var graphLe45015B = new DimacsGraph(loaderLe45015B, rnd);
                     bestCost = Algorithm.Run(graphLe45015B, optionsLe45015B, rnd, exportGraph);
@@ -121,6 +125,9 @@ namespace MultiagentAlgorithmConsole
                 default:
                     return;
             }
+            stopwatch.Stop();
+            Log.Warn($"Algoritham run time: {stopwatch.ElapsedMilliseconds}");
+            Log.Warn($"{args[0]} | {bestCost}");
 
             Console.WriteLine($"{args[0]} | {bestCost}");
         }

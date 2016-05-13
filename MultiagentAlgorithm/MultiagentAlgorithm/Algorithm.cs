@@ -98,7 +98,7 @@ namespace MultiagentAlgorithm
             LoggerHelper.LogVertices(bestDistribution);
             LoggerHelper.LogVerticesOneLine(bestDistribution);
             graphExport.ExportGraph(bestDistribution);
-            LoggerHelper.LogChangesOnVertices(graph.changes);
+            //LoggerHelper.LogChangesOnVertices(graph.changes);
 
             return bestCost;
         }
