@@ -18,7 +18,7 @@ namespace MultiagentAlgorithm.Test
                                                                        "2 6 6 4 5"};
 
         private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-           movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 4, numberOfIterations: 5);
+           movingProbability: 0.85, numberOfVerticesForBalance: 4, numberOfIterations: 5);
 
         [TestMethod]
         public void MetisGraph_FirstLineRead_Success()

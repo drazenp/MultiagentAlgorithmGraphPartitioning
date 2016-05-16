@@ -23,11 +23,11 @@ namespace MultiagentAlgorithm.Test
                                                                         "2 6 6 4 5" };
 
         private readonly Options _optionOneColors = new Options(numberOfAnts: 2, numberOfPartitions: 1, coloringProbability: 0.9,
-            movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
+            movingProbability: 0.95, numberOfVerticesForBalance: 1, numberOfIterations: 100);
         private readonly Options _optionTwoColors = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-            movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
+            movingProbability: 0.95, numberOfVerticesForBalance: 1, numberOfIterations: 100);
         private readonly Options _optionThreeColors = new Options(numberOfAnts: 2, numberOfPartitions: 3, coloringProbability: 0.9,
-            movingProbability: 0.95, graphFilePath: string.Empty, numberOfVerticesForBalance: 1, numberOfIterations: 100);
+            movingProbability: 0.95, numberOfVerticesForBalance: 1, numberOfIterations: 100);
 
         [TestMethod]
         public void Graph_FirstLineRead_Sucess()
