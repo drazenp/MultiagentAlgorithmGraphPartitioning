@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -7,8 +6,8 @@ namespace MultiagentAlgorithm
 {
     public class DimacsGraph : BaseGraph
     {
-        protected const int VertexWeight = 1;
-        protected const int EdgeWeight = 1;
+        private const int VertexWeight = 1;
+        private const int EdgeWeight = 1;
 
         protected enum FileDataType : byte
         {

@@ -235,16 +235,7 @@ namespace MultiagentAlgorithm
                                     .OrderBy(vertex => vertex.LocalCost)
                                     .FirstOrDefault();
             }
-            //if (vertexChangedColor == null)
-            //{
-            //    Log.Warn($"New color: {newColor}");
-            //    LoggerHelper.LogVertexWithState(random);
-            //    Log.Warn("------------------------------------------------------------------");
-            //    LoggerHelper.LogVertexWithState(Vertices);
-            //}
 
-            //// TODO: Probably the function to return random vertices should be run in recursion until the one is found.
-            //Debug.Assert(vertexChangedColor != null, "vertexChangedColor != null");
             vertexChangedColor.Color = oldColor;
 
             AddVertex("k", vertexChangedColor);

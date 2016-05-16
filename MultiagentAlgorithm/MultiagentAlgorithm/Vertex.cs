@@ -34,11 +34,7 @@ namespace MultiagentAlgorithm
         {
             get
             {
-                if (_connectedEdges == null)
-                {
-                    _connectedEdges = new Dictionary<int, int>();
-                }
-                return _connectedEdges;
+                return _connectedEdges ?? (_connectedEdges = new Dictionary<int, int>());
             }
             set { _connectedEdges = value; }
         }

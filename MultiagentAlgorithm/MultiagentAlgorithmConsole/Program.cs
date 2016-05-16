@@ -12,6 +12,7 @@ namespace MultiagentAlgorithmConsole
     {
         private static ILog Log { get; } = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        // part -t 0 -i "Graphs\DIMACS\myciel3.col" -a 1 -p 2 -c 0.9 -m 0.85 -s 6 -d 100
         static int Main(string[] args)
         {
             XmlConfigurator.Configure();
@@ -34,7 +35,7 @@ namespace MultiagentAlgorithmConsole
                             graph = new DimacsGraph(fileLoader, rnd);
                             break;
                         default:
-                            throw new ApplicationException("Graph file format not suppoted.");
+                            throw new ApplicationException("Graph file format is not suppoted.");
                     }
 
                     var graphOptions = new Options(options.NumberOfAnts, options.NumberOfPartitions, options.ColoringProbability,
