@@ -41,8 +41,8 @@ namespace MultiagentAlgorithmConsole
                     var graphOptions = new Options(options.NumberOfAnts, options.NumberOfPartitions, options.ColoringProbability,
                                                    options.MovingProbability, options.NumberOfVerticesForBalance, options.NumberOfIterations);
 
-                    int bestCost = Algorithm.Run(graph, graphOptions, rnd, exportGraph);
-                    return bestCost;
+                    ResultData resultData = Algorithm.Run(graph, graphOptions, rnd, exportGraph);
+                    return resultData.BestCost;
                 };
 
             var result = Parser.Default.ParseArguments<PartitionGraphOptions>(args);

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiagentAlgorithmConsole"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiagentAlgorithm.Test", "MultiagentAlgorithm.Test\MultiagentAlgorithm.Test.csproj", "{B23B35F1-EBAE-40C1-8EF1-319EC1FE9994}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAgentAlgorithmAnalyze", "MultiAgentAlgorithmAnalyze\MultiAgentAlgorithmAnalyze.csproj", "{9B5E9346-36DE-4440-8CE3-353634471F2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B23B35F1-EBAE-40C1-8EF1-319EC1FE9994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B23B35F1-EBAE-40C1-8EF1-319EC1FE9994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B23B35F1-EBAE-40C1-8EF1-319EC1FE9994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B5E9346-36DE-4440-8CE3-353634471F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B5E9346-36DE-4440-8CE3-353634471F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B5E9346-36DE-4440-8CE3-353634471F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B5E9346-36DE-4440-8CE3-353634471F2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

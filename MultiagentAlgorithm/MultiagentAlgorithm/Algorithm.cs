@@ -10,7 +10,7 @@ namespace MultiagentAlgorithm
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static int Run(BaseGraph graph, Options options, Random rnd, IExportGraph graphExport)
+        public static ResultData Run(BaseGraph graph, Options options, Random rnd, IExportGraph graphExport)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -85,9 +85,10 @@ namespace MultiagentAlgorithm
                 iteration++;
             }
             stopwatch.Stop();
-            Log.Info($"The algorithm running time: {stopwatch.ElapsedMilliseconds}");
 
-            Log.Info($"Best cost at the end: {bestCost} first occured for the iteration {bestCostIteration}");
+            var result = new ResultData(bestCost, bestCostIteration, stopwatch.ElapsedMilliseconds);
+            Log.Info(result.ToString());
+
             if (Log.IsDebugEnabled)
             {
                 foreach (var partition in Enumerable.Range(1, options.NumberOfPartitions))
@@ -101,7 +102,7 @@ namespace MultiagentAlgorithm
             graphExport.ExportGraph(bestDistribution);
             //LoggerHelper.LogChangesOnVertices(graph.changes);
 
-            return bestCost;
+            return result;
         }
     }
 }
