@@ -1,0 +1,6 @@
+﻿namespace MultiAgentAlgorithmAnalyze
+{
+    class AnalyzeData
+    {
+    }
+}
