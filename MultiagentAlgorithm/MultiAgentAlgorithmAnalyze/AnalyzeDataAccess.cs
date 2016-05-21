@@ -1,41 +1,44 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
-using MultiagentAlgorithm;
 
 namespace MultiAgentAlgorithmAnalyze
 {
-    class AnalyzeDataAccess
+    static class AnalyzeDataAccess
     {
-        private readonly static string ConnectionString = ConfigurationManager.ConnectionStrings["AnalyzeConnectionString"].ConnectionString;
+        private static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["AnalyzeConnectionString"].ConnectionString;
 
         public static AnalyzeData GetAnalyzeData()
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+            using (var conn = new SQLiteConnection(ConnectionString))
             {
                 const string sqlAnalyzeData = @"select ad.ID, ad.GraphFilePath, ad.InputFileType, ad.NumberOfAnts, ad.NumberOfPartitions, ad.ColoringProbability,
-                                                ad.MovingProbability, ad.NumberOfVerticesForBalance, ad.NumberOfIterations
+                                                ad.MovingProbability, ad.NumberOfVerticesForBalance, ad.NumberOfIterations, count(ar.AnalyzeID) as NumberOfResults
                                                 from AnalyzeData ad
                                                 left join AnalyzeResults ar on ar.AnalyzeID=ad.ID
-                                                where ar.AnalyzeID is null";
+                                                group by ad.ID, ad.GraphFilePath, ad.InputFileType, ad.NumberOfAnts, ad.NumberOfPartitions, ad.ColoringProbability,
+                                                ad.MovingProbability, ad.NumberOfVerticesForBalance, ad.NumberOfIterations, ad.TimesToRun
+                                                having NumberOfResults<ad.TimesToRun";
 
-                using (SQLiteCommand cmd = new SQLiteCommand(sqlAnalyzeData, conn))
+                using (var cmd = new SQLiteCommand(sqlAnalyzeData, conn))
                 {
                     conn.Open();
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
                         reader.Read();
 
-                        var analyzeData = new AnalyzeData();
-                        analyzeData.ID = reader.GetInt32(0);
-                        analyzeData.GraphFilePath = reader.GetString(1);
-                        analyzeData.GraphFileType = (GraphFileType)reader.GetInt32(2);
-                        analyzeData.NumberOfAnts = reader.GetInt32(3);
-                        analyzeData.NumberOfPartitions = reader.GetInt32(4);
-                        analyzeData.ColoringProbability = reader.GetDouble(5);
-                        analyzeData.MovingProbability = reader.GetDouble(6);
-                        analyzeData.NumberOfVerticesForBalance = reader.GetInt32(7);
-                        analyzeData.NumberOfIterations = reader.GetInt32(8);
+                        var analyzeData = new AnalyzeData
+                        {
+                            ID = reader.GetInt32(0),
+                            GraphFilePath = reader.GetString(1),
+                            GraphFileType = (GraphFileType) reader.GetInt32(2),
+                            NumberOfAnts = reader.GetInt32(3),
+                            NumberOfPartitions = reader.GetInt32(4),
+                            ColoringProbability = reader.GetDouble(5),
+                            MovingProbability = reader.GetDouble(6),
+                            NumberOfVerticesForBalance = reader.GetInt32(7),
+                            NumberOfIterations = reader.GetInt32(8)
+                        };
 
                         return analyzeData;
                     }
@@ -43,18 +46,30 @@ namespace MultiAgentAlgorithmAnalyze
             }
         }
 
-        public static void SaveAnalyzeResult(int analyzeID, ResultData resultData)
+        public static void SaveAnalyzeResult(AnalyzeResult analyzeResult)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConnectionString))
+            const string sqlSaveAnalyzeResult = @"insert into AnalyzeResults(AnalyzeID, BestCost, StartDate, EndDate, Duration, BestCostIteration)
+                                                      values(@AnalyzeID, @BestCost, @StartDate, @EndDate, @Duration, @BestCostIteration)";
+
+            using (var conn = new SQLiteConnection(ConnectionString))
             {
-                const string sqlSaveAnalyzeResult = @"";
-
-                using (SQLiteCommand cmd = new SQLiteCommand(sqlSaveAnalyzeResult, conn))
+                conn.Open();
+                using (var tran = conn.BeginTransaction())
                 {
-                    cmd.Parameters.Add("AnalyzeID", DbType.Int32).Value = analyzeID;
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    using (var cmd = new SQLiteCommand(sqlSaveAnalyzeResult, conn, tran))
+                    {
+                        cmd.Parameters.Add("AnalyzeID", DbType.Int32).Value = analyzeResult.AnalyzeID;
+                        cmd.Parameters.Add("@BestCost", DbType.Int32).Value = analyzeResult.BestCost;
+                        cmd.Parameters.Add("@StartDate", DbType.Int32).Value =
+                            analyzeResult.GetIntegerFromDate(analyzeResult.StartDate);
+                        cmd.Parameters.Add("@EndDate", DbType.Int32).Value =
+                            analyzeResult.GetIntegerFromDate(analyzeResult.EndDate);
+                        cmd.Parameters.Add("@Duration", DbType.Int32).Value = analyzeResult.Duration;
+                        cmd.Parameters.Add("@BestCostIteration", DbType.Int32).Value = analyzeResult.BestCostIteration;
+                        
+                        cmd.ExecuteNonQuery();
+                        tran.Commit();
+                    }
                 }
             }
         }

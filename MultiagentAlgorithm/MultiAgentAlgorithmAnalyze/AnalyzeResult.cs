@@ -1,14 +1,16 @@
-﻿namespace MultiAgentAlgorithmAnalyze
+﻿using System;
+
+namespace MultiAgentAlgorithmAnalyze
 {
-    class AnalyzeResults
+    partial class AnalyzeResult
     {
         public int AnalyzeID { get; set; }
 
         public int BestCost { get; set; }
 
-        public int StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public int EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public long Duration { get; set; }
 

@@ -3,7 +3,7 @@ using MultiagentAlgorithm;
 
 namespace MultiAgentAlgorithmAnalyze
 {
-    class Program
+    static class Program
     {
         static void Main()
         {
@@ -29,18 +29,34 @@ namespace MultiAgentAlgorithmAnalyze
             };
 
             var analyzeData = AnalyzeDataAccess.GetAnalyzeData();
-            //var startDate = 
-            var inputGraph = graphFunc(analyzeData);
 
-            var fileWriter = new FileWriter("graph.json");
-            var exportGraph = new GephiFileExport(fileWriter);
+            while (analyzeData != null)
+            {
+                var startDate = DateTime.UtcNow;
+                var inputGraph = graphFunc(analyzeData);
 
-            var graphOptions = new Options(analyzeData.NumberOfAnts, analyzeData.NumberOfPartitions, analyzeData.ColoringProbability,
-                                                   analyzeData.MovingProbability, analyzeData.NumberOfVerticesForBalance, analyzeData.NumberOfIterations);
+                var fileWriter = new FileWriter("graph.json");
+                var exportGraph = new GephiFileExport(fileWriter);
 
-            ResultData resultData = Algorithm.Run(inputGraph, graphOptions, rnd, exportGraph);
+                var graphOptions = new Options(analyzeData.NumberOfAnts, analyzeData.NumberOfPartitions, analyzeData.ColoringProbability,
+                                               analyzeData.MovingProbability, analyzeData.NumberOfVerticesForBalance, analyzeData.NumberOfIterations);
 
-            AnalyzeDataAccess.SaveAnalyzeResult(analyzeData.ID, resultData);
+                ResultData resultData = Algorithm.Run(inputGraph, graphOptions, rnd, exportGraph);
+
+                var analyzeResult = new AnalyzeResult
+                {
+                    AnalyzeID = analyzeData.ID,
+                    BestCost = resultData.BestCost,
+                    BestCostIteration = resultData.BestCostIteration,
+                    Duration = resultData.ElapsedMilliseconds,
+                    StartDate = startDate,
+                    EndDate = DateTime.UtcNow
+                };
+
+                AnalyzeDataAccess.SaveAnalyzeResult(analyzeResult);
+
+                analyzeData = AnalyzeDataAccess.GetAnalyzeData();
+            }
         }
     }
 }
