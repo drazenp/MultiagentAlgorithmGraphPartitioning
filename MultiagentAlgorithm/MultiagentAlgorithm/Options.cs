@@ -44,5 +44,15 @@
             NumberOfVerticesForBalance = numberOfVerticesForBalance;
             NumberOfIterations = numberOfIterations;
         }
+
+        public override string ToString()
+        {
+            return $@"NumberOfAnts: {NumberOfAnts}
+                      NumberOfPartitions = {NumberOfPartitions}
+                      ColoringProbability = {ColoringProbability}
+                      MovingProbability = {MovingProbability}
+                      NumberOfVerticesForBalance = {NumberOfVerticesForBalance}
+                      NumberOfIterations = {NumberOfIterations}";
+        }
     }
 }

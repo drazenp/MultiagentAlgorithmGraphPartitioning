@@ -64,7 +64,7 @@ namespace MultiagentAlgorithm
         {
             Ants = new Dictionary<int, int>();
             var counter = 0;
-            foreach (var vertex in Vertices.Shuffle(Rnd))
+            foreach (var vertex in Vertices.Where(v => v.ConnectedEdges.Count > 0).Shuffle(Rnd))
             {
                 Ants.Add(counter, vertex.ID);
                 counter++;

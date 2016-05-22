@@ -16,5 +16,15 @@ namespace MultiAgentAlgorithmAnalyze
         {
             return DateTime1970.AddSeconds(seconds);
         }
+
+        public override string ToString()
+        {
+            return $@"AnalyzeID {AnalyzeID}
+                      BestCost {BestCost}
+                      StartDate {StartDate}
+                      EndDate {EndDate}
+                      Duration {Duration}
+                      BestCostIteration {BestCostIteration}";
+        }
     }
 }
