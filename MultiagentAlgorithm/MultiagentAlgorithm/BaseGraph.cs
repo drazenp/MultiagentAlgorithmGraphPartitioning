@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
+//using System.Reflection;
+//using log4net;
 
 namespace MultiagentAlgorithm
 {
     public abstract class BaseGraph : IGraph
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected IDataLoader DataLoader;
 
         protected Random Rnd;
@@ -101,11 +99,6 @@ namespace MultiagentAlgorithm
         /// <returns>The value of global cost function.</returns>
         public int GetGlobalCostFunction()
         {
-            if (Log.IsDebugEnabled)
-            {
-                LoggerHelper.LogVertices(Vertices);
-            }
-            
             var globalCost = 0;
 
             foreach (var vertex in Vertices)
