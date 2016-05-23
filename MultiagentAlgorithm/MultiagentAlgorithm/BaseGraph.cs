@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
 
 namespace MultiagentAlgorithm
 {
     public abstract class BaseGraph : IGraph
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected IDataLoader DataLoader;
 
         protected Random Rnd;
@@ -29,17 +25,6 @@ namespace MultiagentAlgorithm
 
         public int MaxNumberOfAdjacentVertices;
 
-        public Dictionary<int, List<string>> changes = new Dictionary<int, List<string>>();
-
-        private void AddVertex(string type, Vertex vertex)
-        {
-            if (changes.Keys.All(key => key != vertex.ID))
-            {
-                changes.Add(vertex.ID, new List<string>());
-            }
-            changes[vertex.ID].Add(type + " " + vertex.Color);
-        }
-
         public abstract void InitializeGraph();
 
         /// <summary>
@@ -52,7 +37,6 @@ namespace MultiagentAlgorithm
             for (var i = 0; i < Vertices.Length; i++)
             {
                 shuffleVertices[i].Color = i % numberOfColors + 1;
-                AddVertex("i", shuffleVertices[i]);
             }
         }
 
@@ -113,11 +97,6 @@ namespace MultiagentAlgorithm
         /// <returns>The value of global cost function.</returns>
         public int GetGlobalCostFunction()
         {
-            if (Log.IsDebugEnabled)
-            {
-                LoggerHelper.LogVertices(Vertices);
-            }
-            
             var globalCost = 0;
 
             foreach (var vertex in Vertices)
@@ -126,7 +105,7 @@ namespace MultiagentAlgorithm
                 globalCost += differentColorCount;
             }
 
-            return globalCost;
+            return globalCost / 2;
         }
 
         /// <summary>
@@ -188,8 +167,6 @@ namespace MultiagentAlgorithm
 
             vertex.Color = bestColor.Key;
             
-            AddVertex("b", vertex);
-
             return vertex;
         }
 
@@ -204,8 +181,6 @@ namespace MultiagentAlgorithm
             var vertex = Vertices[Ants[ant]];
             var randomColor = Enumerable.Range(1, numberOfColors).Shuffle(Rnd).First();
             vertex.Color = randomColor;
-
-            AddVertex("r", vertex);
 
             return vertex;
         }
@@ -238,9 +213,7 @@ namespace MultiagentAlgorithm
 
             vertexChangedColor.Color = oldColor;
 
-            AddVertex("k", vertexChangedColor);
-
-            return vertexChangedColor;
+             return vertexChangedColor;
         }
 
         /// <summary>

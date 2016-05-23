@@ -13,6 +13,8 @@ namespace MultiagentAlgorithmConsole
         private static ILog Log { get; } = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         // part -t 0 -i "Graphs\DIMACS\myciel3.col" -a 1 -p 2 -c 0.9 -m 0.85 -s 6 -d 100
+        // part -t 0 -i "Graphs\DIMACS\le450_15b.col" -a 5 -p 29 -c 0.9 -m 0.85 -s 6 -d 1
+        // part -t 1 -i "Graphs\manual.txt" -a 1 -p 2 -c 0.9 -m 0.85 -s 4 -d 100
         static int Main(string[] args)
         {
             XmlConfigurator.Configure();
@@ -32,7 +34,10 @@ namespace MultiagentAlgorithmConsole
                             graph = new DimacsGraph(fileLoader, rnd);
                             break;
                         case GraphInputFileType.Metis:
-                            graph = new DimacsGraph(fileLoader, rnd);
+                            graph = new MetisGraph(fileLoader, rnd);
+                            break;
+                        case GraphInputFileType.MetisUnweighted:
+                            graph = new MetisUnweightedGraph(fileLoader, rnd);
                             break;
                         default:
                             throw new ApplicationException("Graph file format is not suppoted.");

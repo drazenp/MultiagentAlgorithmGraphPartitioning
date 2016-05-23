@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 
 namespace MultiagentAlgorithm
 {
     public static class Algorithm
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public static ResultData Run(BaseGraph graph, Options options, Random rnd, IExportGraph graphExport)
         {
             var stopwatch = new Stopwatch();
@@ -22,11 +18,9 @@ namespace MultiagentAlgorithm
 
             var bestCost = graph.GetGlobalCostFunction();
             var bestCostIteration = 0;
-            var bestDistribution = (Vertex[])graph.Vertices.Clone();
-            Log.Info($"Initial global cost: {bestCost}");
-
             var iteration = 0;
-            while(bestCost > 0 && iteration < options.NumberOfIterations)
+
+            while (bestCost > 0 && iteration < options.NumberOfIterations)
             { 
                 // At a given iteration each ant moves from the current position 
                 // to the adjacent vertex with the lowest local cost, 
@@ -78,29 +72,13 @@ namespace MultiagentAlgorithm
                     {
                         bestCost = globalCost;
                         bestCostIteration = iteration;
-                        bestDistribution = (Vertex[])graph.Vertices.Clone();
                     }
-                    Log.Info($"Iteration [{iteration}] | Ant {ant} | Global cost: {globalCost} | Best cost: {bestCost}");
                 }
                 iteration++;
             }
             stopwatch.Stop();
 
             var result = new ResultData(bestCost, bestCostIteration, stopwatch.ElapsedMilliseconds);
-            Log.Info(result.ToString());
-
-            if (Log.IsDebugEnabled)
-            {
-                foreach (var partition in Enumerable.Range(1, options.NumberOfPartitions))
-                {
-                    var numberOfVerticesWithinPartition = bestDistribution.Count(vertex => vertex.Color == partition);
-                    Log.Debug($"Partition [{partition}]: {numberOfVerticesWithinPartition}");
-                }
-            }
-            LoggerHelper.LogVertices(bestDistribution);
-            LoggerHelper.LogVerticesOneLine(bestDistribution);
-            graphExport.ExportGraph(bestDistribution);
-            //LoggerHelper.LogChangesOnVertices(graph.changes);
 
             return result;
         }
