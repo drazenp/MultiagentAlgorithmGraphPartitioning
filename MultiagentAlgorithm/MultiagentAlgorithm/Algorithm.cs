@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 
 namespace MultiagentAlgorithm
 {
     public static class Algorithm
     {
-        //private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public static ResultData Run(BaseGraph graph, Options options, Random rnd, IExportGraph graphExport)
         {
             var stopwatch = new Stopwatch();
@@ -24,7 +20,7 @@ namespace MultiagentAlgorithm
             var bestCostIteration = 0;
             var iteration = 0;
 
-            while(bestCost > 0 && iteration < options.NumberOfIterations)
+            while (bestCost > 0 && iteration < options.NumberOfIterations)
             { 
                 // At a given iteration each ant moves from the current position 
                 // to the adjacent vertex with the lowest local cost, 

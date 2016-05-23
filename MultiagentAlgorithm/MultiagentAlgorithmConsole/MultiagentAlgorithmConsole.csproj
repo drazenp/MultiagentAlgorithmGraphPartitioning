@@ -94,6 +94,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Graphs\manual.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Graphs\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

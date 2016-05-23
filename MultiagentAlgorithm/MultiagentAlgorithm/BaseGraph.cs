@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using System.Reflection;
-//using log4net;
 
 namespace MultiagentAlgorithm
 {
@@ -107,7 +105,7 @@ namespace MultiagentAlgorithm
                 globalCost += differentColorCount;
             }
 
-            return globalCost;
+            return globalCost / 2;
         }
 
         /// <summary>
