@@ -56,7 +56,7 @@ namespace MultiAgentAlgorithmAnalyze
                     EndDate = DateTime.UtcNow
                 };
 
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine(analyzeResult);
 
                 AnalyzeDataAccess.SaveAnalyzeResult(analyzeResult);

@@ -21,6 +21,7 @@
 	insert into  _GraphFilePaths (GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun) values ('le450_5a.col', 2, 0.9, 0.85, 12, 20);
 	insert into  _GraphFilePaths (GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun) values ('le450_5b.col', 2, 0.9, 0.85, 12, 20);
 	insert into  _GraphFilePaths (GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun) values ('le450_5c.col', 2, 0.9, 0.85, 12, 20);
+	/* Group one */
 	insert into  _GraphFilePaths (GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun) values ('miles1000.col', 2, 0.9, 0.85, 12, 20);
 	insert into  _GraphFilePaths (GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun) values ('miles1500.col', 2, 0.9, 0.85, 12, 20);
 	insert into  _GraphFilePaths (GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun) values ('miles500.col', 2, 0.9, 0.85, 12, 20);
@@ -56,7 +57,6 @@
 	delete from AnalyzeData;
 	delete from AnalyzeResults;
 	
-	/*GraphFilePath, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, TimesToRun*/
 	insert into AnalyzeData(GraphFilePath, NumberOfAnts, NumberOfPartitions, ColoringProbability, MovingProbability, NumberOfVerticesForBalance, NumberOfIterations, TimesToRun)
 	select g.GraphFilePath, a.NumberOfAnts, g.NumberOfPartitions, g.ColoringProbability, g.MovingProbability, g.NumberOfVerticesForBalance, i.NumberOfIterations, g.TimesToRun
 	from _GraphFilePaths as g, _NumberOfAnts as a, _NumberOfIterations as i;

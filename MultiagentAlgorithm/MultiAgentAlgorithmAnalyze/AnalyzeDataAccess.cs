@@ -25,7 +25,10 @@ namespace MultiAgentAlgorithmAnalyze
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                        reader.Read();
+                        if (!reader.Read())
+                        {
+                            return null;
+                        }
 
                         var analyzeData = new AnalyzeData
                         {

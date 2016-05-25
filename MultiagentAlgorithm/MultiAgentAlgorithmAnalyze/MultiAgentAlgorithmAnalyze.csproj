@@ -62,7 +62,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="db\multiagent.s3db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Graphs\C2000.5.col">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
