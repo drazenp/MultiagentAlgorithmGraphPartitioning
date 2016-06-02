@@ -48,7 +48,7 @@
 	insert into _NumberOfAntsAndIterations(NumberOfAnts, NumberOfIterations)values(7, 500);
 	insert into _NumberOfAntsAndIterations(NumberOfAnts, NumberOfIterations)values(8, 400);
 	insert into _NumberOfAntsAndIterations(NumberOfAnts, NumberOfIterations)values(9, 300);
-
+	
 	delete from AnalyzeData;
 	delete from AnalyzeResults;
 	

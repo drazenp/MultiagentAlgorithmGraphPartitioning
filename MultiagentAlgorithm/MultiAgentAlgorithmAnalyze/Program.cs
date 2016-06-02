@@ -40,6 +40,8 @@ namespace MultiAgentAlgorithmAnalyze
 
                 var graphOptions = new Options(analyzeData.NumberOfAnts, analyzeData.NumberOfPartitions, analyzeData.ColoringProbability,
                                                analyzeData.MovingProbability, analyzeData.NumberOfVerticesForBalance, analyzeData.NumberOfIterations);
+
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(graphOptions);
 
                 ResultData resultData = Algorithm.Run(inputGraph, graphOptions, rnd, exportGraph);
@@ -53,6 +55,8 @@ namespace MultiAgentAlgorithmAnalyze
                     StartDate = startDate,
                     EndDate = DateTime.UtcNow
                 };
+
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine(analyzeResult);
 
                 AnalyzeDataAccess.SaveAnalyzeResult(analyzeResult);
