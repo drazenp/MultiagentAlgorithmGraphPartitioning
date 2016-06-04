@@ -1,5 +1,5 @@
-# MultiagentAlgorithmGraphPartitioning
-A Multiagent Algorithm for Graph Partitioning created based on [document](http://link.springer.com/chapter/10.1007%2F11732242_25).
+# A Multiagent Algorithm for Graph Partitioning
+A multiagent algorithm for graph partitioning created based on [document](http://link.springer.com/chapter/10.1007%2F11732242_25).
 
 |         Graph | Vertices | Edges   | Partitions | Cut size | Algoritham | Multi   | Metis   | My-Best |
 |:--------------|----------|---------|------------|----------|------------|---------|---------|---------|
