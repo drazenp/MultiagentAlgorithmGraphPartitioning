@@ -129,7 +129,7 @@ namespace MultiagentAlgorithm.Test
 
 
         [TestMethod]
-        public void GraphMyciel4_CalculateGlobalCostFunction_Success()
+        public void GraphMyciel4_CalculateGlobalCostFunction_34()
         {
             var loaderMock = new Mock<IDataLoader>();
             loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
@@ -168,7 +168,50 @@ namespace MultiagentAlgorithm.Test
 
             var globalCost = graph.GetGlobalCostFunction();
 
-            Assert.AreEqual(68, globalCost);
+            Assert.AreEqual(34, globalCost);
+        }
+
+        [TestMethod]
+        public void GraphMyciel4_CalculateGlobalCostFunction_28()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new DimacsGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+
+            graph.Vertices[0].Color = 1;
+            graph.Vertices[1].Color = 1;
+            graph.Vertices[2].Color = 1;
+            graph.Vertices[3].Color = 0;
+            graph.Vertices[4].Color = 1;
+            graph.Vertices[5].Color = 0;
+            graph.Vertices[6].Color = 0;
+            graph.Vertices[7].Color = 0;
+            graph.Vertices[8].Color = 0;
+            graph.Vertices[9].Color = 0;
+            graph.Vertices[10].Color = 0;
+            graph.Vertices[11].Color = 0;
+            graph.Vertices[12].Color = 1;
+            graph.Vertices[13].Color = 1;
+            graph.Vertices[14].Color = 1;
+            graph.Vertices[15].Color = 0;
+            graph.Vertices[16].Color = 0;
+            graph.Vertices[17].Color = 1;
+            graph.Vertices[18].Color = 1;
+            graph.Vertices[19].Color = 1;
+            graph.Vertices[20].Color = 0;
+            graph.Vertices[21].Color = 0;
+            graph.Vertices[22].Color = 1;
+
+            var globalCost = graph.GetGlobalCostFunction();
+
+            Assert.AreEqual(28, globalCost);
         }
 
         [TestMethod]
@@ -195,7 +238,7 @@ namespace MultiagentAlgorithm.Test
 
             var globalCost = graph.GetGlobalCostFunction();
 
-            Assert.AreEqual(6, globalCost);
+            Assert.AreEqual(3, globalCost);
         }
 
         [TestMethod]
@@ -240,7 +283,7 @@ namespace MultiagentAlgorithm.Test
 
             var globalCost = graph.GetGlobalCostFunction();
 
-            Assert.AreEqual(168, globalCost);
+            Assert.AreEqual(84, globalCost);
         }
     }
 }
