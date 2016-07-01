@@ -8,10 +8,12 @@ namespace MultiagentAlgorithm
     public class GephiFileExport : IExportGraph
     {
         private readonly IDataWriter _dataWriter;
+        private readonly string _fileName;
 
-        public GephiFileExport(IDataWriter dataWriter)
+        public GephiFileExport(IDataWriter dataWriter, string fileName)
         {
             _dataWriter = dataWriter;
+            _fileName = fileName;
         }
 
         public void ExportGraph(IList<Vertex> vertices)
@@ -22,7 +24,7 @@ namespace MultiagentAlgorithm
 
             var nodes = string.Join(Environment.NewLine, vertices.Select(vertex => (vertex.ID + 1) + ";" + vertex.Color + ";" + (vertex.ID + 1)));
             sb.Append(nodes);
-            _dataWriter.WriteData(sb.ToString());
+            _dataWriter.WriteData(sb.ToString(), $"{_fileName}.vrtx.csv");
 
             sb = new StringBuilder(128);
             sb.Append("Source;Target");
@@ -35,7 +37,7 @@ namespace MultiagentAlgorithm
             var links = string.Join(Environment.NewLine, edges.ToList());
             sb.Append(links);
 
-            _dataWriter.WriteData(sb.ToString());
+            _dataWriter.WriteData(sb.ToString(), $"{_fileName}.edges.csv");
         }
     }
 }

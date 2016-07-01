@@ -18,6 +18,7 @@ namespace MultiagentAlgorithm
 
             var bestCost = graph.GetGlobalCostFunction();
             var bestCostIteration = 0;
+            var bestDistribution = (Vertex[])graph.Vertices.Clone();
             var iteration = 0;
 
             while (bestCost > 0 && iteration < options.NumberOfIterations)
@@ -72,11 +73,14 @@ namespace MultiagentAlgorithm
                     {
                         bestCost = globalCost;
                         bestCostIteration = iteration;
+                        bestDistribution = (Vertex[])graph.Vertices.Clone();
                     }
                 }
                 iteration++;
             }
             stopwatch.Stop();
+
+            graphExport.ExportGraph(bestDistribution);
 
             var result = new ResultData(bestCost, bestCostIteration, stopwatch.ElapsedMilliseconds);
 

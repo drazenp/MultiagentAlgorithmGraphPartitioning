@@ -14,7 +14,12 @@ namespace MultiagentAlgorithm
 
         public void WriteData(string data)
         {
-            File.WriteAllText(_fileName + DateTime.Now.Millisecond, data);
+            File.WriteAllText(_fileName, data);
+        }
+
+        public void WriteData(string data, string fileName)
+        {
+            File.WriteAllText(fileName, data);
         }
     }
 }

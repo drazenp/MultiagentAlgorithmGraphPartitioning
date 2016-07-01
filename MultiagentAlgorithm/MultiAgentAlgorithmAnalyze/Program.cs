@@ -36,7 +36,7 @@ namespace MultiAgentAlgorithmAnalyze
                 var inputGraph = graphFunc(analyzeData);
 
                 var fileWriter = new FileWriter("graph.json");
-                var exportGraph = new GephiFileExport(fileWriter);
+                //var exportGraph = new GephiFileExport(fileWriter);
 
                 var graphOptions = new Options(analyzeData.NumberOfAnts, analyzeData.NumberOfPartitions, analyzeData.ColoringProbability,
                                                analyzeData.MovingProbability, analyzeData.NumberOfVerticesForBalance, analyzeData.NumberOfIterations);
@@ -44,7 +44,7 @@ namespace MultiAgentAlgorithmAnalyze
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(graphOptions);
 
-                ResultData resultData = Algorithm.Run(inputGraph, graphOptions, rnd, exportGraph);
+                ResultData resultData = Algorithm.Run(inputGraph, graphOptions, rnd, null);
 
                 var analyzeResult = new AnalyzeResult
                 {

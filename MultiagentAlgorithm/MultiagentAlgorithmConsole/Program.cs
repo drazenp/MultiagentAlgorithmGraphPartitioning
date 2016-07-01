@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using CommandLine;
 using log4net;
@@ -22,9 +23,8 @@ namespace MultiagentAlgorithmConsole
             Func<PartitionGraphOptions, int> partitionFunc = options =>
                 {
                     var rnd = new Random(Environment.TickCount);
-                    //var rnd = new Random(1);
                     var fileWriter = new FileWriter("graph.json");
-                    var exportGraph = new GephiFileExport(fileWriter);
+                    var exportGraph = new GephiFileExport(fileWriter, Path.GetFileNameWithoutExtension(options.InputGraphFilePath));
 
                     var fileLoader = new FileLoader(options.InputGraphFilePath);
                     BaseGraph graph;
