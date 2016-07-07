@@ -30,9 +30,25 @@ namespace MultiagentAlgorithm
             sb.Append("Source;Target");
             sb.AppendLine();
 
-            var edges = from vertex in vertices
-                        from edge in vertex.ConnectedEdges
-                        select (vertex.ID + 1) + ";" + (edge.Key + 1);
+            var edgesSet = (from vertex in vertices
+                from edge in vertex.ConnectedEdges
+                select Tuple.Create(vertex.ID + 1, edge.Key + 1)).ToList();
+
+            var uniqueEdges = new List<Tuple<int, int>>();
+            foreach (var edge in edgesSet)
+            {
+                if (
+                    !uniqueEdges.Exists(
+                        t =>
+                            (t.Item1 == edge.Item1 && t.Item2 == edge.Item2) ||
+                            (t.Item1 == edge.Item2 && t.Item2 == edge.Item1)))
+                {
+                    uniqueEdges.Add(Tuple.Create(edge.Item1, edge.Item2));
+                }
+            }
+
+            var edges = from vertex in uniqueEdges
+                select vertex.Item1 + ";" + vertex.Item2;
 
             var links = string.Join(Environment.NewLine, edges.ToList());
             sb.Append(links);
