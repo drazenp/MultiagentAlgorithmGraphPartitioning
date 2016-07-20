@@ -511,5 +511,100 @@ namespace MultiagentAlgorithm.Test
             Assert.AreEqual(0.75, graph.Vertices[5].LocalCost);
             Assert.AreEqual(0, graph.Vertices[6].LocalCost);
         }
+
+        [TestMethod]
+        public void Graph_BestLocalCostFunction_Success()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+
+            graph.Vertices[0].Color = 1;
+            graph.Vertices[1].Color = 1;
+            graph.Vertices[2].Color = 1;
+            graph.Vertices[3].Color = 2;
+            graph.Vertices[4].Color = 1;
+            graph.Vertices[5].Color = 2;
+            graph.Vertices[6].Color = 2;
+            
+            graph.CalculateLocalCostFunction();
+
+            Assert.AreEqual(1D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(1D, graph.Vertices[6].LocalCost);
+        }
+
+        [TestMethod]
+        public void Graph_AntOneFullRun()
+        {
+            var loaderMock = new Mock<IDataLoader>();
+            loaderMock.Setup(m => m.LoadData()).Returns(_dummyFile);
+
+            var randomMock = new StubRandom()
+            {
+                NextInt32Int32 = (a, b) => 1
+            };
+
+            var graph = new MetisGraph(loaderMock.Object, randomMock);
+            graph.InitializeGraph();
+            graph.InitializeAnts(_optionTwoColors.NumberOfAnts);
+            graph.ColorVerticesRandomly(_optionTwoColors.NumberOfPartitions);
+            graph.CalculateLocalCostFunction();
+
+            Assert.AreEqual(1 / 2D, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(3 / 4D, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(1 / 4D, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(1 / 2D, graph.Vertices[6].LocalCost);
+
+
+            var globalCost = graph.GetGlobalCostFunction();
+            Assert.AreEqual(7, globalCost);
+
+            Vertex vertexWithAnt = graph.MoveAntToVertexWithLowestCost(0);
+            Assert.AreEqual(2, vertexWithAnt.ID);
+
+            int oldColor = vertexWithAnt.Color;
+            int vertexWithAntID = vertexWithAnt.ID;
+            Vertex vertexWithNewColor = graph.ColorVertexWithBestColor(0);
+            Assert.AreEqual(1, vertexWithNewColor.Color);
+
+            Vertex vertexWhichKeepBalance = graph.KeepBalance(_optionTwoColors.NumberOfVerticesForBalance, vertexWithAntID, oldColor, vertexWithNewColor.Color);
+            Assert.AreEqual(2, graph.Vertices[0].Color);
+            Assert.AreEqual(1, graph.Vertices[1].Color);
+            Assert.AreEqual(1, graph.Vertices[2].Color);
+            Assert.AreEqual(1, graph.Vertices[3].Color);
+            Assert.AreEqual(2, graph.Vertices[4].Color);
+            Assert.AreEqual(1, graph.Vertices[5].Color);
+            Assert.AreEqual(2, graph.Vertices[6].Color);
+
+            graph.UpdateLocalCostFunction(vertexWhichKeepBalance, vertexWithNewColor);
+
+            Assert.AreEqual(0.5, graph.Vertices[0].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[1].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[2].LocalCost);
+            Assert.AreEqual(0.75, graph.Vertices[3].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[4].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[5].LocalCost);
+            Assert.AreEqual(0.5, graph.Vertices[6].LocalCost);
+
+            var globalCostAfterMove = graph.GetGlobalCostFunction();
+            Assert.AreEqual(6, globalCostAfterMove);
+        }
     }
 }
