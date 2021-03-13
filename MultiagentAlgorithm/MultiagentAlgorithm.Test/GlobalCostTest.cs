@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Fakes;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace MultiagentAlgorithm.Test
 {
-    [TestClass]
-    public class GlobalCostTest
-    {
-        #region Myciel4
-        private readonly List<string> _myciel4 = new List<string>() { "p edges 23 71",
+   [TestClass]
+   public class GlobalCostTest
+   {
+      #region Myciel4
+      private readonly List<string> _myciel4 = new List<string>() { "p edges 23 71",
                                                                       "e 1 2",
                                                                       "e 1 4",
                                                                       "e 1 7",
@@ -81,9 +81,9 @@ namespace MultiagentAlgorithm.Test
                                                                       "e 20 23",
                                                                       "e 21 23",
                                                                       "e 22 23"};
-        #endregion
+      #endregion
 
-        private readonly List<string> _metisTest = new List<string>() {"7 11 011",
+      private readonly List<string> _metisTest = new List<string>() {"7 11 011",
                                                                        "4 5 1 3 2 2 1",
                                                                        "2 1 1 3 2 4 1",
                                                                        "5 5 3 4 2 2 2 1 2",
@@ -91,8 +91,8 @@ namespace MultiagentAlgorithm.Test
                                                                        "1 1 1 3 3 6 2",
                                                                        "6 5 2 4 2 7 6",
                                                                        "2 6 6 4 5"};
-        #region Queen5_5
-        private readonly List<string> _queen55Metis = new List<string>() {"25 320",
+      #region Queen5_5
+      private readonly List<string> _queen55Metis = new List<string>() {"25 320",
                                                                           "7 13 19 25 2 3 4 5 6 11 16 21",
                                                                           "1 8 14 20 6 3 4 5 7 12 17 22",
                                                                           "1 2 9 15 7 11 4 5 8 13 18 23",
@@ -118,172 +118,160 @@ namespace MultiagentAlgorithm.Test
                                                                           "3 8 11 13 15 17 18 19 21 22 24 25",
                                                                           "4 6 9 12 14 18 19 20 21 22 23 25",
                                                                           "1 5 7 10 13 15 19 20 21 22 23 24"};
-        #endregion
+      #endregion
 
-        // Uncomment if needed.
-        //private readonly Options _optionMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-        //        movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 12, numberOfIterations: 100);
+      // Uncomment if needed.
+      //private readonly Options _optionMyciel4 = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
+      //        movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 12, numberOfIterations: 100);
 
-        //private readonly Options _optionMetisTest = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
-        //        movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 4, numberOfIterations: 5);
+      //private readonly Options _optionMetisTest = new Options(numberOfAnts: 2, numberOfPartitions: 2, coloringProbability: 0.9,
+      //        movingProbability: 0.85, graphFilePath: string.Empty, numberOfVerticesForBalance: 4, numberOfIterations: 5);
 
 
-        [TestMethod]
-        public void GraphMyciel4_CalculateGlobalCostFunction_34()
-        {
-            var loaderMock = new Mock<IDataLoader>();
-            loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
+      [TestMethod]
+      public void GraphMyciel4_CalculateGlobalCostFunction_34()
+      {
+         var loaderMock = new Mock<IDataLoader>();
+         loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
+         var randomMock = new Mock<Random>();
+         randomMock.Setup(s => s.Next(It.IsAny<int>(), It.IsAny<int>())).Returns(1);
 
-            var randomMock = new StubRandom()
-            {
-                NextInt32Int32 = (a, b) => 1
-            };
+         var graph = new DimacsGraph(loaderMock.Object, randomMock.Object);
+         graph.InitializeGraph();
 
-            var graph = new DimacsGraph(loaderMock.Object, randomMock);
-            graph.InitializeGraph();
+         graph.Vertices[0].Color = 1;
+         graph.Vertices[1].Color = 1;
+         graph.Vertices[2].Color = 1;
+         graph.Vertices[3].Color = 1;
+         graph.Vertices[4].Color = 0;
+         graph.Vertices[5].Color = 1;
+         graph.Vertices[6].Color = 1;
+         graph.Vertices[7].Color = 1;
+         graph.Vertices[8].Color = 0;
+         graph.Vertices[9].Color = 0;
+         graph.Vertices[10].Color = 1;
+         graph.Vertices[11].Color = 0;
+         graph.Vertices[12].Color = 0;
+         graph.Vertices[13].Color = 1;
+         graph.Vertices[14].Color = 0;
+         graph.Vertices[15].Color = 1;
+         graph.Vertices[16].Color = 1;
+         graph.Vertices[17].Color = 0;
+         graph.Vertices[18].Color = 0;
+         graph.Vertices[19].Color = 0;
+         graph.Vertices[20].Color = 1;
+         graph.Vertices[21].Color = 0;
+         graph.Vertices[22].Color = 0;
 
-            graph.Vertices[0].Color = 1;
-            graph.Vertices[1].Color = 1;
-            graph.Vertices[2].Color = 1;
-            graph.Vertices[3].Color = 1;
-            graph.Vertices[4].Color = 0;
-            graph.Vertices[5].Color = 1;
-            graph.Vertices[6].Color = 1;
-            graph.Vertices[7].Color = 1;
-            graph.Vertices[8].Color = 0;
-            graph.Vertices[9].Color = 0;
-            graph.Vertices[10].Color = 1;
-            graph.Vertices[11].Color = 0;
-            graph.Vertices[12].Color = 0;
-            graph.Vertices[13].Color = 1;
-            graph.Vertices[14].Color = 0;
-            graph.Vertices[15].Color = 1;
-            graph.Vertices[16].Color = 1;
-            graph.Vertices[17].Color = 0;
-            graph.Vertices[18].Color = 0;
-            graph.Vertices[19].Color = 0;
-            graph.Vertices[20].Color = 1;
-            graph.Vertices[21].Color = 0;
-            graph.Vertices[22].Color = 0;
+         var globalCost = graph.GetGlobalCostFunction();
 
-            var globalCost = graph.GetGlobalCostFunction();
+         Assert.AreEqual(34, globalCost);
+      }
 
-            Assert.AreEqual(34, globalCost);
-        }
+      [TestMethod]
+      public void GraphMyciel4_CalculateGlobalCostFunction_28()
+      {
+         var loaderMock = new Mock<IDataLoader>();
+         loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
+         var randomMock = new Mock<Random>();
+         randomMock.Setup(s => s.Next(It.IsAny<int>(), It.IsAny<int>())).Returns(1);
 
-        [TestMethod]
-        public void GraphMyciel4_CalculateGlobalCostFunction_28()
-        {
-            var loaderMock = new Mock<IDataLoader>();
-            loaderMock.Setup(m => m.LoadData()).Returns(_myciel4);
+         var graph = new DimacsGraph(loaderMock.Object, randomMock.Object);
+         graph.InitializeGraph();
 
-            var randomMock = new StubRandom()
-            {
-                NextInt32Int32 = (a, b) => 1
-            };
+         graph.Vertices[0].Color = 1;
+         graph.Vertices[1].Color = 1;
+         graph.Vertices[2].Color = 1;
+         graph.Vertices[3].Color = 0;
+         graph.Vertices[4].Color = 1;
+         graph.Vertices[5].Color = 0;
+         graph.Vertices[6].Color = 0;
+         graph.Vertices[7].Color = 0;
+         graph.Vertices[8].Color = 0;
+         graph.Vertices[9].Color = 0;
+         graph.Vertices[10].Color = 0;
+         graph.Vertices[11].Color = 0;
+         graph.Vertices[12].Color = 1;
+         graph.Vertices[13].Color = 1;
+         graph.Vertices[14].Color = 1;
+         graph.Vertices[15].Color = 0;
+         graph.Vertices[16].Color = 0;
+         graph.Vertices[17].Color = 1;
+         graph.Vertices[18].Color = 1;
+         graph.Vertices[19].Color = 1;
+         graph.Vertices[20].Color = 0;
+         graph.Vertices[21].Color = 0;
+         graph.Vertices[22].Color = 1;
 
-            var graph = new DimacsGraph(loaderMock.Object, randomMock);
-            graph.InitializeGraph();
+         var globalCost = graph.GetGlobalCostFunction();
 
-            graph.Vertices[0].Color = 1;
-            graph.Vertices[1].Color = 1;
-            graph.Vertices[2].Color = 1;
-            graph.Vertices[3].Color = 0;
-            graph.Vertices[4].Color = 1;
-            graph.Vertices[5].Color = 0;
-            graph.Vertices[6].Color = 0;
-            graph.Vertices[7].Color = 0;
-            graph.Vertices[8].Color = 0;
-            graph.Vertices[9].Color = 0;
-            graph.Vertices[10].Color = 0;
-            graph.Vertices[11].Color = 0;
-            graph.Vertices[12].Color = 1;
-            graph.Vertices[13].Color = 1;
-            graph.Vertices[14].Color = 1;
-            graph.Vertices[15].Color = 0;
-            graph.Vertices[16].Color = 0;
-            graph.Vertices[17].Color = 1;
-            graph.Vertices[18].Color = 1;
-            graph.Vertices[19].Color = 1;
-            graph.Vertices[20].Color = 0;
-            graph.Vertices[21].Color = 0;
-            graph.Vertices[22].Color = 1;
+         Assert.AreEqual(28, globalCost);
+      }
 
-            var globalCost = graph.GetGlobalCostFunction();
+      [TestMethod]
+      public void GraphMetisTest_CalculateGlobalCostFunction_Success()
+      {
+         var loaderMock = new Mock<IDataLoader>();
+         loaderMock.Setup(m => m.LoadData()).Returns(_metisTest);
+         var randomMock = new Mock<Random>();
+         randomMock.Setup(s => s.Next(It.IsAny<int>(), It.IsAny<int>())).Returns(1);
 
-            Assert.AreEqual(28, globalCost);
-        }
+         var graph = new DimacsGraph(loaderMock.Object, randomMock.Object);
+         graph.InitializeGraph();
 
-        [TestMethod]
-        public void GraphMetisTest_CalculateGlobalCostFunction_Success()
-        {
-            var loaderMock = new Mock<IDataLoader>();
-            loaderMock.Setup(m => m.LoadData()).Returns(_metisTest);
+         graph.Vertices[0].Color = 2;
+         graph.Vertices[1].Color = 2;
+         graph.Vertices[2].Color = 2;
+         graph.Vertices[3].Color = 1;
+         graph.Vertices[4].Color = 2;
+         graph.Vertices[5].Color = 1;
+         graph.Vertices[6].Color = 1;
 
-            var randomMock = new StubRandom()
-            {
-                NextInt32Int32 = (a, b) => 1
-            };
+         var globalCost = graph.GetGlobalCostFunction();
 
-            var graph = new MetisGraph(loaderMock.Object, randomMock);
-            graph.InitializeGraph();
+         Assert.AreEqual(3, globalCost);
+      }
 
-            graph.Vertices[0].Color = 2;
-            graph.Vertices[1].Color = 2;
-            graph.Vertices[2].Color = 2;
-            graph.Vertices[3].Color = 1;
-            graph.Vertices[4].Color = 2;
-            graph.Vertices[5].Color = 1;
-            graph.Vertices[6].Color = 1;
+      [TestMethod]
+      public void GraphQueen5_5_CalculateGlobalCostFunction_Success()
+      {
+         var loaderMock = new Mock<IDataLoader>();
+         loaderMock.Setup(m => m.LoadData()).Returns(_queen55Metis);
+         var randomMock = new Mock<Random>();
+         randomMock.Setup(s => s.Next(It.IsAny<int>(), It.IsAny<int>())).Returns(1);
 
-            var globalCost = graph.GetGlobalCostFunction();
+         var graph = new DimacsGraph(loaderMock.Object, randomMock.Object);
+         graph.InitializeGraph();
 
-            Assert.AreEqual(3, globalCost);
-        }
+         graph.Vertices[0].Color = 2;
+         graph.Vertices[1].Color = 2;
+         graph.Vertices[2].Color = 1;
+         graph.Vertices[3].Color = 1;
+         graph.Vertices[4].Color = 1;
+         graph.Vertices[5].Color = 2;
+         graph.Vertices[6].Color = 2;
+         graph.Vertices[7].Color = 1;
+         graph.Vertices[8].Color = 2;
+         graph.Vertices[9].Color = 2;
+         graph.Vertices[10].Color = 1;
+         graph.Vertices[11].Color = 1;
+         graph.Vertices[12].Color = 2;
+         graph.Vertices[13].Color = 2;
+         graph.Vertices[14].Color = 2;
+         graph.Vertices[15].Color = 2;
+         graph.Vertices[16].Color = 1;
+         graph.Vertices[17].Color = 1;
+         graph.Vertices[18].Color = 2;
+         graph.Vertices[19].Color = 2;
+         graph.Vertices[20].Color = 2;
+         graph.Vertices[21].Color = 1;
+         graph.Vertices[22].Color = 1;
+         graph.Vertices[23].Color = 1;
+         graph.Vertices[24].Color = 1;
 
-        [TestMethod]
-        public void GraphQueen5_5_CalculateGlobalCostFunction_Success()
-        {
-            var loaderMock = new Mock<IDataLoader>();
-            loaderMock.Setup(m => m.LoadData()).Returns(_queen55Metis);
+         var globalCost = graph.GetGlobalCostFunction();
 
-            var randomMock = new StubRandom()
-            {
-                NextInt32Int32 = (a, b) => 1
-            };
-
-            var graph = new MetisUnweightedGraph(loaderMock.Object, randomMock);
-            graph.InitializeGraph();
-            
-            graph.Vertices[0].Color = 2;
-            graph.Vertices[1].Color = 2;
-            graph.Vertices[2].Color = 1;
-            graph.Vertices[3].Color = 1;
-            graph.Vertices[4].Color = 1;
-            graph.Vertices[5].Color = 2;
-            graph.Vertices[6].Color = 2;
-            graph.Vertices[7].Color = 1;
-            graph.Vertices[8].Color = 2;
-            graph.Vertices[9].Color = 2;
-            graph.Vertices[10].Color = 1;
-            graph.Vertices[11].Color = 1;
-            graph.Vertices[12].Color = 2;
-            graph.Vertices[13].Color = 2;
-            graph.Vertices[14].Color = 2;
-            graph.Vertices[15].Color = 2;
-            graph.Vertices[16].Color = 1;
-            graph.Vertices[17].Color = 1;
-            graph.Vertices[18].Color = 2;
-            graph.Vertices[19].Color = 2;
-            graph.Vertices[20].Color = 2;
-            graph.Vertices[21].Color = 1;
-            graph.Vertices[22].Color = 1;
-            graph.Vertices[23].Color = 1;
-            graph.Vertices[24].Color = 1;
-
-            var globalCost = graph.GetGlobalCostFunction();
-
-            Assert.AreEqual(84, globalCost);
-        }
-    }
+         Assert.AreEqual(84, globalCost);
+      }
+   }
 }
