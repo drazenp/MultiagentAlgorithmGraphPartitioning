@@ -2,8 +2,8 @@
 
 namespace MultiagentAlgorithm
 {
-    public interface IDataLoader
-    {
-        IEnumerable<string> LoadData();
-    }
+   public interface IDataLoader
+   {
+      IEnumerable<string> LoadData();
+   }
 }

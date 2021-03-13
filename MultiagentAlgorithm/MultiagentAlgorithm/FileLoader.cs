@@ -3,25 +3,25 @@ using System.IO;
 
 namespace MultiagentAlgorithm
 {
-    public class FileLoader : IDataLoader
-    {
-        private readonly string _fileName;
+   public class FileLoader : IDataLoader
+   {
+      private readonly string _fileName;
 
-        public FileLoader(string fileName)
-        {
-            _fileName = fileName;
-        }
+      public FileLoader(string fileName)
+      {
+         _fileName = fileName;
+      }
 
-        public IEnumerable<string> LoadData()
-        {
-            using (StreamReader reader = new StreamReader(_fileName))
+      public IEnumerable<string> LoadData()
+      {
+         using (StreamReader reader = new StreamReader(_fileName))
+         {
+            string line;
+            while ((line = reader.ReadLine()) != null)
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    yield return line;
-                }
+               yield return line;
             }
-        }
-    }
+         }
+      }
+   }
 }

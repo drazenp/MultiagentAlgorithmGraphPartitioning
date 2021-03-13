@@ -2,8 +2,8 @@
 
 namespace MultiagentAlgorithm
 {
-    public interface IExportGraph
-    {
-        void ExportGraph(IList<Vertex> vertices);
-    }
+   public interface IExportGraph
+   {
+      void ExportGraph(IList<Vertex> vertices);
+   }
 }

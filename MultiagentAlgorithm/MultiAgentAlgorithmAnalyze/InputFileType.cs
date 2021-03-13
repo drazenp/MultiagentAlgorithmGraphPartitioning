@@ -1,8 +1,8 @@
 ﻿namespace MultiAgentAlgorithmAnalyze
 {
-    public enum GraphFileType
-    {
-        Dimacs,
-        Metis
-    }
+   public enum GraphFileType
+   {
+      Dimacs,
+      Metis
+   }
 }
